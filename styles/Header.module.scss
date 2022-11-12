@@ -1,0 +1,68 @@
+$height: 50px;
+$space: 0.5rem;
+
+#header {
+  height: $height;
+  display: flex;
+  align-items: center;
+  padding: $space;
+}
+
+#category-narrow {
+  display: none;
+  position: relative;
+
+  & .button {
+    cursor: pointer;
+    margin-right: $space;
+  }
+
+  & .menu {
+    display: none;
+    position: absolute;
+    top: $height;
+    left: 0;
+    width: 100px;
+    height: 100px;
+
+    &.block {
+      display: block;
+    }
+  }
+}
+
+#logo {
+  margin-right: $space;
+}
+
+#category-wide {
+  display: flex;
+
+  & .item {
+    margin-right: $space;
+  }
+}
+
+#empty {
+  flex-grow: 1;
+}
+
+#search {
+  width: 16rem;
+  height: 80%;
+  margin-right: $space;
+}
+
+#login {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #category-narrow {
+    display: block;
+  }
+
+  #category-wide {
+    display: none;
+  }
+}

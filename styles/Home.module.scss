@@ -1,0 +1,6 @@
+@use 'Header.module.scss' as Header;
+@use 'Footer.module.scss' as Footer;
+
+#home {
+  min-height: calc(100vh - Header.$height - Footer.$height);
+}
