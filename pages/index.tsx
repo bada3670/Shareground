@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import style from 'styles/Home.module.scss';
+import Welcome from 'components/Welcome';
+import Intro from 'components/Intro';
 
 export default function Home() {
   return (
@@ -7,9 +9,10 @@ export default function Home() {
       <Head>
         <title>Shareground-Home</title>
       </Head>
-      <div id={style.home}>
-        <h1>Shareground</h1>
-      </div>
+      <main id={style.home}>
+        <Welcome />
+        <Intro />
+      </main>
     </>
   );
 }

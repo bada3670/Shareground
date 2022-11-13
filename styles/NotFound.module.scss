@@ -1,0 +1,10 @@
+@use 'Header.module.scss' as Header;
+@use 'Footer.module.scss' as Footer;
+
+#not-found {
+  min-height: calc(100vh - Header.$height - Footer.$height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+}

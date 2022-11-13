@@ -1,0 +1,32 @@
+$section-width: 6rem;
+$item-height: 2rem;
+$number-of-items: 3;
+$space: 0.5rem;
+$z-index: 100;
+
+#section {
+  position: absolute;
+  width: $section-width;
+  top: calc(50% - ($item-height * $number-of-items / 2));
+  right: $space;
+  background: white;
+  border-top: 1px solid gray;
+  z-index: $z-index;
+}
+
+.item {
+  border: 1px solid gray;
+  border-top: none;
+  height: $item-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: black;
+    font-size: 1.1rem;
+  }
+}

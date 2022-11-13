@@ -2,6 +2,7 @@ import 'styles/globals.css';
 import type { AppProps } from 'next/app';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import Following from 'components/Following';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -9,6 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header />
       <Component {...pageProps} />
       <Footer />
+      <Following />
     </div>
   );
 }
