@@ -1,0 +1,42 @@
+$space: 1rem;
+
+.section {
+  display: flex;
+  justify-content: center;
+
+  .edit,
+  .cancel,
+  .confirm {
+    cursor: pointer;
+  }
+
+  .input,
+  .cancel,
+  .confirm {
+    display: none;
+  }
+
+  .text {
+    margin-right: $space;
+  }
+}
+
+.section.edit-mode {
+  .text,
+  .edit {
+    display: none;
+  }
+
+  .input {
+    display: block;
+    margin-right: 1rem;
+  }
+
+  .cancel {
+    display: block;
+  }
+
+  .confirm {
+    display: block;
+  }
+}

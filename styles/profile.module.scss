@@ -1,10 +1,13 @@
 @use 'Header.module.scss' as Header;
 @use 'Footer.module.scss' as Footer;
 
-.not-found {
+.main {
   min-height: calc(100vh - Header.$height - Footer.$height);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
+
+  &_not-logged-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
 }

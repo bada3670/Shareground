@@ -29,22 +29,19 @@ export default function Intro() {
   }, []);
 
   return (
-    <section id={style.section} ref={$section}>
+    <section className={style.section} ref={$section}>
       <article
-        id={style['many-contents']}
-        className={`${style['article']} ${style['from-right']}`}
+        className={`${style['article']} ${style['from-right']} ${style['many-contents']}`}
       >
         수많은 콘텐츠를 경험해 보세요!
       </article>
       <article
-        id={style['various-forms']}
-        className={`${style['article']} ${style['from-left']}`}
+        className={`${style['article']} ${style['from-left']} ${style['various-forms']}`}
       >
         영상, pdf, 이미지 등 다양한 종류의 콘텐츠를 제공합니다!
       </article>
       <article
-        id={style['reaction']}
-        className={`${style['article']} ${style['from-right']}`}
+        className={`${style['article']} ${style['from-right']} ${style['reaction']}`}
       >
         댓글을 통해 사람들의 반응을 확인하세요!
       </article>

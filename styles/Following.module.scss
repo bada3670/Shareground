@@ -4,10 +4,10 @@ $number-of-items: 3;
 $space: 0.5rem;
 $z-index: 100;
 
-#section {
+.section {
   position: absolute;
   width: $section-width;
-  top: calc(50% - ($item-height * $number-of-items / 2));
+  top: calc(70%);
   right: $space;
   background: white;
   border-top: 1px solid gray;

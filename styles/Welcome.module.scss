@@ -10,23 +10,23 @@ $img-height: 400px;
   }
 }
 
-#section {
+.section {
   position: relative;
   overflow: hidden;
 }
 
-#carousel {
+.carousel {
   display: flex;
   width: calc(2 * $img-width);
 
-  & .item {
+  .item {
     width: $img-width;
     height: $img-height;
     animation: moving 24s linear infinite;
   }
 }
 
-#text {
+.text {
   position: absolute;
   left: 0;
   top: 0;
@@ -41,7 +41,7 @@ $img-height: 400px;
 }
 
 @media (max-width: 640px) {
-  #text {
+  .text {
     font-size: 1.5rem;
   }
 }

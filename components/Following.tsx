@@ -1,8 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import style from 'styles/Following.module.scss';
+import { useRouter } from 'next/router';
 
 export default function Following() {
+  const router = useRouter();
   const $section = useRef<HTMLElement>(null);
+
+  const click$toTop = () => {
+    window.scrollTo(0, 0);
+  };
+  const click$login = () => {
+    router.push('/sign');
+  };
+  const click$toBottom = () => {
+    window.scrollTo(0, document.body.scrollHeight);
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -26,10 +38,16 @@ export default function Following() {
   }, []);
 
   return (
-    <section id={style.section} ref={$section}>
-      <div className={style.item}>맨 위로</div>
-      <div className={style.item}>로그인</div>
-      <div className={style.item}>맨 아래로</div>
+    <section className={style.section} ref={$section}>
+      <div className={style.item} onClick={click$toTop}>
+        맨 위로
+      </div>
+      <div className={style.item} onClick={click$login}>
+        로그인
+      </div>
+      <div className={style.item} onClick={click$toBottom}>
+        맨 아래로
+      </div>
     </section>
   );
 }

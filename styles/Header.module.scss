@@ -1,23 +1,23 @@
 $height: 4rem;
 $space: 0.5rem;
 
-#header {
+.header {
   height: $height;
   display: flex;
   align-items: center;
   padding: calc($space * 1.5);
 }
 
-#category-narrow {
+.category-narrow {
   display: none;
   position: relative;
 
-  & .button {
+  .button {
     cursor: pointer;
     margin-right: $space;
   }
 
-  & .menu {
+  .menu {
     display: none;
     position: absolute;
     top: $height;
@@ -31,33 +31,33 @@ $space: 0.5rem;
   }
 }
 
-#logo {
+.logo {
   margin-right: $space;
 }
 
-#category-wide {
+.category-wide {
   display: flex;
 
-  & .item {
+  .item {
     margin-right: $space;
   }
 }
 
-#empty {
+.empty {
   flex-grow: 1;
 }
 
-#search {
+.search {
   width: 16rem;
   height: 80%;
   margin-right: $space;
 }
 
-#logged-in {
+.logged-in {
   display: flex;
   align-items: center;
 
-  #profile {
+  .profile {
     cursor: pointer;
     height: 100%;
     width: calc($height * 0.7);
@@ -66,15 +66,15 @@ $space: 0.5rem;
     margin-right: $space;
   }
 
-  #logout-button {
+  .logout-button {
     cursor: pointer;
   }
 }
 
-#not-logged-in {
+.not-logged-in {
   display: flex;
 
-  #login-button {
+  .login-button {
     cursor: pointer;
 
     a {
@@ -84,11 +84,11 @@ $space: 0.5rem;
 }
 
 @media (max-width: 768px) {
-  #category-narrow {
+  .category-narrow {
     display: block;
   }
 
-  #category-wide {
+  .category-wide {
     display: none;
   }
 }
