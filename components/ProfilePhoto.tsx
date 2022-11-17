@@ -1,48 +1,38 @@
 import fb from 'fb';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { getFirestore, updateDoc, doc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
-import authReducer from 'reducers/auth';
+import authReducer, { AuthState } from 'reducers/auth';
 import { ChangeEvent, useRef, useState } from 'react';
 import style from 'styles/components/ProfilePhoto.module.scss';
 
-interface State {
-  auth: {
-    id: string | null;
-    name: string | null;
-    photo: string | null;
-  };
-}
-
 export default function ProfilePhoto() {
-  const auth = getAuth(fb);
+  const db = getFirestore(fb);
   const storage = getStorage(fb);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { id: userid, photo } = useSelector((state: State) => state.auth);
+  const { id: userid, photo } = useSelector((state: AuthState) => state.auth);
   const userphoto = photo ? photo : '';
   const refInputPhoto = useRef<HTMLInputElement>(null);
 
   const change$inputPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);
-
     if (!e.target.files || !userid) {
       return;
     }
-    const file = e.target.files[0];
-    const storageRef = ref(storage, `profile/${userid}`);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
-    setTimeout(async () => {
-      if (!auth.currentUser) {
-        return;
-      }
-      await updateProfile(auth.currentUser, {
-        photoURL: url,
+    try {
+      const file = e.target.files[0];
+      const storageRef = ref(storage, `profile/${userid}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      await updateDoc(doc(db, 'users', userid), {
+        photo: url,
       });
+      dispatch(authReducer.actions.changePhoto({ photo: url }));
       setIsLoading(false);
-    }, 1000);
-    dispatch(authReducer.actions.changePhoto({ photo: url }));
+    } catch (error) {
+      console.error(error);
+    }
   };
   const click$changePhoto = () => {
     refInputPhoto.current?.click();

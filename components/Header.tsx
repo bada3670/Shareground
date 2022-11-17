@@ -1,28 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import fb from 'fb';
 import { getAuth, signOut } from 'firebase/auth';
-import authReducer from 'reducers/auth';
+import authReducer, { AuthState } from 'reducers/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import style from 'styles/components/Header.module.scss';
 
-interface State {
-  auth: {
-    name: string;
-    photo: string;
-  };
-}
-
 export default function Header() {
   const auth = getAuth(fb);
-  const { name: username, photo: userphoto } = useSelector((state: State) => state.auth);
+  const { id: userid, photo } = useSelector((state: AuthState) => state.auth);
+  const userphoto = photo ?? '';
   const dispatch = useDispatch();
   const router = useRouter();
 
   const click$logout = async () => {
     await signOut(auth);
-    dispatch(authReducer.actions.changeName({ name: null }));
-    dispatch(authReducer.actions.changePhoto({ photo: null }));
+    dispatch(authReducer.actions.changeAll({ id: null, name: null, photo: null }));
     router.push('/');
   };
 
@@ -36,7 +29,7 @@ export default function Header() {
       </div>
       <div className={style['category-wide']}>
         <div className={style['item']}>사회</div>
-        <div className={style['item']}>과학기술</div>
+        <div className={style['item']}>과학•기술</div>
         <div className={style['item']}>문화</div>
       </div>
       <div className={style['empty']}></div>
@@ -45,7 +38,7 @@ export default function Header() {
         className={style['search']}
         placeholder={'원하시는 콘텐츠의 제목을 입력하세요.'}
       />
-      {username ? (
+      {userid ? (
         <div className={style['logged-in']}>
           <Link href={'/profile'}>
             <img

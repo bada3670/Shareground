@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface AuthState {
+  auth: {
+    id: string | null;
+    name: string | null;
+    photo: string | null;
+  };
+}
+
 export default createSlice({
   // This name will be applied to 'type' of 'action'.
   name: 'auth',
@@ -8,12 +16,14 @@ export default createSlice({
     name: null,
     photo: null,
   },
+  // Don't forget to write 'payload'.
   reducers: {
-    changeID(state, action) {
+    changeAll(state, action) {
       state.id = action.payload.id;
+      state.name = action.payload.name;
+      state.photo = action.payload.photo;
     },
     changeName(state, action) {
-      // Don't forget to write 'payload'.
       state.name = action.payload.name;
     },
     changePhoto(state, action) {
