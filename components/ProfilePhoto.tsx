@@ -3,8 +3,8 @@ import { getAuth, updateProfile } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer from 'reducers/auth';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import style from 'styles/ProfilePhoto.module.scss';
+import { ChangeEvent, useRef, useState } from 'react';
+import style from 'styles/components/ProfilePhoto.module.scss';
 
 interface State {
   auth: {

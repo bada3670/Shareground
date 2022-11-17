@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import style from 'styles/Following.module.scss';
 import { useRouter } from 'next/router';
+import style from 'styles/components/Following.module.scss';
 
 export default function Following() {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import style from 'styles/Welcome.module.scss';
+import style from 'styles/components/Welcome.module.scss';
 
 export default function Welcome() {
   return (

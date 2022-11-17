@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import style from 'styles/Home.module.scss';
 import Welcome from 'components/Welcome';
 import Intro from 'components/Intro';
+import style from 'styles/pages/index.module.scss';
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Head>
         <title>Shareground-Home</title>
       </Head>
-      <main id={style.home}>
+      <main className={style.home}>
         <Welcome />
         <Intro />
       </main>

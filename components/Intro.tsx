@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import style from 'styles/Intro.module.scss';
+import style from 'styles/components/Intro.module.scss';
 
 export default function Intro() {
   const $section = useRef<HTMLElement>(null);

@@ -1,3 +1,5 @@
+@use '../layout.scss';
+
 $img-width: 4000px;
 $img-height: 400px;
 
@@ -22,7 +24,7 @@ $img-height: 400px;
   .item {
     width: $img-width;
     height: $img-height;
-    animation: moving 24s linear infinite;
+    animation: moving 35s linear infinite;
   }
 }
 
@@ -40,7 +42,7 @@ $img-height: 400px;
   font-size: 2.5rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: layout.$screen-small) {
   .text {
     font-size: 1.5rem;
   }

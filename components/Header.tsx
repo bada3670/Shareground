@@ -1,10 +1,10 @@
-import style from 'styles/Header.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import fb from 'fb';
 import { getAuth, signOut } from 'firebase/auth';
 import authReducer from 'reducers/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import style from 'styles/components/Header.module.scss';
 
 interface State {
   auth: {
@@ -31,7 +31,9 @@ export default function Header() {
       <div className={style['category-narrow']}>
         <div className={style['button']}>☰</div>
       </div>
-      <div className={style['logo']}>Shareground</div>
+      <div className={style['logo']}>
+        <Link href={'/'}>Shareground</Link>
+      </div>
       <div className={style['category-wide']}>
         <div className={style['item']}>사회</div>
         <div className={style['item']}>과학기술</div>
@@ -45,7 +47,14 @@ export default function Header() {
       />
       {username ? (
         <div className={style['logged-in']}>
-          <img src={userphoto} alt={'프로필 사진'} className={style['profile']} />
+          <Link href={'/profile'}>
+            <img
+              src={userphoto}
+              alt={'프로필 사진'}
+              className={style['profile']}
+              referrerPolicy={'no-referrer'}
+            />
+          </Link>
           <div className={style['logout-button']} onClick={click$logout}>
             로그아웃
           </div>

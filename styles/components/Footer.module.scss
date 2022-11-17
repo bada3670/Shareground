@@ -1,7 +1,7 @@
-$height: 150px;
+@use '../layout.scss';
 
 .footer {
-  height: $height;
+  height: layout.$footer-height;
   display: flex;
   flex-direction: column;
   align-items: center;

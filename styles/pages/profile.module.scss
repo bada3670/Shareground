@@ -1,0 +1,13 @@
+@use '../layout.scss';
+
+.logged-in {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+}
+
+.not-logged-in {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}

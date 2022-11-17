@@ -1,3 +1,5 @@
+@use '../layout.scss';
+
 .section {
   overflow-x: hidden;
 }
@@ -39,4 +41,17 @@
 .reaction {
   background-color: #2c3e50;
   color: white;
+}
+
+@media (max-width: layout.$screen-medium) {
+  .from {
+    &-right,
+    &-left {
+      justify-content: center;
+
+      &.to-original-position {
+        transform: translateX(0);
+      }
+    }
+  }
 }

@@ -1,0 +1,9 @@
+@use '../layout.scss';
+
+.not-found {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+}

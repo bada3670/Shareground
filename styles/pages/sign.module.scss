@@ -1,10 +1,47 @@
-@use '../Header.module.scss' as Header;
-@use '../Footer.module.scss' as Footer;
+@use '../layout.scss';
 
-.sign {
-  min-height: calc(100vh - Header.$height - Footer.$height);
+.section {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+}
+
+.container {
+  width: 25rem;
+}
+
+.label {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
+.submit {
+  width: 50%;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 3rem;
+    height: 3rem;
+    margin: 1rem;
+
+    svg {
+      width: 50%;
+      height: 50%;
+    }
+  }
 }

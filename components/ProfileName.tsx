@@ -3,7 +3,7 @@ import fb from 'fb';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer from 'reducers/auth';
 import { useRef, useState } from 'react';
-import style from 'styles/ProfileName.module.scss';
+import style from 'styles/components/ProfileName.module.scss';
 
 interface State {
   auth: {
