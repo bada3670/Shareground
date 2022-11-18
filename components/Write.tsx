@@ -1,14 +1,28 @@
 import fb from 'fb';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDoc,
+  updateDoc,
+  doc,
+} from 'firebase/firestore';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { categoryToPath } from 'utils/categoryPath';
+import { useSelector, useDispatch } from 'react-redux';
+import authReducer, { AuthState } from 'reducers/auth';
 
 export default function Write({ userid, mode }: { userid: string; mode: string }) {
   const db = getFirestore(fb);
-  const [loading, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const { wrote, name, bookmark, id } = useSelector((state: AuthState) => state.auth);
+  console.log(wrote, name, bookmark, id);
+
+  const { register, handleSubmit } = useForm();
 
   const submit$write: SubmitHandler<FieldValues> = async ({
     category,
@@ -18,6 +32,7 @@ export default function Write({ userid, mode }: { userid: string; mode: string }
     setLoading(true);
     if (mode === 'create') {
       try {
+        // article에 추가하기
         const { id } = await addDoc(collection(db, category), {
           userid,
           category,
@@ -25,25 +40,20 @@ export default function Write({ userid, mode }: { userid: string; mode: string }
           title,
           explanation,
         });
-        let categoryParam;
-        switch (category) {
-          case 'society':
-            categoryParam = 's';
-            break;
-          case 'science':
-            categoryParam = 't';
-            break;
-          case 'culture':
-            categoryParam = 'c';
-            break;
-          default:
-            break;
-        }
-        router.push(`/article/${categoryParam}/${id}`);
+        // 사용자에 추가하기
+        console.log(wrote);
+
+        const newWrote = [...wrote, id];
+        await updateDoc(doc(db, 'users', userid), {
+          wrote: newWrote,
+        });
+        dispatch(authReducer.actions.changeWrote({ wrote: newWrote }));
+        // 이동하기
+        router.push(`/article/${categoryToPath(category)}/${id}`);
       } catch (error) {
         console.error(error);
         alert('죄송합니다. 처리가 되지 않았습니다!');
-        location.reload();
+        // location.reload();
       }
     }
   };

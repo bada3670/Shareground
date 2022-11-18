@@ -9,11 +9,8 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
 } from 'firebase/auth';
-import { getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import authReducer from 'reducers/auth';
 import style from 'styles/components/SignForm.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -22,11 +19,9 @@ type SocialProvider = GoogleAuthProvider | GithubAuthProvider;
 
 export default function SignForm() {
   const auth = getAuth(fb);
-  const db = getFirestore(fb);
   const providerGoogle = new GoogleAuthProvider();
   const providerGitHub = new GithubAuthProvider();
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const router = useRouter();
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
@@ -42,22 +37,11 @@ export default function SignForm() {
       return;
     }
     try {
-      const { user } = await signInWithEmailAndPassword(auth, emailInput, passwordInput);
-      if (!user) {
-        alert('조회하신 자료로 된 사용자가 없습니다!');
-        setLoading(false);
-      }
-      const docRef = doc(db, 'users', user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const { name, photo } = docSnap.data();
-        dispatch(authReducer.actions.changeAll({ id: user.uid, name, photo }));
-        router.push('/');
-      } else {
-        console.log('No such document!');
-      }
+      await signInWithEmailAndPassword(auth, emailInput, passwordInput);
+      router.push('/');
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -72,24 +56,7 @@ export default function SignForm() {
       return;
     }
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        emailInput,
-        passwordInput
-      );
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      const defaultPhoto = process.env.NEXT_PUBLIC_USER_PHOTO;
-      const { uid, displayName, email, photoURL } = user;
-      const name = displayName ? displayName : email?.split('@')[0];
-      const photo = photoURL ? photoURL : defaultPhoto;
-      await setDoc(doc(db, 'users', uid), {
-        name,
-        photo,
-      });
-      dispatch(authReducer.actions.changeAll({ id: uid, name, photo }));
+      await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
       router.push('/');
     } catch (error) {
       console.error(error);
@@ -98,32 +65,12 @@ export default function SignForm() {
   };
 
   // 소셜 로그인
+  // signInWithPopup 이후 onAuthChanged가 먼저 일어난다.
   const loginSocial = async (provider: SocialProvider) => {
     setLoading(true);
     try {
-      const { user } = await signInWithPopup(auth, provider);
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      const docRef = doc(db, 'users', user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const { name, photo } = docSnap.data();
-        dispatch(authReducer.actions.changeAll({ id: user.uid, name, photo }));
-        router.push('/');
-      } else {
-        const defaultPhoto = process.env.NEXT_PUBLIC_USER_PHOTO;
-        const { uid, displayName, email, photoURL } = user;
-        const name = displayName ? displayName : email?.split('@')[0];
-        const photo = photoURL ? photoURL : defaultPhoto;
-        await setDoc(doc(db, 'users', uid), {
-          name,
-          photo,
-        });
-        dispatch(authReducer.actions.changeAll({ id: uid, name, photo }));
-        router.push('/');
-      }
+      await signInWithPopup(auth, provider);
+      router.push('/');
     } catch (error) {
       console.error(error);
       setLoading(false);

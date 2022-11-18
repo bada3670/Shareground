@@ -13,15 +13,31 @@ export default function Auth() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
+        console.log('no user');
         return;
       }
-      const docRef = doc(db, 'users', user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const { name, photo } = docSnap.data();
-        dispatch(authReducer.actions.changeAll({ id: user.uid, name, photo }));
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (snap.exists()) {
+        const { name, photo, wrote, bookmark } = snap.data();
+        dispatch(
+          authReducer.actions.changeAll({ id: user.uid, name, photo, wrote, bookmark })
+        );
       } else {
-        console.log('No such document!');
+        const defaultPhoto = process.env.NEXT_PUBLIC_USER_PHOTO;
+        const { uid, displayName, email, photoURL } = user;
+        const name = displayName ? displayName : email?.split('@')[0];
+        const photo = photoURL ? photoURL : defaultPhoto;
+        const wrote: string[] = [];
+        const bookmark: string[] = [];
+        await setDoc(doc(db, 'users', uid), {
+          name,
+          photo,
+          wrote,
+          bookmark,
+        });
+        dispatch(
+          authReducer.actions.changeAll({ id: uid, name, photo, wrote, bookmark })
+        );
       }
     });
   }, []);
