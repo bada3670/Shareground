@@ -1,16 +1,8 @@
 import fb from 'fb';
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDoc,
-  updateDoc,
-  doc,
-} from 'firebase/firestore';
+import { getFirestore, collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { categoryToPath } from 'utils/categoryPath';
 import { useSelector, useDispatch } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 
@@ -19,9 +11,7 @@ export default function Write({ userid, mode }: { userid: string; mode: string }
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { wrote, name, bookmark, id } = useSelector((state: AuthState) => state.auth);
-  console.log(wrote, name, bookmark, id);
-
+  const { wrote } = useSelector((state: AuthState) => state.auth);
   const { register, handleSubmit } = useForm();
 
   const submit$write: SubmitHandler<FieldValues> = async ({
@@ -33,7 +23,7 @@ export default function Write({ userid, mode }: { userid: string; mode: string }
     if (mode === 'create') {
       try {
         // article에 추가하기
-        const { id } = await addDoc(collection(db, category), {
+        const { id } = await addDoc(collection(db, 'articles'), {
           userid,
           category,
           date: Date.now(),
@@ -41,15 +31,13 @@ export default function Write({ userid, mode }: { userid: string; mode: string }
           explanation,
         });
         // 사용자에 추가하기
-        console.log(wrote);
-
         const newWrote = [...wrote, id];
         await updateDoc(doc(db, 'users', userid), {
           wrote: newWrote,
         });
         dispatch(authReducer.actions.changeWrote({ wrote: newWrote }));
         // 이동하기
-        router.push(`/article/${categoryToPath(category)}/${id}`);
+        router.push(`/a/${id}`);
       } catch (error) {
         console.error(error);
         alert('죄송합니다. 처리가 되지 않았습니다!');

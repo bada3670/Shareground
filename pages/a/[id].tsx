@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import fb from 'fb';
-import { getFirestore, doc, getDoc, DocumentData } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import dateNumToStr from 'utils/dateNumToStr';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
@@ -25,31 +25,29 @@ export default function () {
   });
 
   useEffect(() => {
-    if (!router.query.id) {
+    if (!router.query.id || typeof router.query.id === 'object') {
       return;
     }
-    if (router.query.id.length === 1) {
-      const fbRefArticle = doc(db, 'society', router.query.id[0]);
-      (async () => {
-        const fbSnapArticle = await getDoc(fbRefArticle);
-        if (!fbSnapArticle.exists()) {
-          return;
-        }
-        const { userid, category, date, title, explanation } = fbSnapArticle.data();
-        const fbSnapUser = await getDoc(doc(db, 'users', userid));
-        if (!fbSnapUser.exists()) {
-          return;
-        }
-        const { name: username } = fbSnapUser.data();
-        setArticleInfo({
-          username,
-          category: categoryEngToKor(category),
-          date: dateNumToStr(date),
-          title,
-          explanation,
-        });
-      })();
-    }
+    const fbRefArticle = doc(db, 'articles', router.query.id);
+    (async () => {
+      const fbSnapArticle = await getDoc(fbRefArticle);
+      if (!fbSnapArticle.exists()) {
+        return;
+      }
+      const { userid, category, date, title, explanation } = fbSnapArticle.data();
+      const fbSnapUser = await getDoc(doc(db, 'users', userid));
+      if (!fbSnapUser.exists()) {
+        return;
+      }
+      const { name: username } = fbSnapUser.data();
+      setArticleInfo({
+        username,
+        category: categoryEngToKor(category),
+        date: dateNumToStr(date),
+        title,
+        explanation,
+      });
+    })();
   }, [router.isReady]);
 
   return (
