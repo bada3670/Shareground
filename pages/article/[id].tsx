@@ -1,6 +1,5 @@
 import fb from 'fb';
 import { getFirestore, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import authReducer from 'reducers/auth';
@@ -19,19 +18,27 @@ interface Article {
   explanation: string;
 }
 
-export default function ({ data }: { data: Article | string }) {
-  const [artcleInfo, setArticleInfo] = useState<Article>({
-    id: '',
-    userid: '',
-    username: '',
-    category: '',
-    date: '',
-    title: '',
-    explanation: '',
-  });
+export default function ({
+  status,
+  article,
+}: {
+  status: string;
+  article: Article | null;
+}) {
+  if (status === 'no article') {
+    return <main className={style['no-content']}>요청하신 자료가 없습니다.</main>;
+  }
 
-  if (typeof data === 'string') {
-    return <main className={style['no-content']}>요청하신 자료가 없습니다!</main>;
+  if (status === 'no user') {
+    return (
+      <main className={style['no-content']}>
+        요청하신 자료의 저자를 찾을 수 없습니다.
+      </main>
+    );
+  }
+
+  if (article === null) {
+    return <></>;
   }
 
   const { id: currentUserid, wrote } = useSelector((state: AuthState) => state.auth);
@@ -39,21 +46,17 @@ export default function ({ data }: { data: Article | string }) {
   const router = useRouter();
   const db = getFirestore(fb);
 
-  useEffect(() => {
-    setArticleInfo(data);
-  }, []);
-
   const click$edit = () => {
-    router.push(`/edit/${artcleInfo.id}`);
+    router.push(`/edit/${article.id}`);
   };
   const click$delete = async () => {
     alert('삭제하시겠습니까?');
     try {
       // 삭제하기
-      await deleteDoc(doc(db, 'articles', data.id));
+      await deleteDoc(doc(db, 'articles', article.id));
       // 삭제한 사실 user에 반영하기
-      const newWrote = wrote.filter((articleid) => articleid !== data.id);
-      await updateDoc(doc(db, 'users', data.userid), {
+      const newWrote = wrote.filter((articleid) => articleid !== article.id);
+      await updateDoc(doc(db, 'users', article.userid), {
         wrote: newWrote,
       });
       dispatch(authReducer.actions.changeWrote({ wrote: newWrote }));
@@ -67,14 +70,14 @@ export default function ({ data }: { data: Article | string }) {
   return (
     <main className={style['content']}>
       <section className={style['section']}>
-        <div>카테고리: {artcleInfo.category}</div>
-        <div>작성일: {artcleInfo.date}</div>
-        <div>작성자: {artcleInfo.username}</div>
+        <div>카테고리: {article.category}</div>
+        <div>작성일: {article.date}</div>
+        <div>작성자: {article.username}</div>
       </section>
-      <h1 className={style['title']}>{artcleInfo.title}</h1>
+      <h1 className={style['title']}>{article.title}</h1>
       <hr />
-      <p className={style['content']}>{artcleInfo.explanation}</p>
-      {currentUserid === artcleInfo.userid && (
+      <p className={style['content']}>{article.explanation}</p>
+      {currentUserid === article.userid && (
         <div className={style['delete']}>
           <button onClick={click$edit}>수정</button>
           <button onClick={click$delete}>삭제</button>
@@ -86,21 +89,27 @@ export default function ({ data }: { data: Article | string }) {
 
 export async function getServerSideProps(context: { query: { id: string } }) {
   const db = getFirestore(fb);
-  const fbSnapArticle = await getDoc(doc(db, 'articles', context.query.id));
-  if (!fbSnapArticle.exists()) {
+  const snapArticle = await getDoc(doc(db, 'articles', context.query.id));
+  if (!snapArticle.exists()) {
     return {
       props: {
-        data: 'no article',
+        status: 'no article',
+        article: null,
       },
     };
   }
-  const { userid, category, date, title, explanation } = fbSnapArticle.data();
-  const fbSnapUser = await getDoc(doc(db, 'users', userid));
-  if (!fbSnapUser.exists()) {
-    return;
+  const { userid, category, date, title, explanation } = snapArticle.data();
+  const snapUser = await getDoc(doc(db, 'users', userid));
+  if (!snapUser.exists()) {
+    return {
+      props: {
+        status: 'no user',
+        article: null,
+      },
+    };
   }
-  const { name: username } = fbSnapUser.data();
-  const data = {
+  const { name: username } = snapUser.data();
+  const article = {
     id: context.query.id,
     userid,
     username,
@@ -112,7 +121,8 @@ export async function getServerSideProps(context: { query: { id: string } }) {
 
   return {
     props: {
-      data,
+      status: 'succeeded',
+      article,
     },
   };
 }
