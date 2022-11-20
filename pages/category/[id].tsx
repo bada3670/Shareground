@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import fb from 'fb';
 import {
   getFirestore,
@@ -21,32 +20,18 @@ import dateNumToStr from 'utils/dateNumToStr';
 //   explanation: string;
 // }
 
-export default function () {
-  const router = useRouter();
-  const db = getFirestore(fb);
+export default function ({ data }: { data: DocumentData[] }) {
   const [articles, setArticles] = useState<DocumentData[]>([]);
 
   useEffect(() => {
-    if (!router.query.id || typeof router.query.id === 'object') {
-      return;
-    }
-
-    (async () => {
-      const queryMade = query(
-        collection(db, 'articles'),
-        where('category', '==', router.query.id)
-      );
-      const snapshot = await getDocs(queryMade);
-      const data = snapshot.docs.map((result) => result.data());
-      setArticles(data);
-    })();
-  }, [router.isReady]);
+    setArticles(data);
+  }, []);
 
   return (
     <div>
-      {articles.map(({ title, date }) => {
+      {articles.map(({ title, date }, index) => {
         return (
-          <div>
+          <div key={index}>
             <div>{title}</div>
             <div>{dateNumToStr(date)}</div>
           </div>
@@ -54,4 +39,22 @@ export default function () {
       })}
     </div>
   );
+}
+
+export async function getServerSideProps(context: { query: { id: string } }) {
+  const db = getFirestore(fb);
+  const queryMade = query(
+    collection(db, 'articles'),
+    where('category', '==', context.query.id),
+    // orderBy('date', 'desc'),
+    limit(1)
+  );
+  const snapshot = await getDocs(queryMade);
+  const data = snapshot.docs.map((result) => result.data());
+
+  return {
+    props: {
+      data,
+    },
+  };
 }

@@ -1,0 +1,51 @@
+@use '../layout.scss';
+
+.no-content {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.content {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+}
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 1rem 0;
+
+  div {
+    text-align: center;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem;
+}
+
+.content {
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.delete {
+  text-align: center;
+  margin: 1rem 0;
+
+  button {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+@media (max-width: layout.$screen-tiny) {
+  .section {
+    display: block;
+  }
+}

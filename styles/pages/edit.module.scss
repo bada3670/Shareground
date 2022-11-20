@@ -1,9 +1,7 @@
 @use '../layout.scss';
 
-.confirmed {
+.cofirmed {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
-  display: flex;
-  flex-direction: column;
 }
 
 .not-confirmed {

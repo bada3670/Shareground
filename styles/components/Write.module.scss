@@ -1,0 +1,61 @@
+.form {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem;
+}
+
+.select {
+  height: 2rem;
+  margin-bottom: 1rem;
+
+  label {
+    margin-right: 1rem;
+    display: inline-block;
+    font-size: 1rem;
+  }
+
+  select {
+    height: 100%;
+  }
+}
+
+.title {
+  height: 3rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  border: none;
+  border-bottom: 2px solid black;
+}
+
+.explanation {
+  flex-grow: 1;
+  font-size: 1rem;
+  border: none;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  resize: none;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 4rem;
+    height: 2rem;
+    margin-right: 1rem;
+    background-color: #2ecc71;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #27ae60;
+    }
+  }
+}

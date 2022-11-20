@@ -13,7 +13,6 @@ export default function Auth() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        console.log('no user');
         return;
       }
       const snap = await getDoc(doc(db, 'users', user.uid));

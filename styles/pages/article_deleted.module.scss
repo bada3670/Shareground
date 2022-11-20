@@ -1,15 +1,22 @@
 @use '../layout.scss';
 
-.confirmed {
+.main {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   display: flex;
   flex-direction: column;
-}
-
-.not-confirmed {
-  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
-  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.message {
   font-size: 2rem;
+}
+
+.to-home {
+  a {
+    text-decoration: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: gray;
+  }
 }
