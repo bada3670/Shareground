@@ -1,7 +1,8 @@
 import fb from 'fb';
 import { getFirestore, updateDoc, doc, DocumentData } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import style from 'styles/components/Write.module.scss';
 
@@ -12,10 +13,13 @@ interface Props {
 
 export default function Edit({ data, articleid }: Props) {
   const db = getFirestore(fb);
+  const storage = getStorage(fb);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
-  const { category, title, explanation } = data;
+  const { category, title, explanation, fileRef } = data;
+  const [fileName, setFileName] = useState<string>('파일을 새로 올리셔야 합니다.');
+  const refFile = useRef<HTMLInputElement>(null);
   const refSubmit = useRef<HTMLInputElement>(null);
 
   const click$cancel = () => {
@@ -24,19 +28,55 @@ export default function Edit({ data, articleid }: Props) {
   const click$submit = () => {
     refSubmit.current?.click();
   };
+  const click$file = () => {
+    refFile.current?.click();
+  };
+  const change$file = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) {
+      return;
+    }
+    // 업로드를 취소한 경우
+    if (!event.target.files[0]) {
+      setFileName('');
+      return;
+    }
+
+    setFileName(event.target.files[0].name);
+  };
 
   const submit$edit: SubmitHandler<FieldValues> = async ({
     category,
     title,
     explanation,
   }) => {
-    setLoading(false);
-    await updateDoc(doc(db, 'articles', articleid), {
-      category,
-      title,
-      explanation,
-    });
-    router.push(`/article/${articleid}`);
+    setLoading(true);
+
+    try {
+      // 파일이 있으면 스토리지에 올리기
+      // fileType은 바뀔 수 있으므로 data에서 가져오지 말고 여기서 지정
+      let fileType = null;
+      if (refFile.current?.files) {
+        // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
+        if (refFile.current.files[0]) {
+          const storageRef = ref(storage, `article-file/${fileRef}`);
+          await uploadBytes(storageRef, refFile.current?.files[0]);
+          fileType = refFile.current?.files[0].name.split('.').at(-1);
+        }
+      }
+      // article 수정하기
+      await updateDoc(doc(db, 'articles', articleid), {
+        category,
+        title,
+        explanation,
+        fileType,
+      });
+      // 이동하기
+      router.push(`/article/${articleid}`);
+    } catch (error) {
+      console.error(error);
+      alert('죄송합니다. 처리가 되지 않았습니다.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,6 +103,13 @@ export default function Edit({ data, articleid }: Props) {
         ></textarea>
         <input type={'submit'} hidden ref={refSubmit} />
       </form>
+      <section className={style['file']}>
+        <input type={'file'} hidden onChange={change$file} ref={refFile} />
+        <button onClick={click$file} disabled={loading}>
+          파일 업로드
+        </button>
+        <div>업로드된 파일: {fileName}</div>
+      </section>
       <section className={style['buttons']}>
         <button onClick={click$cancel} disabled={loading}>
           취소

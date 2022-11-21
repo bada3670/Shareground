@@ -1,0 +1,27 @@
+.card {
+  border: 2px solid black;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.file-type {
+  width: 4rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.others {
+  font-size: 1rem;
+}

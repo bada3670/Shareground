@@ -3,10 +3,10 @@ import { getFirestore, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firest
 import { useSelector, useDispatch } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import authReducer from 'reducers/auth';
+import { useRouter } from 'next/router';
 import dateNumToStr from 'utils/dateNumToStr';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/article.module.scss';
-import { useRouter } from 'next/router';
 
 interface Article {
   id: string;
@@ -16,6 +16,7 @@ interface Article {
   date: string;
   title: string;
   explanation: string;
+  fileURL: string;
 }
 
 export default function ({
@@ -76,9 +77,12 @@ export default function ({
       </section>
       <h1 className={style['title']}>{article.title}</h1>
       <hr />
-      <p className={style['content']}>{article.explanation}</p>
+      <p className={style['explanation']}>{article.explanation}</p>
+      <div className={style['file']}>
+        <a href={article.fileURL}>파일 다운로드</a>
+      </div>
       {currentUserid === article.userid && (
-        <div className={style['delete']}>
+        <div className={style['edit-delete']}>
           <button onClick={click$edit}>수정</button>
           <button onClick={click$delete}>삭제</button>
         </div>
@@ -98,7 +102,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
       },
     };
   }
-  const { userid, category, date, title, explanation } = snapArticle.data();
+  const { userid, category, date, title, explanation, fileURL } = snapArticle.data();
   const snapUser = await getDoc(doc(db, 'users', userid));
   if (!snapUser.exists()) {
     return {
@@ -117,6 +121,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
     date: dateNumToStr(date),
     title,
     explanation,
+    fileURL,
   };
 
   return {

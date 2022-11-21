@@ -1,0 +1,14 @@
+@use '../layout.scss';
+
+.main {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  padding: 1rem;
+}
+
+.category {
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid black;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}

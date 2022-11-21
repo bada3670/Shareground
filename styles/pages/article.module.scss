@@ -10,37 +10,62 @@
 
 .content {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  padding: 0 1rem;
 }
 
 .section {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   margin: 1rem 0;
 
   div {
     text-align: center;
+    margin-right: 1rem;
   }
 }
 
 .title {
+  margin: 1rem 0;
   font-size: 2rem;
   font-weight: 700;
-  padding: 1rem;
 }
 
-.content {
+.explanation {
+  margin: 1rem 0;
   font-size: 1rem;
-  padding: 1rem;
 }
 
-.delete {
+.file {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    width: 8rem;
+    height: 2rem;
+    cursor: pointer;
+    background-color: #f1c40f;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #f39c12;
+    }
+  }
+}
+
+.edit-delete {
   text-align: center;
   margin: 1rem 0;
 
   button {
     font-size: 1rem;
-    margin-right: 1rem;
+    margin: 0 0.5rem;
   }
 }
 

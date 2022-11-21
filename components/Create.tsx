@@ -1,7 +1,9 @@
 import fb from 'fb';
 import { getFirestore, collection, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
@@ -9,18 +11,36 @@ import style from 'styles/components/Write.module.scss';
 
 export default function Write({ userid }: { userid: string }) {
   const db = getFirestore(fb);
+  const storage = getStorage(fb);
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { wrote } = useSelector((state: AuthState) => state.auth);
   const { register, handleSubmit } = useForm();
   const refSubmit = useRef<HTMLInputElement>(null);
+  const refFile = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string>('');
 
   const click$cancel = () => {
     router.push('/');
   };
   const click$submit = () => {
     refSubmit.current?.click();
+  };
+  const click$file = () => {
+    refFile.current?.click();
+  };
+  const change$file = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) {
+      return;
+    }
+    // 업로드를 취소한 경우
+    if (!event.target.files[0]) {
+      setFileName('');
+      return;
+    }
+
+    setFileName(event.target.files[0].name);
   };
 
   const submit$form: SubmitHandler<FieldValues> = async ({
@@ -29,11 +49,27 @@ export default function Write({ userid }: { userid: string }) {
     explanation,
   }) => {
     setLoading(true);
+
     if (category === '') {
       alert('카테고리를 선택하셔야 합니다!');
       return;
     }
+
     try {
+      // 파일이 있으면 스토리지에 올리기
+      let fileRef = null;
+      let fileURL = null;
+      let fileType = null;
+      if (refFile.current?.files) {
+        // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
+        if (refFile.current.files[0]) {
+          fileRef = uuidv4();
+          const storageRef = ref(storage, `article-file/${fileRef}`);
+          await uploadBytes(storageRef, refFile.current?.files[0]);
+          fileURL = await getDownloadURL(storageRef);
+          fileType = refFile.current?.files[0].name.split('.').at(-1);
+        }
+      }
       // article에 추가하기
       const { id } = await addDoc(collection(db, 'articles'), {
         userid,
@@ -41,6 +77,9 @@ export default function Write({ userid }: { userid: string }) {
         date: Date.now(),
         title,
         explanation,
+        fileRef,
+        fileURL,
+        fileType,
       });
       // 사용자에 추가하기
       const newWrote = [...wrote, id];
@@ -52,8 +91,8 @@ export default function Write({ userid }: { userid: string }) {
       router.push(`/article/${id}`);
     } catch (error) {
       console.error(error);
-      alert('죄송합니다. 처리가 되지 않았습니다!');
-      // location.reload();
+      alert('죄송합니다. 처리가 되지 않았습니다.');
+      setLoading(false);
     }
   };
 
@@ -82,6 +121,13 @@ export default function Write({ userid }: { userid: string }) {
         ></textarea>
         <input type={'submit'} hidden ref={refSubmit} />
       </form>
+      <section className={style['file']}>
+        <input type={'file'} hidden onChange={change$file} ref={refFile} />
+        <button onClick={click$file} disabled={loading}>
+          파일 업로드
+        </button>
+        <div>업로드된 파일: {fileName}</div>
+      </section>
       <section className={style['buttons']}>
         <button onClick={click$cancel} disabled={loading}>
           취소

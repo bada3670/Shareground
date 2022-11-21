@@ -1,3 +1,20 @@
+@mixin button($width, $color, $hover-color) {
+  width: $width;
+  height: 2rem;
+  margin-right: 1rem;
+  background-color: $color;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
 .form {
   flex-grow: 1;
   height: 100%;
@@ -38,24 +55,27 @@
   resize: none;
 }
 
+.file {
+  display: flex;
+  padding: 0 2rem 1rem 2rem;
+
+  button {
+    @include button(6rem, #3498db, #2980b9);
+    color: white;
+  }
+
+  div {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
 .buttons {
   display: flex;
   justify-content: center;
 
   button {
-    width: 4rem;
-    height: 2rem;
-    margin-right: 1rem;
-    background-color: #2ecc71;
-    cursor: pointer;
-    border: none;
-    font-size: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      background-color: #27ae60;
-    }
+    @include button(4rem, #2ecc71, #27ae60);
   }
 }
