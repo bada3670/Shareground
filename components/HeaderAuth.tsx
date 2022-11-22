@@ -1,13 +1,12 @@
 import { useSelector } from 'react-redux';
-import fb from 'fb';
-import { getAuth, signOut } from 'firebase/auth';
+import { auth } from 'fb';
+import { signOut } from 'firebase/auth';
 import { AuthState, authStatus } from 'reducers/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import style from 'styles/components/Header.module.scss';
 
 export default function HeaderAuth() {
-  const auth = getAuth(fb);
   const { status: currentAuthStatus, photo } = useSelector(
     (state: AuthState) => state.auth
   );

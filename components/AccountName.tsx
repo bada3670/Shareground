@@ -1,14 +1,14 @@
-import fb from 'fb';
-import { getFirestore, updateDoc, doc } from 'firebase/firestore';
+import { db } from 'fb';
+import { updateDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import style from 'styles/components/ProfileName.module.scss';
+import { LoadStatus } from 'components/Account';
 
-export default function Profile() {
-  const db = getFirestore(fb);
+export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) {
+  const { loading, setLoading } = loadStatus;
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { name, id: userid } = useSelector((state: AuthState) => state.auth);
   const username = name ? name : '';
   const refNameSection = useRef<HTMLElement>(null);
@@ -27,7 +27,7 @@ export default function Profile() {
     $nameSection.classList.remove(style['edit-mode']);
   };
   const click$confirm = async () => {
-    setIsLoading(true);
+    setLoading(true);
     const $inputName = refInputName.current;
     if (!$inputName) {
       return;
@@ -49,7 +49,7 @@ export default function Profile() {
   return (
     <section className={style.section} ref={refNameSection}>
       <div className={style.text}>{username}</div>
-      <button className={style.edit} onClick={click$edit}>
+      <button className={style.edit} onClick={click$edit} disabled={loading}>
         수정
       </button>
       <input
@@ -58,10 +58,10 @@ export default function Profile() {
         ref={refInputName}
         defaultValue={username}
       />
-      <button className={style.cancel} onClick={click$cancel} disabled={isLoading}>
+      <button className={style.cancel} onClick={click$cancel} disabled={loading}>
         취소
       </button>
-      <button className={style.confirm} onClick={click$confirm} disabled={isLoading}>
+      <button className={style.confirm} onClick={click$confirm} disabled={loading}>
         확인
       </button>
     </section>

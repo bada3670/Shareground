@@ -1,8 +1,7 @@
 // 에러 처리 추가 작업 요구
 
-import fb from 'fb';
+import { auth } from 'fb';
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -18,7 +17,6 @@ import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
 type SocialProvider = GoogleAuthProvider | GithubAuthProvider;
 
 export default function SignForm() {
-  const auth = getAuth(fb);
   const providerGoogle = new GoogleAuthProvider();
   const providerGitHub = new GithubAuthProvider();
   const [loading, setLoading] = useState<boolean>(false);

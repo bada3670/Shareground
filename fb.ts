@@ -1,4 +1,7 @@
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -9,4 +12,10 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-export default initializeApp(firebaseConfig);
+const fb = initializeApp(firebaseConfig);
+const db = getFirestore(fb);
+const auth = getAuth(fb);
+const storage = getStorage(fb);
+
+export default fb;
+export { db, auth, storage };

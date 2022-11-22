@@ -3,12 +3,11 @@ import { AuthState } from 'reducers/auth';
 import style from 'styles/pages/create.module.scss';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import fb from 'fb';
-import { getFirestore, doc, getDoc, DocumentData } from 'firebase/firestore';
+import { db } from 'fb';
+import { doc, getDoc, DocumentData } from 'firebase/firestore';
 import Edit from 'components/Edit';
 
 export default function profile() {
-  const db = getFirestore(fb);
   const router = useRouter();
   const authState = useSelector((state: AuthState) => state.auth);
   const [article, setArticle] = useState<DocumentData | null | undefined>(undefined);

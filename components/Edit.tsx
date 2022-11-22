@@ -1,6 +1,6 @@
-import fb from 'fb';
-import { getFirestore, updateDoc, doc, DocumentData } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from 'fb';
+import { updateDoc, doc, DocumentData } from 'firebase/firestore';
+import { ref, uploadBytes } from 'firebase/storage';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
@@ -12,8 +12,6 @@ interface Props {
 }
 
 export default function Edit({ data, articleid }: Props) {
-  const db = getFirestore(fb);
-  const storage = getStorage(fb);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();

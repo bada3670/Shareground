@@ -1,13 +1,11 @@
-import fb from 'fb';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
+import { auth, db } from 'fb';
+import { onAuthStateChanged } from 'firebase/auth';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import authReducer from 'reducers/auth';
 
 export default function Auth() {
-  const auth = getAuth(fb);
-  const db = getFirestore(fb);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,8 +18,6 @@ export default function Auth() {
             id: null,
             name: null,
             photo: null,
-            wrote: [],
-            bookmark: [],
           })
         );
         return;
@@ -31,15 +27,13 @@ export default function Auth() {
       const snap = await getDoc(doc(db, 'users', user.uid));
       if (snap.exists()) {
         // 로그인
-        const { name, photo, wrote, bookmark } = snap.data();
+        const { name, photo } = snap.data();
         dispatch(
           authReducer.actions.changeAll({
             status: 'fetched',
             id: user.uid,
             name,
             photo,
-            wrote,
-            bookmark,
           })
         );
       } else {
@@ -48,13 +42,9 @@ export default function Auth() {
         const { uid, displayName, email, photoURL } = user;
         const name = displayName ? displayName : email?.split('@')[0];
         const photo = photoURL ? photoURL : defaultPhoto;
-        const wrote: string[] = [];
-        const bookmark: string[] = [];
         await setDoc(doc(db, 'users', uid), {
           name,
           photo,
-          wrote,
-          bookmark,
         });
         dispatch(
           authReducer.actions.changeAll({
@@ -62,8 +52,6 @@ export default function Auth() {
             id: uid,
             name,
             photo,
-            wrote,
-            bookmark,
           })
         );
       }

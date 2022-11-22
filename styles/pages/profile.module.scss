@@ -1,13 +1,53 @@
 @use '../layout.scss';
 
-.logged-in {
-  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
-}
-
-.not-logged-in {
+.not-exist {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+}
+
+.exist {
+  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
+  display: flex;
+}
+
+.choose {
+  width: 8rem;
+  border-right: 1px solid black;
+
+  button {
+    width: 100%;
+    display: flex;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    height: 2rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+
+    &.chosen {
+      color: red;
+    }
+  }
+}
+
+@media (max-width: layout.$screen-small) {
+  .exist {
+    display: block;
+  }
+
+  .choose {
+    width: 100%;
+    display: flex;
+    border: none;
+    border-bottom: 1px solid black;
+
+    button {
+      flex-grow: 1;
+    }
+  }
 }

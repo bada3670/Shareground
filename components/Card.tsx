@@ -1,4 +1,3 @@
-import fb from 'fb';
 import {
   getFirestore,
   collection,

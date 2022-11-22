@@ -1,6 +1,5 @@
-import fb from 'fb';
+import { db } from 'fb';
 import {
-  getFirestore,
   collection,
   query,
   where,
@@ -9,8 +8,6 @@ import {
   getDocs,
   DocumentData,
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import dateNumToStr from 'utils/dateNumToStr';
 import Card from 'components/Card';
 import style from 'styles/pages/category.module.scss';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
@@ -40,7 +37,6 @@ export default function ({ category, data }: { category: string; data: Datum[] }
 }
 
 export async function getServerSideProps(context: { query: { id: string } }) {
-  const db = getFirestore(fb);
   const queryMade = query(
     collection(db, 'articles'),
     where('category', '==', context.query.id),

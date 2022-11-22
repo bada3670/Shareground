@@ -1,22 +1,21 @@
-import fb from 'fb';
-import { getFirestore, updateDoc, doc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from 'fb';
+import { updateDoc, doc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import style from 'styles/components/ProfilePhoto.module.scss';
+import { LoadStatus } from 'components/Account';
 
-export default function ProfilePhoto() {
-  const db = getFirestore(fb);
-  const storage = getStorage(fb);
+export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus }) {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { loading, setLoading } = loadStatus;
   const { id: userid, photo } = useSelector((state: AuthState) => state.auth);
   const userphoto = photo ? photo : '';
   const refInputPhoto = useRef<HTMLInputElement>(null);
 
   const change$inputPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
-    setIsLoading(true);
+    setLoading(true);
     if (!e.target.files || !userid) {
       return;
     }
@@ -29,7 +28,7 @@ export default function ProfilePhoto() {
         photo: url,
       });
       dispatch(authReducer.actions.changePhoto({ photo: url }));
-      setIsLoading(false);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -42,7 +41,7 @@ export default function ProfilePhoto() {
     <section className={style.section}>
       <div className={style.container}>
         <img src={userphoto} />
-        <button className={style.edit} disabled={isLoading} onClick={click$changePhoto}>
+        <button className={style.edit} disabled={loading} onClick={click$changePhoto}>
           ✏
         </button>
       </div>
