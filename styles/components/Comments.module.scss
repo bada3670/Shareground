@@ -1,0 +1,48 @@
+.comment {
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+}
+
+.writer-photo {
+  margin-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.writer-name {
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.delete {
+  display: flex;
+  justify-content: right;
+
+  button {
+    width: 4rem;
+    height: 2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    background-color: #e74c3c;
+
+    &:hover {
+      background-color: #c0392b;
+    }
+  }
+}

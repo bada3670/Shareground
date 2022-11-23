@@ -17,26 +17,31 @@
   display: flex;
   flex-wrap: wrap;
   margin: 1rem 0;
+  padding: 0 1rem;
 
   div {
-    text-align: center;
     margin-right: 1rem;
+    font-size: 1rem;
   }
 }
 
 .title {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   font-size: 2rem;
   font-weight: 700;
+  padding: 0 1rem;
 }
 
 .explanation {
-  margin: 1rem 0;
+  margin-bottom: 2rem;
   font-size: 1rem;
+  min-height: 12rem;
+  white-space: pre-line;
+  padding: 1rem;
 }
 
 .file {
-  margin: 1rem 0;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,13 +65,27 @@
 }
 
 .edit-delete {
-  text-align: center;
-  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
 
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 2rem;
     font-size: 1rem;
     margin: 0 0.5rem;
+    border: none;
+    cursor: pointer;
   }
+}
+
+.comment-title {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.75rem;
 }
 
 @media (max-width: layout.$screen-tiny) {

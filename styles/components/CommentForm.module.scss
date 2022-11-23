@@ -1,0 +1,28 @@
+.form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.content {
+  margin-right: 1rem;
+  width: 30rem;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 2rem;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #9b59b6;
+
+  &:hover {
+    background-color: #8e44ad;
+  }
+}

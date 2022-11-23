@@ -1,12 +1,14 @@
-import fb from 'fb';
-import { getFirestore, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { useSelector, useDispatch } from 'react-redux';
+import { db } from 'fb';
+import { doc, getDoc } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
-import authReducer from 'reducers/auth';
-import { useRouter } from 'next/router';
 import dateNumToStr from 'utils/dateNumToStr';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/article.module.scss';
+import ToEdit from 'components/ToEdit';
+import Delete from 'components/Delete';
+import CommentForm from 'components/CommentForm';
+import Comments from 'components/Comments';
 
 interface Article {
   id: string;
@@ -42,31 +44,7 @@ export default function ({
     return <></>;
   }
 
-  const { id: currentUserid, wrote } = useSelector((state: AuthState) => state.auth);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const db = getFirestore(fb);
-
-  const click$edit = () => {
-    router.push(`/edit/${article.id}`);
-  };
-  const click$delete = async () => {
-    alert('삭제하시겠습니까?');
-    try {
-      // 삭제하기
-      await deleteDoc(doc(db, 'articles', article.id));
-      // 삭제한 사실 user에 반영하기
-      const newWrote = wrote.filter((articleid) => articleid !== article.id);
-      await updateDoc(doc(db, 'users', article.userid), {
-        wrote: newWrote,
-      });
-      dispatch(authReducer.actions.changeWrote({ wrote: newWrote }));
-      // 삭제 처리 성공 페이지로 이동
-      router.push('/article/deleted');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { id: currentUserid } = useSelector((state: AuthState) => state.auth);
 
   return (
     <main className={style['content']}>
@@ -83,16 +61,18 @@ export default function ({
       </div>
       {currentUserid === article.userid && (
         <div className={style['edit-delete']}>
-          <button onClick={click$edit}>수정</button>
-          <button onClick={click$delete}>삭제</button>
+          <ToEdit articleid={article.id} />
+          <Delete articleid={article.id} db={db} />
         </div>
       )}
+      <h2 className={style['comment-title']}>댓글</h2>
+      {currentUserid && <CommentForm writerid={currentUserid} articleid={article.id} />}
+      <Comments articleid={article.id} currentUserid={currentUserid} />
     </main>
   );
 }
 
 export async function getServerSideProps(context: { query: { id: string } }) {
-  const db = getFirestore(fb);
   const snapArticle = await getDoc(doc(db, 'articles', context.query.id));
   if (!snapArticle.exists()) {
     return {
