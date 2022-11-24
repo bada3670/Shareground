@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { useRef } from 'react';
 import style from 'styles/components/ProfileName.module.scss';
-import { LoadStatus } from 'components/Account';
+import { LoadStatus } from 'components/profile/Account';
 
 export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) {
   const { loading, setLoading } = loadStatus;

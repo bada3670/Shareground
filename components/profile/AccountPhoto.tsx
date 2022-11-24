@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { ChangeEvent, useRef } from 'react';
 import style from 'styles/components/ProfilePhoto.module.scss';
-import { LoadStatus } from 'components/Account';
+import { LoadStatus } from 'components/profile/Account';
 
 export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus }) {
   const dispatch = useDispatch();

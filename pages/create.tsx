@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { AuthState, authStatus } from 'reducers/auth';
-import Create from 'components/Create';
+import Create from 'components/create/Create';
 import style from 'styles/pages/create.module.scss';
 
 export default function profile() {

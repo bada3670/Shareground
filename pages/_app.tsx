@@ -1,9 +1,9 @@
 import 'styles/globals.css';
 import type { AppProps } from 'next/app';
-import Auth from 'components/Auth';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
-import Following from 'components/Following';
+import Auth from 'components/app/Auth';
+import Header from 'components/app/Header';
+import Footer from 'components/app/Footer';
+import Following from 'components/app/Following';
 import { Provider } from 'react-redux';
 import store from 'store';
 

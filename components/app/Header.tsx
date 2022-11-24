@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import HeaderAuth from 'components/HeaderAuth';
+import HeaderAuth from 'components/app/HeaderAuth';
 import style from 'styles/components/Header.module.scss';
 
 export default function Header() {

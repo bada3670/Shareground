@@ -4,7 +4,7 @@ import { doc, deleteDoc, getDocs, collection, query, where } from 'firebase/fire
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
-import { LoadStatus } from 'components/Account';
+import { LoadStatus } from 'components/profile/Account';
 
 export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }) {
   const { loading, setLoading } = loadStatus;

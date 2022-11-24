@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { db } from 'fb';
 import { doc, getDoc, DocumentData } from 'firebase/firestore';
-import Edit from 'components/Edit';
+import Edit from 'components/edit/Edit';
 
 export default function profile() {
   const router = useRouter();

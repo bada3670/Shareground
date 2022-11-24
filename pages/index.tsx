@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Welcome from 'components/Welcome';
-import Intro from 'components/Intro';
+import Welcome from 'components/home/Welcome';
+import Intro from 'components/home/Intro';
 import style from 'styles/pages/index.module.scss';
 
 export default function Home() {

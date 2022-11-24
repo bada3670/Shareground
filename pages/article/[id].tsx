@@ -5,10 +5,10 @@ import { AuthState } from 'reducers/auth';
 import dateNumToStr from 'utils/dateNumToStr';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/article.module.scss';
-import ToEdit from 'components/ToEdit';
-import Delete from 'components/Delete';
-import CommentForm from 'components/CommentForm';
-import Comments from 'components/Comments';
+import ToEdit from 'components/article/ToEdit';
+import Delete from 'components/article/Delete';
+import CommentForm from 'components/article/CommentForm';
+import Comments from 'components/article/Comments';
 
 interface Article {
   id: string;

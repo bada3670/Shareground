@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
-import Account from 'components/Account';
-import Wrote from 'components/Wrote';
+import Account from 'components/profile/Account';
+import Wrote from 'components/profile/Wrote';
 import style from 'styles/pages/profile.module.scss';
 import { AuthState, authStatus } from 'reducers/auth';
-import { useRef, useState, MouseEvent } from 'react';
+import { useState } from 'react';
 
 function Exist() {
   const [category, setCategory] = useState<string>('account');

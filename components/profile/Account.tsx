@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import AccountName from 'components/AccountName';
-import AccountPhoto from 'components/AccountPhoto';
-import AccountDelete from './AccountDelete';
+import AccountName from 'components/profile/AccountName';
+import AccountPhoto from 'components/profile/AccountPhoto';
+import AccountDelete from 'components/profile/AccountDelete';
 import style from 'styles/components/Account.module.scss';
 
 export interface LoadStatus {
