@@ -1,32 +1,16 @@
-$section-width: 6rem;
-$item-height: 2rem;
-$number-of-items: 3;
-$space: 0.5rem;
-$z-index: 100;
-
-.section {
+.to-top {
   position: absolute;
-  width: $section-width;
-  top: calc(70%);
-  right: $space;
-  background: white;
-  border-top: 1px solid gray;
-  z-index: $z-index;
-}
-
-.item {
-  border: 1px solid gray;
-  border-top: none;
-  height: $item-height;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: gray;
-  font-size: 1rem;
+  width: 3rem;
+  height: 3rem;
+  top: calc(85%);
+  right: 1rem;
+  background: #ffffff;
+  color: #34495e;
   cursor: pointer;
-
-  &:hover {
-    color: black;
-    font-size: 1.1rem;
-  }
+  font-size: 1.5rem;
+  border: 3px dashed #34495e;
+  z-index: 100;
 }

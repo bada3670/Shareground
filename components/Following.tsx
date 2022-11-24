@@ -1,19 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/Following.module.scss';
 
 export default function Following() {
-  const router = useRouter();
-  const $section = useRef<HTMLElement>(null);
+  const $toTop = useRef<HTMLButtonElement>(null);
 
   const click$toTop = () => {
     window.scrollTo(0, 0);
-  };
-  const click$login = () => {
-    router.push('/sign');
-  };
-  const click$toBottom = () => {
-    window.scrollTo(0, document.body.scrollHeight);
   };
 
   useEffect(() => {
@@ -31,23 +25,15 @@ export default function Following() {
         fill: 'forwards',
         easing: 'ease-in',
       };
-      if ($section.current) {
-        $section.current.animate(where, how);
+      if ($toTop.current) {
+        $toTop.current.animate(where, how);
       }
     });
   }, []);
 
   return (
-    <section className={style.section} ref={$section}>
-      <div className={style.item} onClick={click$toTop}>
-        맨 위로
-      </div>
-      <div className={style.item} onClick={click$login}>
-        로그인
-      </div>
-      <div className={style.item} onClick={click$toBottom}>
-        맨 아래로
-      </div>
-    </section>
+    <button className={style['to-top']} ref={$toTop} onClick={click$toTop}>
+      <FontAwesomeIcon icon={faAngleUp} />
+    </button>
   );
 }

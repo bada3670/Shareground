@@ -20,16 +20,17 @@ $img-height: 400px;
 .carousel {
   display: flex;
   width: calc(2 * $img-width);
+  animation: moving 35s linear infinite;
 
   .item {
     width: $img-width;
     height: $img-height;
-    animation: moving 35s linear infinite;
   }
 }
 
 .text {
   position: absolute;
+  padding: 1rem;
   left: 0;
   top: 0;
   width: 100%;
@@ -40,10 +41,4 @@ $img-height: 400px;
   align-items: center;
   color: white;
   font-size: 2.5rem;
-}
-
-@media (max-width: layout.$screen-small) {
-  .text {
-    font-size: 1.5rem;
-  }
 }
