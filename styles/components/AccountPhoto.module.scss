@@ -1,0 +1,38 @@
+@use '../theme.scss';
+
+$img-size: 8rem;
+
+.section {
+  padding: calc($img-size * 0.2);
+}
+
+.container {
+  margin: 1rem auto;
+  width: $img-size;
+  height: $img-size;
+  position: relative;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.edit {
+  position: absolute;
+  width: calc($img-size * 0.2);
+  height: calc($img-size * 0.2);
+  bottom: calc($img-size * -0.1);
+  right: calc($img-size * -0.1);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid theme.$color-silver;
+  border-radius: 0;
+  background-color: theme.$color-clouds;
+  &:hover {
+    background-color: theme.$color-silver;
+  }
+}

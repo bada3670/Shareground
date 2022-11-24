@@ -1,0 +1,79 @@
+@use '../theme.scss';
+
+.section {
+  display: flex;
+  justify-content: center;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  width: 4rem;
+  height: 2rem;
+}
+
+.input {
+  padding: 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.input,
+.cancel,
+.confirm {
+  display: none;
+}
+
+.edit {
+  background-color: theme.$color-turquoise;
+  &:hover {
+    background-color: theme.$color-greensea;
+  }
+}
+
+.cancel {
+  background-color: theme.$color-emerald;
+  &:hover {
+    background-color: theme.$color-nephritis;
+  }
+}
+
+.confirm {
+  background-color: theme.$color-peterriver;
+  &:hover {
+    background-color: theme.$color-belizehole;
+  }
+}
+
+.section.edit-mode {
+  .text,
+  .edit {
+    display: none;
+  }
+
+  .input {
+    display: block;
+    margin-right: 1rem;
+  }
+
+  .cancel {
+    display: block;
+    margin-right: 1rem;
+  }
+
+  .confirm {
+    display: block;
+  }
+}

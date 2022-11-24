@@ -4,7 +4,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { ChangeEvent, useRef } from 'react';
-import style from 'styles/components/ProfilePhoto.module.scss';
+import style from 'styles/components/AccountPhoto.module.scss';
 import { LoadStatus } from 'components/profile/Account';
 
 export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus }) {
@@ -38,10 +38,10 @@ export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus })
   };
 
   return (
-    <section className={style.section}>
-      <div className={style.container}>
-        <img src={userphoto} />
-        <button className={style.edit} disabled={loading} onClick={click$changePhoto}>
+    <section className={style['section']}>
+      <div className={style['container']}>
+        <img src={userphoto} className={style['img']} />
+        <button className={style['edit']} disabled={loading} onClick={click$changePhoto}>
           ✏
         </button>
       </div>

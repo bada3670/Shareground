@@ -1,4 +1,5 @@
 @use '../layout.scss';
+@use '../theme.scss';
 
 .main {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
@@ -17,6 +18,6 @@
     text-decoration: none;
     font-size: 2rem;
     cursor: pointer;
-    color: gray;
+    color: theme.$color-asbestos;
   }
 }

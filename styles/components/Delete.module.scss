@@ -1,8 +1,10 @@
+@use '../theme.scss';
+
 .delete {
   color: white;
-  background-color: #e74c3c;
+  background-color: theme.$color-alizarin;
 
   &:hover {
-    background-color: #c0392b;
+    background-color: theme.$color-pomegranate;
   }
 }

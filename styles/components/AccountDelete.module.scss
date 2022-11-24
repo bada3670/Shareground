@@ -1,0 +1,22 @@
+@use '../theme.scss';
+
+.section {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  color: white;
+  background-color: theme.$color-alizarin;
+  &:hover {
+    background-color: theme.$color-pomegranate;
+  }
+}

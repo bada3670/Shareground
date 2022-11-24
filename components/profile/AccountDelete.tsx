@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { LoadStatus } from 'components/profile/Account';
+import style from 'styles/components/AccountDelete.module.scss';
 
 export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }) {
   const { loading, setLoading } = loadStatus;
@@ -56,8 +57,10 @@ export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }
   };
 
   return (
-    <button onClick={click$delete} disabled={loading}>
-      탈퇴
-    </button>
+    <section className={style['section']}>
+      <button onClick={click$delete} disabled={loading} className={style['button']}>
+        탈퇴
+      </button>
+    </section>
   );
 }

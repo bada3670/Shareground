@@ -3,7 +3,7 @@ import { updateDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { useRef } from 'react';
-import style from 'styles/components/ProfileName.module.scss';
+import style from 'styles/components/AccountName.module.scss';
 import { LoadStatus } from 'components/profile/Account';
 
 export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) {
@@ -49,7 +49,11 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
   return (
     <section className={style.section} ref={refNameSection}>
       <div className={style.text}>{username}</div>
-      <button className={style.edit} onClick={click$edit} disabled={loading}>
+      <button
+        className={`${style['edit']} ${style['button']}`}
+        onClick={click$edit}
+        disabled={loading}
+      >
         수정
       </button>
       <input
@@ -58,10 +62,18 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
         ref={refInputName}
         defaultValue={username}
       />
-      <button className={style.cancel} onClick={click$cancel} disabled={loading}>
+      <button
+        className={`${style['cancel']} ${style['button']}`}
+        onClick={click$cancel}
+        disabled={loading}
+      >
         취소
       </button>
-      <button className={style.confirm} onClick={click$confirm} disabled={loading}>
+      <button
+        className={`${style['confirm']} ${style['button']}`}
+        onClick={click$confirm}
+        disabled={loading}
+      >
         확인
       </button>
     </section>

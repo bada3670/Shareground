@@ -1,3 +1,5 @@
+@use '../theme.scss';
+
 .to-top {
   position: absolute;
   display: flex;
@@ -7,10 +9,10 @@
   height: 3rem;
   top: calc(85%);
   right: 1rem;
-  background: #ffffff;
-  color: #34495e;
+  background: theme.$color-clouds;
+  color: theme.$color-wetasphalt;
   cursor: pointer;
   font-size: 1.5rem;
-  border: 3px dashed #34495e;
+  border: 3px dashed theme.$color-wetasphalt;
   z-index: 100;
 }

@@ -96,10 +96,18 @@ export default function SignForm() {
         ref={refPassword}
         className={style['input']}
       />
-      <button onClick={click$login} disabled={loading} className={style['submit']}>
+      <button
+        onClick={click$login}
+        disabled={loading}
+        className={`${style['submit']} ${style['log-in']}`}
+      >
         로그인
       </button>
-      <button onClick={click$signup} disabled={loading} className={style['submit']}>
+      <button
+        onClick={click$signup}
+        disabled={loading}
+        className={`${style['submit']} ${style['sign-up']}`}
+      >
         회원가입
       </button>
       <hr />

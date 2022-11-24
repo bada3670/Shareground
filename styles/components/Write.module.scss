@@ -1,3 +1,5 @@
+@use '../theme.scss';
+
 @mixin button($width, $color, $hover-color) {
   width: $width;
   height: 2rem;
@@ -60,7 +62,7 @@
   padding: 0 2rem 1rem 2rem;
 
   button {
-    @include button(6rem, #3498db, #2980b9);
+    @include button(6rem, theme.$color-peterriver, theme.$color-belizehole);
     color: white;
   }
 
@@ -76,6 +78,6 @@
   justify-content: center;
 
   button {
-    @include button(4rem, #2ecc71, #27ae60);
+    @include button(4rem, theme.$color-emerald, theme.$color-nephritis);
   }
 }

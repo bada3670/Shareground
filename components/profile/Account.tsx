@@ -14,7 +14,6 @@ export default function Account() {
 
   return (
     <section className={style['section']}>
-      <h1 className={style['title']}>계정</h1>
       <AccountPhoto loadStatus={{ loading, setLoading }} />
       <AccountName loadStatus={{ loading, setLoading }} />
       <AccountDelete loadStatus={{ loading, setLoading }} />

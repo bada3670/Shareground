@@ -1,4 +1,5 @@
 @use '../layout.scss';
+@use '../theme.scss';
 
 .not-exist {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
@@ -23,14 +24,14 @@
     border: none;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
     height: 2rem;
-    padding: 1rem;
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    background-color: transparent;
+    cursor: pointer;
 
     &.chosen {
-      color: red;
+      color: theme.$color-pomegranate;
     }
   }
 }
@@ -42,12 +43,16 @@
 
   .choose {
     width: 100%;
+    height: 3rem;
     display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     border-bottom: 1px solid black;
 
     button {
-      flex-grow: 1;
+      width: 4rem;
+      margin: 0 1rem;
     }
   }
 }
