@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import Account from 'components/profile/Account';
 import Wrote from 'components/profile/Wrote';
+import InterestList from 'components/profile/InterestList';
 import style from 'styles/pages/profile.module.scss';
 import { AuthState, authStatus } from 'reducers/auth';
 import { useState } from 'react';
@@ -28,9 +29,16 @@ function Exist() {
         <button onClick={() => setCategory('wrote')} className={style[isChosen('wrote')]}>
           작성
         </button>
+        <button
+          onClick={() => setCategory('interest')}
+          className={style[isChosen('interest')]}
+        >
+          관심
+        </button>
       </section>
       {category === 'account' && <Account />}
       {category === 'wrote' && <Wrote />}
+      {category === 'interest' && <InterestList />}
     </main>
   );
 }

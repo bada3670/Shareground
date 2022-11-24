@@ -7,6 +7,7 @@ import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/article.module.scss';
 import ToEdit from 'components/article/ToEdit';
 import Delete from 'components/article/Delete';
+import Interest from 'components/article/Interest';
 import CommentForm from 'components/article/CommentForm';
 import Comments from 'components/article/Comments';
 
@@ -19,6 +20,7 @@ interface Article {
   title: string;
   explanation: string;
   fileURL: string;
+  interestPeople: string[];
 }
 
 export default function ({
@@ -65,6 +67,13 @@ export default function ({
           <Delete articleid={article.id} db={db} />
         </div>
       )}
+      {currentUserid && currentUserid !== article.userid && (
+        <Interest
+          articleid={article.id}
+          currentUserid={currentUserid}
+          interestPeople={article.interestPeople}
+        />
+      )}
       <h2 className={style['comment-title']}>댓글</h2>
       {currentUserid && <CommentForm writerid={currentUserid} articleid={article.id} />}
       <Comments articleid={article.id} currentUserid={currentUserid} />
@@ -82,7 +91,8 @@ export async function getServerSideProps(context: { query: { id: string } }) {
       },
     };
   }
-  const { userid, category, date, title, explanation, fileURL } = snapArticle.data();
+  const { userid, category, date, title, explanation, fileURL, interestPeople } =
+    snapArticle.data();
   const snapUser = await getDoc(doc(db, 'users', userid));
   if (!snapUser.exists()) {
     return {
@@ -102,6 +112,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
     title,
     explanation,
     fileURL,
+    interestPeople,
   };
 
   return {

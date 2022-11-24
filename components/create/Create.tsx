@@ -77,6 +77,7 @@ export default function Write({ userid }: { userid: string }) {
         fileRef,
         fileURL,
         fileType,
+        interestPeople: [],
       });
       // 이동하기
       router.push(`/article/${id}`);

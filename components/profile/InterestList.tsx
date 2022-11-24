@@ -25,7 +25,10 @@ export default function Wrote() {
 
   useEffect(() => {
     (async () => {
-      const queryMade = query(collection(db, 'articles'), where('userid', '==', userid));
+      const queryMade = query(
+        collection(db, 'articles'),
+        where('interestPeople', 'array-contains', userid)
+      );
       const snapshot = await getDocs(queryMade);
       const result = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -41,7 +44,7 @@ export default function Wrote() {
   }
 
   if (data.length === 0) {
-    return <section>아직 작성하신 것이 없습니다.</section>;
+    return <section>아직 추가하신 것이 없습니다.</section>;
   }
 
   return (
