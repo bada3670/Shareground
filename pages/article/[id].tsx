@@ -7,7 +7,7 @@ import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/article.module.scss';
 import ToEdit from 'components/article/ToEdit';
 import Delete from 'components/article/Delete';
-import Interest from 'components/article/Interest';
+import InterestButton from 'components/article/InterestButton';
 import CommentForm from 'components/article/CommentForm';
 import Comments from 'components/article/Comments';
 
@@ -19,6 +19,7 @@ interface Article {
   date: string;
   title: string;
   explanation: string;
+  fileRef: string;
   fileURL: string;
   interestPeople: string[];
 }
@@ -64,11 +65,11 @@ export default function ({
       {currentUserid === article.userid && (
         <div className={style['edit-delete']}>
           <ToEdit articleid={article.id} />
-          <Delete articleid={article.id} db={db} />
+          <Delete articleid={article.id} db={db} fileRef={article.fileRef} />
         </div>
       )}
       {currentUserid && currentUserid !== article.userid && (
-        <Interest
+        <InterestButton
           articleid={article.id}
           currentUserid={currentUserid}
           interestPeople={article.interestPeople}
@@ -91,7 +92,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
       },
     };
   }
-  const { userid, category, date, title, explanation, fileURL, interestPeople } =
+  const { userid, category, date, title, explanation, fileRef, fileURL, interestPeople } =
     snapArticle.data();
   const snapUser = await getDoc(doc(db, 'users', userid));
   if (!snapUser.exists()) {
@@ -111,6 +112,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
     date: dateNumToStr(date),
     title,
     explanation,
+    fileRef,
     fileURL,
     interestPeople,
   };

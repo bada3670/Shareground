@@ -1,0 +1,16 @@
+.no-list {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.list {
+  flex-grow: 1;
+  padding: 1rem;
+
+  article {
+    margin-bottom: 1rem;
+  }
+}

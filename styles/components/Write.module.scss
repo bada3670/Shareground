@@ -37,6 +37,12 @@
 
   select {
     height: 100%;
+    background-color: white;
+    border-radius: 0;
+    border: 1px solid black;
+    width: 7rem;
+    height: 2rem;
+    padding-left: 0.25rem;
   }
 }
 

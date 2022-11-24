@@ -4,7 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
-import style from 'styles/components/Interest.module.scss';
+import style from 'styles/components/InterestButton.module.scss';
 
 interface Props {
   articleid: string;

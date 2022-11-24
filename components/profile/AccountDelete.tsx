@@ -1,6 +1,7 @@
-import { auth, db } from 'fb';
+import { auth, db, storage } from 'fb';
 import { deleteUser } from 'firebase/auth';
 import { doc, deleteDoc, getDocs, collection, query, where } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
@@ -27,6 +28,16 @@ export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }
       if (auth.currentUser) {
         // 계정 삭제
         await deleteUser(auth.currentUser);
+        // storage에서 사진 삭제
+        // 없어서 삭제를 못하는 경우가 있다.
+        // 그런데 원래대로 하면 아래의 error처리에 걸린다.
+        // 따라서 별도로 try catch를 만들어야 한다.
+        try {
+          // await를 해야 해당 try catch에 걸린다.
+          await deleteObject(ref(storage, `profile/${userid}`));
+        } catch (error) {
+          console.error(error);
+        }
         // firestore에서 계정 삭제
         deleteDoc(doc(db, 'users', userid));
         // 올린 글 삭제

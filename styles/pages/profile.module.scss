@@ -12,6 +12,7 @@
 .exist {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   display: flex;
+  padding-top: 1rem;
 }
 
 .choose {
@@ -38,7 +39,7 @@
 
 @media (max-width: layout.$screen-small) {
   .exist {
-    display: block;
+    flex-direction: column;
   }
 
   .choose {

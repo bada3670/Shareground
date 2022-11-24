@@ -1,12 +1,11 @@
 import { db, storage } from 'fb';
-import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import authReducer, { AuthState } from 'reducers/auth';
+import { useDispatch } from 'react-redux';
 import style from 'styles/components/Write.module.scss';
 
 export default function Write({ userid }: { userid: string }) {

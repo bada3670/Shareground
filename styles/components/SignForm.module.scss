@@ -20,12 +20,18 @@
   padding: 0 0.5rem;
 }
 
-.submit {
-  margin-top: 1rem;
-  width: 50%;
+.buttons {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
   height: 2rem;
-  border: none;
-  cursor: pointer;
+
+  button {
+    cursor: pointer;
+    flex-grow: 1;
+    border: none;
+    height: 2rem;
+  }
 }
 
 .log-in {
@@ -45,11 +51,12 @@
 .social {
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
 
   button {
     width: 3rem;
     height: 3rem;
-    margin: 1rem;
+    margin: 0 1rem;
     border-radius: 0;
     border: none;
     cursor: pointer;

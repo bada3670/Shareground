@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import Card from 'components/Card';
 import { useEffect, useState } from 'react';
+import style from 'styles/components/Wrote.module.scss';
 
 interface Datum {
   id: string;
@@ -37,15 +38,15 @@ export default function Wrote() {
   }, []);
 
   if (loading) {
-    return <section>로딩 중</section>;
+    return <section className={style['no-list']}>로딩 중</section>;
   }
 
   if (data.length === 0) {
-    return <section>아직 작성하신 것이 없습니다.</section>;
+    return <section className={style['no-list']}>아직 작성하신 것이 없습니다.</section>;
   }
 
   return (
-    <section>
+    <section className={style['list']}>
       {data.map((datum, index) => {
         return <Card datum={datum} key={index} />;
       })}
