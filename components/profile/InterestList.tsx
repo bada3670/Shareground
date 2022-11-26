@@ -21,7 +21,7 @@ interface Datum {
   info: DocumentData;
 }
 
-export default function Wrote() {
+export default function InterestList() {
   const numOfUnit = 4;
   let numOfTotal = numOfUnit;
   const [data, setData] = useState<Datum[]>([]);

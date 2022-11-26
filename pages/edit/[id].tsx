@@ -7,7 +7,7 @@ import { db } from 'fb';
 import { doc, getDoc, DocumentData } from 'firebase/firestore';
 import Edit from 'components/edit/Edit';
 
-export default function profile() {
+export default function () {
   const router = useRouter();
   const authState = useSelector((state: AuthState) => state.auth);
   const [article, setArticle] = useState<DocumentData | null | undefined>(undefined);
