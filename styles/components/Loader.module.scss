@@ -1,0 +1,55 @@
+.section {
+  display: flex;
+  justify-content: center;
+}
+
+// 자료가 더 없는 경우
+
+.end {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+// 자료가 더 있는 경우
+
+@keyframes fade {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.loader {
+  margin-top: 1rem;
+  width: 6rem;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.l {
+  width: 1rem;
+  opacity: 0.2;
+}
+
+.l1 {
+  background-color: #2980b9;
+  animation: fade 1s 0s infinite;
+}
+.l2 {
+  background-color: #3498db;
+  animation: fade 1s 0.1s infinite;
+}
+.l3 {
+  background-color: #27ae60;
+  animation: fade 1s 0.2s infinite;
+}
+.l4 {
+  background-color: #2ecc71;
+  animation: fade 1s 0.3s infinite;
+}
