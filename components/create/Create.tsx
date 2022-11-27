@@ -1,19 +1,22 @@
 import { db, storage } from 'fb';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import searchReducer from 'reducers/search';
 import style from 'styles/components/Write.module.scss';
 
-export default function Write({ userid }: { userid: string }) {
+export default function Create({ userid }: { userid: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const refSubmit = useRef<HTMLInputElement>(null);
   const refFile = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string>('');
+  const dispatch = useDispatch();
 
   const click$cancel = () => {
     router.push('/');
@@ -46,6 +49,12 @@ export default function Write({ userid }: { userid: string }) {
 
     if (category === '') {
       alert('카테고리를 선택하셔야 합니다!');
+      setLoading(false);
+      return;
+    }
+    if (title === '') {
+      alert('제목을 입력하셔야 합니다!');
+      setLoading(false);
       return;
     }
 
@@ -77,6 +86,28 @@ export default function Write({ userid }: { userid: string }) {
         interestPeople: [],
         comments: [],
       });
+
+      // search에 추가하기
+      const snapshotSearch = await getDoc(doc(db, 'search', 'search'));
+      if (snapshotSearch.exists()) {
+        const searchListLimit = 3;
+        const { searchList } = snapshotSearch.data();
+        const searchListLength = searchList.length;
+        const searchListMargin = searchListLength + 1 - searchListLimit;
+        let newSearchList;
+        if (searchListMargin > 0) {
+          newSearchList = searchList.slice(searchListMargin);
+        } else {
+          newSearchList = searchList;
+        }
+        newSearchList.push({ id, title });
+        await updateDoc(doc(db, 'search', 'search'), {
+          searchList: newSearchList,
+        });
+        // redux에 추가하기
+        dispatch(searchReducer.actions.add({ list: newSearchList }));
+      }
+
       // 이동하기
       router.push(`/article/${id}`);
     } catch (error) {

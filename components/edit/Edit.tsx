@@ -49,6 +49,12 @@ export default function Edit({ data, articleid }: Props) {
   }) => {
     setLoading(true);
 
+    if (title === '') {
+      alert('제목을 입력하셔야 합니다!');
+      setLoading(false);
+      return;
+    }
+
     try {
       // 파일이 있으면 스토리지에 올리기
       // fileType은 바뀔 수 있으므로 data에서 가져오지 말고 여기서 지정

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { AuthState, authStatus } from 'reducers/auth';
 import Create from 'components/create/Create';
-import style from 'styles/pages/create.module.scss';
+import style from 'styles/pages/write.module.scss';
 
 export default function profile() {
   const { id, status: currentAuthStatus } = useSelector((state: AuthState) => state.auth);

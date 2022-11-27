@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
-import style from 'styles/pages/create.module.scss';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { db } from 'fb';
 import { doc, getDoc, DocumentData } from 'firebase/firestore';
 import Edit from 'components/edit/Edit';
+import style from 'styles/pages/write.module.scss';
 
 export default function () {
   const router = useRouter();

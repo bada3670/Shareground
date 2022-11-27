@@ -25,6 +25,11 @@ export default function CommentForm({
 
   const submit$form: SubmitHandler<FieldValues> = async ({ comment }) => {
     setLoading(true);
+    if (comment === '') {
+      alert('글을 입력하셔야 합니다!');
+      setLoading(false);
+      return;
+    }
     const newComment = { id: uuidv4(), content: comment, writerid, date: Date.now() };
     try {
       const snapshotArticle = await getDoc(doc(db, 'articles', articleid));
@@ -46,11 +51,7 @@ export default function CommentForm({
 
   return (
     <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
-      <input
-        type={'text'}
-        {...register('comment', { required: true })}
-        className={style['content']}
-      />
+      <input type={'text'} {...register('comment')} className={style['content']} />
       <input
         type={'submit'}
         disabled={loading}
