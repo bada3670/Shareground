@@ -5,11 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import style from 'styles/components/Write.module.scss';
 
 export default function Write({ userid }: { userid: string }) {
-  const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
@@ -77,6 +75,7 @@ export default function Write({ userid }: { userid: string }) {
         fileURL,
         fileType,
         interestPeople: [],
+        comments: [],
       });
       // 이동하기
       router.push(`/article/${id}`);

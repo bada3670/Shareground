@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import { realdb } from 'fb';
-import { ref, child, push, update } from 'firebase/database';
+import { db } from 'fb';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import style from 'styles/components/CommentForm.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CommentForm({
   writerid,
@@ -24,17 +25,17 @@ export default function CommentForm({
 
   const submit$form: SubmitHandler<FieldValues> = async ({ comment }) => {
     setLoading(true);
-    const newComment = { content: comment, writerid, date: Date.now() };
-    const newKey = push(child(ref(realdb), 'comments')).key;
-    if (!newKey) {
-      alert('죄송합니다. 등록을 하지 못했습니다.');
-      return;
-    }
-    const updates = {
-      [`comments/${articleid}/${newKey}`]: newComment,
-    };
+    const newComment = { id: uuidv4(), content: comment, writerid, date: Date.now() };
     try {
-      await update(ref(realdb), updates);
+      const snapshotArticle = await getDoc(doc(db, 'articles', articleid));
+      if (snapshotArticle.exists()) {
+        const { comments } = snapshotArticle.data();
+        comments.unshift(newComment);
+        await updateDoc(doc(db, 'articles', articleid), {
+          comments,
+        });
+        location.reload();
+      }
     } catch (error) {
       console.error(error);
       alert('죄송합니다. 등록을 하지 못했습니다.');
@@ -45,7 +46,11 @@ export default function CommentForm({
 
   return (
     <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
-      <input type={'text'} {...register('comment')} className={style['content']} />
+      <input
+        type={'text'}
+        {...register('comment', { required: true })}
+        className={style['content']}
+      />
       <input
         type={'submit'}
         disabled={loading}

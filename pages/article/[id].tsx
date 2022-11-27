@@ -11,6 +11,13 @@ import InterestButton from 'components/article/InterestButton';
 import CommentForm from 'components/article/CommentForm';
 import Comments from 'components/article/Comments';
 
+export interface CommentType {
+  id: string;
+  content: string;
+  date: number;
+  writerid: string;
+}
+
 interface Article {
   id: string;
   userid: string;
@@ -22,6 +29,7 @@ interface Article {
   fileRef: string;
   fileURL: string;
   interestPeople: string[];
+  comments: CommentType[];
 }
 
 export default function ({
@@ -77,7 +85,11 @@ export default function ({
       )}
       <h2 className={style['comment-title']}>댓글</h2>
       {currentUserid && <CommentForm writerid={currentUserid} articleid={article.id} />}
-      <Comments articleid={article.id} currentUserid={currentUserid} />
+      <Comments
+        articleid={article.id}
+        comments={article.comments}
+        currentUserid={currentUserid}
+      />
     </main>
   );
 }
@@ -92,8 +104,17 @@ export async function getServerSideProps(context: { query: { id: string } }) {
       },
     };
   }
-  const { userid, category, date, title, explanation, fileRef, fileURL, interestPeople } =
-    snapArticle.data();
+  const {
+    userid,
+    category,
+    date,
+    title,
+    explanation,
+    fileRef,
+    fileURL,
+    interestPeople,
+    comments,
+  } = snapArticle.data();
   const snapUser = await getDoc(doc(db, 'users', userid));
   if (!snapUser.exists()) {
     return {
@@ -115,6 +136,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
     fileRef,
     fileURL,
     interestPeople,
+    comments,
   };
 
   return {
