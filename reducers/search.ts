@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface AuthState {
-  auth: {
-    list: {
-      id: string;
-      title: string;
-    };
+export interface Item {
+  id: string;
+  title: string;
+}
+
+export interface SearchState {
+  search: {
+    list: Item[];
   };
 }
 

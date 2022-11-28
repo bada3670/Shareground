@@ -3,11 +3,12 @@
 $img-size: 8rem;
 
 .section {
-  padding: calc($img-size * 0.2);
+  margin-bottom: 2.25rem;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
-  margin: 1rem auto;
   width: $img-size;
   height: $img-size;
   position: relative;

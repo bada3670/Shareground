@@ -1,105 +1,62 @@
 @use '../layout.scss';
+@use '../theme.scss';
 
 $height: layout.$header-height;
-$space: 0.5rem;
 
 .header {
   height: $height;
   display: flex;
   align-items: center;
-  padding: calc($space * 1.5);
-}
-
-.category-narrow {
-  display: none;
-  position: relative;
-
-  .button {
-    cursor: pointer;
-    margin-right: $space;
-  }
-
-  .menu {
-    display: none;
-    position: absolute;
-    top: $height;
-    left: 0;
-    width: 100px;
-    height: 100px;
-
-    &.block {
-      display: block;
-    }
-  }
+  padding: 1rem;
+  background-color: theme.$color-clouds;
+  color: theme.$color-midnightblue;
 }
 
 .logo {
-  margin-right: $space;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
 
   a {
-    color: black;
+    color: theme.$color-midnightblue;
     text-decoration: none;
     cursor: pointer;
-
+    font-size: 1.25rem;
     &:hover {
-      color: gray;
+      background-color: theme.$color-midnightblue;
+      color: theme.$color-clouds;
     }
   }
 }
 
-.category-wide {
-  display: flex;
-
-  .item {
-    margin-right: $space;
-  }
+.empty1 {
 }
 
-.empty {
+.empty2 {
   flex-grow: 1;
 }
 
 .search {
   width: 16rem;
   height: 80%;
-  margin-right: $space;
+  margin-right: 0.5rem;
+  padding-left: 0.25rem;
 }
 
-.logged-in {
+.create {
+  margin-right: 1.5rem;
   display: flex;
   align-items: center;
 
-  .profile {
+  a {
+    color: theme.$color-midnightblue;
+    text-decoration: none;
     cursor: pointer;
-    height: 100%;
-    width: calc($height * 0.7);
-    height: calc($height * 0.7);
-    border-radius: 50%;
-    margin-right: $space;
-  }
-
-  .logout-button {
-    cursor: pointer;
-  }
-}
-
-.not-logged-in {
-  display: flex;
-
-  .login-button {
-    cursor: pointer;
-
-    a {
-      text-decoration: none;
-    }
+    font-size: 1.25rem;
   }
 }
 
 @media (max-width: layout.$screen-medium) {
-  .category-narrow {
-    display: block;
-  }
-
   .category-wide {
     display: none;
   }

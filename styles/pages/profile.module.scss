@@ -12,7 +12,6 @@
 .exist {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   display: flex;
-  padding-top: 1rem;
 }
 
 .choose {

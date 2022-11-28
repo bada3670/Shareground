@@ -1,0 +1,85 @@
+@use '../layout.scss';
+@use '../theme.scss';
+
+@keyframes skeleton {
+  0% {
+    background-color: theme.$color-asbestos;
+  }
+  100% {
+    background-color: theme.$color-clouds;
+  }
+}
+
+.container {
+  height: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+}
+
+.skeleton {
+  height: 100%;
+  border-radius: 50%;
+  animation: skeleton 1s linear infinite alternate;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid theme.$color-midnightblue;
+  border-radius: 50%;
+  height: 100%;
+
+  a {
+    color: theme.$color-midnightblue;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+}
+
+.photo {
+  border: none;
+  background-color: transparent;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.login-content {
+  display: none;
+  position: absolute;
+  top: 110%;
+  width: 6rem;
+  right: 0;
+  text-align: right;
+  z-index: 1;
+  background-color: white;
+
+  div {
+    margin: 0.5rem;
+  }
+}
+
+.logout-button button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.to-profile a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-content.visible {
+  display: block;
+}
