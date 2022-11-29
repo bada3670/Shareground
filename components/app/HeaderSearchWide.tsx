@@ -1,22 +1,46 @@
-import { ChangeEventHandler, useState } from 'react';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
-import { SearchState, Item } from 'reducers/search';
-import searchFunction from 'utils/search';
 import style from 'styles/components/HeaderSearchWide.module.scss';
+import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearh';
+import { useRef, useEffect } from 'react';
 
-export default function HeaderSearchWide() {
-  const allData = useSelector((state: SearchState) => state.search.list);
-  const [result, setResult] = useState<Item[]>([]);
+interface Props {
+  change$search: ChangeSearch;
+  click$result: ClickResult;
+  result: Result;
+  searchValue: string;
+}
 
-  const change$search: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const {
-      target: { value },
-    } = e;
-    const searched = searchFunction(allData, value);
-    setResult(searched);
-  };
+interface ResultCompProps {
+  result: Result;
+  click$result: ClickResult;
+}
 
+function ResultComp({ click$result, result }: ResultCompProps) {
+  const refResultContainer = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (refResultContainer.current) {
+      refResultContainer.current.classList.add(style['visible']);
+    }
+  }, []);
+
+  return (
+    <div className={style['result']} ref={refResultContainer} onClick={click$result}>
+      {result.map(({ title, id }, index) => (
+        <div key={index}>
+          <Link href={`/article/${id}`}>{title}</Link>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function HeaderSearchWide({
+  result,
+  change$search,
+  click$result,
+  searchValue,
+}: Props) {
   return (
     <div className={style['container']}>
       <input
@@ -24,14 +48,13 @@ export default function HeaderSearchWide() {
         className={style['search']}
         placeholder={'원하시는 콘텐츠의 제목을 입력하세요.'}
         onChange={change$search}
+        value={searchValue}
       />
-      <div className={style['result']}>
-        {result.map(({ title, id }, index) => (
-          <div key={index}>
-            <Link href={`/article/${id}`}>{title}</Link>
-          </div>
-        ))}
-      </div>
+      {searchValue === '' ? (
+        <></>
+      ) : (
+        <ResultComp result={result} click$result={click$result} />
+      )}
     </div>
   );
 }

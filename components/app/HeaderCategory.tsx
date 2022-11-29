@@ -1,8 +1,19 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faList } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/HeaderCategory.module.scss';
 import { useRef } from 'react';
+
+function TitleText() {
+  return (
+    <>
+      <FontAwesomeIcon icon={faList} className={style['title-narrow']} />
+      <span className={style['title-wide']}>
+        카테고리 <FontAwesomeIcon icon={faAngleDown} />
+      </span>
+    </>
+  );
+}
 
 export default function HeaderCategory() {
   const refCategories = useRef<HTMLDivElement>(null);
@@ -35,7 +46,7 @@ export default function HeaderCategory() {
     <div className={style['container']} onMouseLeave={mouseleave$container}>
       <div className={style['title']}>
         <button onClick={click$title} onMouseEnter={mouseenter$title}>
-          카테고리 <FontAwesomeIcon icon={faAngleDown} />
+          <TitleText />
         </button>
       </div>
       <div className={style['categories']} ref={refCategories} onClick={click$categories}>

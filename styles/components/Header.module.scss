@@ -29,9 +29,6 @@ $height: layout.$header-height;
   }
 }
 
-.empty1 {
-}
-
 .empty2 {
   flex-grow: 1;
 }
@@ -44,7 +41,7 @@ $height: layout.$header-height;
 }
 
 .create {
-  margin-right: 1.5rem;
+  margin-right: 1.25rem;
   display: flex;
   align-items: center;
 
@@ -59,5 +56,14 @@ $height: layout.$header-height;
 @media (max-width: layout.$screen-medium) {
   .category-wide {
     display: none;
+  }
+}
+
+@media (max-width: layout.$screen-tiny) {
+  .empty1 {
+    flex-grow: 1;
+  }
+  .empty2 {
+    flex-grow: 0;
   }
 }

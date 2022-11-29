@@ -1,8 +1,9 @@
+@use '../layout.scss';
 @use '../theme.scss';
 
 .container {
   position: relative;
-  margin-right: 1rem;
+  margin-right: 1.25rem;
   height: 100%;
   display: flex;
 }
@@ -22,6 +23,14 @@
       background-color: theme.$color-midnightblue;
       color: theme.$color-clouds;
     }
+  }
+
+  &-narrow {
+    display: none;
+  }
+
+  &-wide {
+    display: inline;
   }
 }
 
@@ -47,4 +56,15 @@
 
 .categories.visible {
   display: block;
+}
+
+@media (max-width: layout.$screen-tiny) {
+  .title {
+    &-narrow {
+      display: inline;
+    }
+    &-wide {
+      display: none;
+    }
+  }
 }
