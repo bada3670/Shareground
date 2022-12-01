@@ -39,6 +39,11 @@ export default function SignForm() {
       router.push('/');
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        if (error.message.includes('user-not-found')) {
+          alert('해당 계정이 존재하지 않습니다!');
+        }
+      }
       setLoading(false);
     }
   };
@@ -58,6 +63,11 @@ export default function SignForm() {
       router.push('/');
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        if (error.message.includes('email-already-in-use')) {
+          alert('이미 가입되어 있습니다!');
+        }
+      }
       setLoading(false);
     }
   };

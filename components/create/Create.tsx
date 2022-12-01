@@ -90,7 +90,7 @@ export default function Create({ userid }: { userid: string }) {
       // search에 추가하기
       const snapshotSearch = await getDoc(doc(db, 'search', 'search'));
       if (snapshotSearch.exists()) {
-        const searchListLimit = 3;
+        const searchListLimit = 500;
         const { searchList } = snapshotSearch.data();
         const searchListLength = searchList.length;
         const searchListMargin = searchListLength + 1 - searchListLimit;

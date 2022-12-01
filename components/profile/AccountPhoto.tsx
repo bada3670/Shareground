@@ -31,6 +31,7 @@ export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus })
       setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
   const click$changePhoto = () => {

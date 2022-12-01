@@ -39,11 +39,16 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
     if (!userid) {
       return;
     }
-    await updateDoc(doc(db, 'users', userid), {
-      name: $inputName.value,
-    });
-    dispatch(authReducer.actions.changeName({ name: $inputName.value }));
-    location.reload();
+    try {
+      await updateDoc(doc(db, 'users', userid), {
+        name: $inputName.value,
+      });
+      dispatch(authReducer.actions.changeName({ name: $inputName.value }));
+      location.reload();
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   return (
