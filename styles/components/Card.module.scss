@@ -1,8 +1,25 @@
+@use '../theme.scss';
+
 .card {
-  border: 2px solid black;
   padding: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
+}
+
+.aud {
+  border: 2px solid theme.$color-pomegranate;
+}
+.doc {
+  border: 2px solid theme.$color-belizehole;
+}
+.img {
+  border: 2px solid theme.$color-sunflower;
+}
+.vid {
+  border: 2px solid theme.$color-wisteria;
+}
+.default {
+  border: 2px solid black;
 }
 
 .file-type {
