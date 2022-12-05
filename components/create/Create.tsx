@@ -61,16 +61,16 @@ export default function Create({ userid }: { userid: string }) {
     try {
       // 파일이 있으면 스토리지에 올리기
       let fileRef = null;
-      let fileURL = null;
       let fileType = null;
+      let fileURL = null;
       if (refFile.current?.files) {
         // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
         if (refFile.current.files[0]) {
           fileRef = uuidv4();
-          const storageRef = ref(storage, `article-file/${fileRef}`);
+          fileType = refFile.current?.files[0].name.split('.').at(-1);
+          const storageRef = ref(storage, `article-file/${fileRef}.${fileType}`);
           await uploadBytes(storageRef, refFile.current?.files[0]);
           fileURL = await getDownloadURL(storageRef);
-          fileType = refFile.current?.files[0].name.split('.').at(-1);
         }
       }
       // article에 추가하기
@@ -81,8 +81,8 @@ export default function Create({ userid }: { userid: string }) {
         title,
         explanation,
         fileRef,
-        fileURL,
         fileType,
+        fileURL,
         interestPeople: [],
         comments: [],
       });

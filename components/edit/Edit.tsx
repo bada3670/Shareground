@@ -62,9 +62,9 @@ export default function Edit({ data, articleid }: Props) {
       if (refFile.current?.files) {
         // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
         if (refFile.current.files[0]) {
-          const storageRef = ref(storage, `article-file/${fileRef}`);
-          await uploadBytes(storageRef, refFile.current?.files[0]);
           fileType = refFile.current?.files[0].name.split('.').at(-1);
+          const storageRef = ref(storage, `article-file/${fileRef}.${fileType}`);
+          await uploadBytes(storageRef, refFile.current?.files[0]);
         }
       }
       // article 수정하기
