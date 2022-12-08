@@ -1,5 +1,5 @@
 import { db, storage } from 'fb';
-import { collection, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
@@ -74,18 +74,28 @@ export default function Create({ userid }: { userid: string }) {
         }
       }
       // article에 추가하기
-      const { id } = await addDoc(collection(db, 'articles'), {
+      const payArticle = {
         userid,
         category,
-        date: Date.now(),
         title,
         explanation,
         fileRef,
         fileType,
         fileURL,
-        interestPeople: [],
-        comments: [],
+      };
+      const resArticle = await fetch('/api/articles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payArticle),
       });
+
+      if (resArticle.status !== 201) {
+        throw new Error('죄송합니다. 저장되지 않았습니다.');
+      }
+
+      const { id } = await resArticle.json();
 
       // search에 추가하기
       const snapshotSearch = await getDoc(doc(db, 'search', 'search'));
@@ -112,7 +122,9 @@ export default function Create({ userid }: { userid: string }) {
       router.push(`/article/${id}`);
     } catch (error) {
       console.error(error);
-      alert('죄송합니다. 처리가 되지 않았습니다.');
+      if (error instanceof Error) {
+        alert(error.message);
+      }
       setLoading(false);
     }
   };

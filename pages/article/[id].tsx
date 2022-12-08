@@ -1,5 +1,7 @@
 import { db } from 'fb';
+import { Context } from 'utils/typeContext';
 import { doc, getDoc } from 'firebase/firestore';
+import getSsrApi from 'utils/getSsrApi';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import dateNumToStr from 'utils/dateNumToStr';
@@ -32,23 +34,15 @@ interface Article {
   comments: CommentType[];
 }
 
-export default function ({
-  status,
-  article,
-}: {
+interface Props {
   status: string;
+  message: string;
   article: Article | null;
-}) {
-  if (status === 'no article') {
-    return <main className={style['no-content']}>요청하신 자료가 없습니다.</main>;
-  }
+}
 
-  if (status === 'no user') {
-    return (
-      <main className={style['no-content']}>
-        요청하신 자료의 저자를 찾을 수 없습니다.
-      </main>
-    );
+export default function ({ status, message, article }: Props) {
+  if (status === 'error') {
+    return <main className={style['no-content']}>{message}</main>;
   }
 
   if (article === null) {
@@ -73,7 +67,7 @@ export default function ({
       {currentUserid === article.userid && (
         <div className={style['edit-delete']}>
           <ToEdit articleid={article.id} />
-          <Delete articleid={article.id} db={db} fileRef={article.fileRef} />
+          <Delete articleid={article.id} fileRef={article.fileRef} />
         </div>
       )}
       {currentUserid && currentUserid !== article.userid && (
@@ -94,16 +88,21 @@ export default function ({
   );
 }
 
-export async function getServerSideProps(context: { query: { id: string } }) {
-  const snapArticle = await getDoc(doc(db, 'articles', context.query.id));
-  if (!snapArticle.exists()) {
+export async function getServerSideProps(context: Context) {
+  const resArticle = await fetch(getSsrApi(context, 'articles', context.query.id));
+
+  if (resArticle.status !== 200) {
+    const { message } = await resArticle.json();
     return {
       props: {
-        status: 'no article',
+        status: 'error',
+        message,
         article: null,
       },
     };
   }
+
+  const { data: dataArticle } = await resArticle.json();
   const {
     userid,
     category,
@@ -114,12 +113,14 @@ export async function getServerSideProps(context: { query: { id: string } }) {
     fileURL,
     interestPeople,
     comments,
-  } = snapArticle.data();
+  } = dataArticle;
+
   const snapUser = await getDoc(doc(db, 'users', userid));
   if (!snapUser.exists()) {
     return {
       props: {
-        status: 'no user',
+        status: 'error',
+        message: '요청하진 자료의 저자를 찾을 수 없습니다.',
         article: null,
       },
     };
@@ -142,6 +143,7 @@ export async function getServerSideProps(context: { query: { id: string } }) {
   return {
     props: {
       status: 'succeeded',
+      message: '',
       article,
     },
   };

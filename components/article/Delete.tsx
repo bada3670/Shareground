@@ -1,16 +1,14 @@
 import { storage } from 'fb';
 import { useRouter } from 'next/router';
 import { ref, deleteObject } from 'firebase/storage';
-import { Firestore, doc, deleteDoc } from 'firebase/firestore';
 import style from 'styles/components/Delete.module.scss';
 
 interface Props {
   articleid: string;
-  db: Firestore;
   fileRef: string;
 }
 
-export default function Delete({ articleid, db, fileRef }: Props) {
+export default function Delete({ articleid, fileRef }: Props) {
   const router = useRouter();
 
   const click$delete = async () => {
@@ -28,12 +26,21 @@ export default function Delete({ articleid, db, fileRef }: Props) {
       } catch (error) {
         console.error(error);
       }
+
       // 삭제하기
-      await deleteDoc(doc(db, 'articles', articleid));
+      const resArticle = await fetch(`/api/articles?doc=${articleid}`, {
+        method: 'DELETE',
+      });
+      if (resArticle.status !== 200) {
+        throw new Error('죄송합니다. 삭제되지 않았습니다.');
+      }
       // 삭제 처리 성공 페이지로 이동
       router.push('/article/deleted');
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
   };
 

@@ -2,8 +2,7 @@ import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { db } from 'fb';
-import { doc, getDoc, DocumentData } from 'firebase/firestore';
+import { DocumentData } from 'firebase/firestore';
 import Edit from 'components/edit/Edit';
 import style from 'styles/pages/write.module.scss';
 
@@ -16,12 +15,13 @@ export default function () {
   useEffect(() => {
     (async () => {
       if (router.query.id && typeof router.query.id !== 'object') {
-        const snap = await getDoc(doc(db, 'articles', router.query.id));
-        if (snap.exists()) {
-          setArticle(snap.data());
-          setArticleid(router.query.id);
-        } else {
+        const resArticle = await fetch(`/api/articles?doc=${router.query.id}`);
+        if (resArticle.status !== 200) {
           setArticle(null);
+        } else {
+          const { data: dataArticle } = await resArticle.json();
+          setArticle(dataArticle);
+          setArticleid(router.query.id);
         }
       }
     })();

@@ -1,5 +1,5 @@
-import { db, storage } from 'fb';
-import { updateDoc, doc, DocumentData } from 'firebase/firestore';
+import { storage } from 'fb';
+import { DocumentData } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
@@ -60,25 +60,34 @@ export default function Edit({ data, articleid }: Props) {
       // fileType은 바뀔 수 있으므로 data에서 가져오지 말고 여기서 지정
       let fileType = null;
       if (refFile.current?.files) {
-        // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
         if (refFile.current.files[0]) {
           fileType = refFile.current?.files[0].name.split('.').at(-1);
           const storageRef = ref(storage, `article-file/${fileRef}.${fileType}`);
           await uploadBytes(storageRef, refFile.current?.files[0]);
+        } else {
+          // 아무것도 안 올린 경우 스토리지에서 삭제하기
+          // 나중에
         }
       }
       // article 수정하기
-      await updateDoc(doc(db, 'articles', articleid), {
-        category,
-        title,
-        explanation,
-        fileType,
+      const payArticle = { category, title, explanation, fileType };
+      const resArticle = await fetch(`/api/articles?doc=${articleid}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payArticle),
       });
+      if (resArticle.status !== 204) {
+        throw new Error('죄송합니다. 처리가 되지 않았습니다.');
+      }
       // 이동하기
       router.push(`/article/${articleid}`);
     } catch (error) {
       console.error(error);
-      alert('죄송합니다. 처리가 되지 않았습니다.');
+      if (error instanceof Error) {
+        alert(error.message);
+      }
       setLoading(false);
     }
   };
