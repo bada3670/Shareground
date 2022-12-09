@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { db } from 'fb';
-import { doc, updateDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
@@ -27,15 +25,18 @@ export default function Interest({ articleid, currentUserid, interestPeople }: P
     message: string,
     starType: IconDefinition
   ) => {
-    try {
-      await updateDoc(doc(db, 'articles', articleid), {
-        interestPeople: newInterestPeople,
-      });
-      setStar(starType);
-    } catch (error) {
-      console.error(error);
+    const resInterest = await fetch(`/api/articlelist/in`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ articleid, newInterestPeople }),
+    });
+    if (resInterest.status !== 204) {
       alert(message);
+      return;
     }
+    setStar(starType);
   };
 
   const click$button = async () => {

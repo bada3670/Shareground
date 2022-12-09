@@ -1,14 +1,4 @@
-import { db } from 'fb';
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  getDocs,
-  DocumentData,
-  getCountFromServer,
-} from 'firebase/firestore';
+import { DocumentData } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
 import Card from 'components/Card';
@@ -23,7 +13,7 @@ interface Datum {
 
 export default function InterestList() {
   const numOfUnit = 4;
-  let numOfTotal = numOfUnit;
+  let currentNum = numOfUnit;
   const [data, setData] = useState<Datum[]>([]);
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const refLoader = useRef<HTMLDivElement>(null);
@@ -31,32 +21,22 @@ export default function InterestList() {
 
   const fetchData = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
-      if (entry.isIntersecting) {
-        // 자료 가져와서 화면에 전달
-        const queryArticles = query(
-          collection(db, 'articles'),
-          where('interestPeople', 'array-contains', userid),
-          orderBy('date', 'desc'),
-          limit(numOfTotal)
-        );
-        const snapshotArticles = await getDocs(queryArticles);
-        const articles = snapshotArticles.docs.map((doc) => ({
-          id: doc.id,
-          info: doc.data(),
-        }));
-        setData(articles);
-
-        // article 총 개수 파악하기 -> 로딩 끝낼 때를 파악하기 위해
-        const queryCount = query(
-          collection(db, 'articles'),
-          where('interestPeople', 'array-contains', userid)
-        );
-        const snapshotCount = await getCountFromServer(queryCount);
-        if (numOfTotal >= snapshotCount.data().count) {
-          setIsEnd(true);
-        } else {
-          numOfTotal += numOfUnit;
-        }
+      if (!entry.isIntersecting) {
+        return;
+      }
+      const resArticles = await fetch(
+        `api/articlelist/in?user=${userid}&count=${currentNum}`
+      );
+      if (resArticles.status !== 200) {
+        alert('문제가 발생했습니다.');
+        setIsEnd(true);
+      }
+      const { articles, totalCount } = await resArticles.json();
+      setData(articles);
+      if (currentNum >= totalCount) {
+        setIsEnd(true);
+      } else {
+        currentNum += numOfUnit;
       }
     });
   };

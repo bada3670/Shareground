@@ -1,27 +1,19 @@
-import { db } from 'fb';
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  getDocs,
-  DocumentData,
-  startAfter,
-  getCountFromServer,
-} from 'firebase/firestore';
+import { DocumentData } from 'firebase/firestore';
 import Card from 'components/Card';
 import Paginate from 'components/category/Paginate';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import style from 'styles/pages/category.module.scss';
 
-// interface Article {
-//   userid: string;
-//   category: string;
-//   date: number;
-//   title: string;
-//   explanation: string;
-// }
+interface Context {
+  query: {
+    id: string[];
+  };
+  req: {
+    headers: {
+      host: string;
+    };
+  };
+}
 
 interface Datum {
   id: string;
@@ -32,12 +24,14 @@ export default function ({
   category,
   data,
   pageCount,
+  initialPage,
 }: {
   category: string;
   data: Datum[] | string;
   pageCount: number | null;
+  initialPage: number | null;
 }) {
-  if (typeof data === 'string' || pageCount === null) {
+  if (typeof data === 'string' || pageCount === null || initialPage === null) {
     return (
       <section className={style['error']}>
         죄송합니다. 자료를 가져오지 못했습니다.
@@ -51,73 +45,39 @@ export default function ({
       {data.map((datum, index) => {
         return <Card datum={datum} key={index} />;
       })}
-      <Paginate category={category} pageCount={pageCount} />
+      <Paginate category={category} pageCount={pageCount} initialPage={initialPage} />
     </main>
   );
 }
 
 // society/1
-export async function getServerSideProps(context: { query: { id: string[] } }) {
-  const itemsPerPage = 4;
+export async function getServerSideProps(context: Context) {
   const {
     query: { id },
+    req: { headers },
   } = context;
-
-  try {
-    // 전체 개수 가져오기
-    const countQuery = query(collection(db, 'articles'), where('category', '==', id[0]));
-    const countSnapshot = await getCountFromServer(countQuery);
-    const pageCount = Math.ceil(countSnapshot.data().count / itemsPerPage);
-
-    // 페이지네이트
-    let realQuery;
-    if (parseInt(id[1]) === 1) {
-      // 첫 페이지인 경우
-      realQuery = query(
-        collection(db, 'articles'),
-        where('category', '==', id[0]),
-        orderBy('date', 'desc'),
-        limit(itemsPerPage)
-      );
-    } else {
-      // 두 번째 페이지부터
-      const offset = itemsPerPage * (parseInt(id[1]) - 1);
-      const offsetQuery = query(
-        collection(db, 'articles'),
-        where('category', '==', id[0]),
-        orderBy('date', 'desc'),
-        limit(offset)
-      );
-      const offsetSnapshot = await getDocs(offsetQuery);
-      const lastOffset = offsetSnapshot.docs.at(-1);
-      realQuery = query(
-        collection(db, 'articles'),
-        where('category', '==', id[0]),
-        orderBy('date', 'desc'),
-        startAfter(lastOffset),
-        limit(itemsPerPage)
-      );
-    }
-    const realSnapshot = await getDocs(realQuery);
-    const data = realSnapshot.docs.map((result) => ({
-      id: result.id,
-      info: result.data(),
-    }));
+  const protocol = process.env.API_PROTOCOL;
+  const host = headers.host;
+  const resArticles = await fetch(
+    `${protocol}://${host}/api/articlelist/ca?category=${id[0]}&page=${id[1]}`
+  );
+  if (resArticles.status !== 200) {
     return {
       props: {
-        category: context.query.id[0],
-        data,
-        pageCount,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        category: context.query.id[0],
-        data: '자료를 찾을 수 없습니다.',
+        category: id[0],
+        data: '죄송합니다. 문제가 발생했습니다.',
         pageCount: null,
+        initialPage: null,
       },
     };
   }
+  const { data, pageCount } = await resArticles.json();
+  return {
+    props: {
+      category: id[0],
+      data,
+      pageCount,
+      initialPage: parseInt(id[1]),
+    },
+  };
 }

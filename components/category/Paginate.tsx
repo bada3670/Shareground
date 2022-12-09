@@ -5,10 +5,11 @@ import style from 'styles/components/Paginate.module.scss';
 interface Props {
   category: string;
   pageCount: number;
+  initialPage: number;
 }
 type Click$PageButton = (selectedItem: { selected: number }) => void;
 
-export default function Paginate({ category, pageCount }: Props) {
+export default function Paginate({ category, pageCount, initialPage }: Props) {
   const router = useRouter();
 
   const handlePageClick: Click$PageButton = (event) => {
@@ -22,6 +23,7 @@ export default function Paginate({ category, pageCount }: Props) {
         onPageChange={handlePageClick}
         pageRangeDisplayed={2}
         marginPagesDisplayed={2}
+        initialPage={initialPage - 1}
         pageCount={pageCount}
         previousLabel="< prev"
         pageClassName={style['page-item']}

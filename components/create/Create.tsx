@@ -1,5 +1,3 @@
-import { db } from 'fb';
-import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
@@ -82,6 +80,7 @@ export default function Create({ userid }: { userid: string }) {
           fileURL = dataFile.fileURL;
         }
       }
+
       // article에 추가하기
       const payArticle = {
         userid,
@@ -99,18 +98,16 @@ export default function Create({ userid }: { userid: string }) {
         },
         body: JSON.stringify(payArticle),
       });
-
       if (resArticle.status !== 201) {
         throw new Error('죄송합니다. 저장되지 않았습니다.');
       }
-
       const { id } = await resArticle.json();
 
       // search에 추가하기
-      const snapshotSearch = await getDoc(doc(db, 'search', 'search'));
-      if (snapshotSearch.exists()) {
-        const searchListLimit = 500;
-        const { searchList } = snapshotSearch.data();
+      const resSearch = await fetch('/api/search');
+      if (resSearch.status === 200) {
+        const searchListLimit = 10;
+        const { searchList } = await resSearch.json();
         const searchListLength = searchList.length;
         const searchListMargin = searchListLength + 1 - searchListLimit;
         let newSearchList;
@@ -120,16 +117,20 @@ export default function Create({ userid }: { userid: string }) {
           newSearchList = searchList;
         }
         newSearchList.push({ id, title });
-        await updateDoc(doc(db, 'search', 'search'), {
-          searchList: newSearchList,
+        await fetch('/api/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ newSearchList }),
         });
-        // redux에 추가하기
         dispatch(searchReducer.actions.add({ list: newSearchList }));
       }
 
       // 이동하기
       router.push(`/article/${id}`);
     } catch (error) {
+      ////////////////오류//////////////////
       console.error(error);
       if (error instanceof Error) {
         alert(error.message);
