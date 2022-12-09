@@ -1,9 +1,6 @@
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import { db } from 'fb';
-import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import style from 'styles/components/CommentForm.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 
 export default function CommentForm({
   writerid,
@@ -23,35 +20,31 @@ export default function CommentForm({
     }
   }, [formState]);
 
-  const submit$form: SubmitHandler<FieldValues> = async ({ comment }) => {
+  const submit$form: SubmitHandler<FieldValues> = async ({ content }) => {
     setLoading(true);
-    if (comment === '') {
+    if (content === '') {
       alert('글을 입력하셔야 합니다!');
       setLoading(false);
       return;
     }
-    const newComment = { id: uuidv4(), content: comment, writerid, date: Date.now() };
-    try {
-      const snapshotArticle = await getDoc(doc(db, 'articles', articleid));
-      if (snapshotArticle.exists()) {
-        const { comments } = snapshotArticle.data();
-        comments.unshift(newComment);
-        await updateDoc(doc(db, 'articles', articleid), {
-          comments,
-        });
-        location.reload();
-      }
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(`/api/comment?article=${articleid}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content, writerid }),
+    });
+    if (response.status !== 204) {
       alert('죄송합니다. 등록을 하지 못했습니다.');
+      setLoading(false);
       return;
     }
-    setLoading(false);
+    location.reload();
   };
 
   return (
     <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
-      <input type={'text'} {...register('comment')} className={style['content']} />
+      <input type={'text'} {...register('content')} className={style['content']} />
       <input
         type={'submit'}
         disabled={loading}

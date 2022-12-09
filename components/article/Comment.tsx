@@ -1,8 +1,7 @@
 import { db } from 'fb';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import dateNumtoStr from 'utils/dateNumToStr';
-import { CommentType } from 'pages/article/[id]';
 import style from 'styles/components/Comment.module.scss';
 
 interface Props {
@@ -48,21 +47,15 @@ export default function Comment({
     if (!answer) {
       return;
     }
-    try {
-      const snapshotArticle = await getDoc(doc(db, 'articles', articleid));
-      if (snapshotArticle.exists()) {
-        const { comments } = snapshotArticle.data();
-        const newComments = comments.filter((comment: CommentType) => comment.id !== id);
-        await updateDoc(doc(db, 'articles', articleid), {
-          comments: newComments,
-        });
-        location.reload();
-      }
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(`/api/comment?article=${articleid}&comment=${id}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
       alert('삭제가 되지 않았습니다!');
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    location.reload();
   };
 
   if (!writerData) {
