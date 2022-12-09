@@ -48,12 +48,14 @@ async function handlePut(req: Req, res: Res) {
     res.status(400).json({ messagae: mesBadRequest });
     return;
   }
-  const { category, title, explanation, fileType } = req.body;
+  const { category, title, explanation, fileType, fileRef, fileURL } = req.body;
   await updateDoc(doc(db, 'articles', req.query.doc), {
     category,
     title,
     explanation,
     fileType,
+    fileRef,
+    fileURL,
   });
   res.status(204).json({ message: '수정되었습니다.' });
 }
@@ -74,6 +76,7 @@ export default async function (req: Req, res: Res) {
     try {
       await handleGet(req, res);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: mesServerError });
     }
   }
@@ -82,6 +85,7 @@ export default async function (req: Req, res: Res) {
     try {
       await handlePost(req, res);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: mesServerError });
     }
   }
@@ -90,6 +94,7 @@ export default async function (req: Req, res: Res) {
     try {
       await handlePut(req, res);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: mesServerError });
     }
   }
@@ -98,6 +103,7 @@ export default async function (req: Req, res: Res) {
     try {
       await handleDelete(req, res);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: mesServerError });
     }
   }

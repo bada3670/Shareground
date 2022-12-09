@@ -1,6 +1,4 @@
-import { storage } from 'fb';
 import { DocumentData } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
@@ -15,7 +13,7 @@ export default function Edit({ data, articleid }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
-  const { category, title, explanation, fileRef } = data;
+  const { category, title, explanation, fileRef: prevFileRef } = data;
   const [fileName, setFileName] = useState<string>('파일을 새로 올리셔야 합니다.');
   const refFile = useRef<HTMLInputElement>(null);
   const refSubmit = useRef<HTMLInputElement>(null);
@@ -55,22 +53,44 @@ export default function Edit({ data, articleid }: Props) {
       return;
     }
 
+    let fileType = null;
+    let fileRef = null;
+    let fileURL = null;
+
     try {
-      // 파일이 있으면 스토리지에 올리기
-      // fileType은 바뀔 수 있으므로 data에서 가져오지 말고 여기서 지정
-      let fileType = null;
-      if (refFile.current?.files) {
-        if (refFile.current.files[0]) {
-          fileType = refFile.current?.files[0].name.split('.').at(-1);
-          const storageRef = ref(storage, `article-file/${fileRef}.${fileType}`);
-          await uploadBytes(storageRef, refFile.current?.files[0]);
-        } else {
-          // 아무것도 안 올린 경우 스토리지에서 삭제하기
-          // 나중에
+      ////////////파일 수정하기////////////////
+      if (prevFileRef) {
+        // 기존에 파일이 있으면 삭제
+        const resFile = await fetch(`/api/article-file?file=${prevFileRef}`, {
+          method: 'DELETE',
+        });
+        if (resFile.status !== 200) {
+          throw new Error('죄송합니다. 수정되지 않았습니다.');
         }
       }
-      // article 수정하기
-      const payArticle = { category, title, explanation, fileType };
+      if (refFile.current?.files) {
+        if (refFile.current.files[0]) {
+          // 새 파일을 올리기
+          fileType = refFile.current?.files[0].name.split('.').at(-1);
+          const buffer = await refFile.current.files[0].arrayBuffer();
+          const bufferArray = new Uint8Array(buffer);
+          const resFile = await fetch(`/api/article-file`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fileType, buffer: Array.from(bufferArray) }),
+          });
+          if (resFile.status !== 201) {
+            throw new Error('죄송합니다. 수정되지 않았습니다.');
+          }
+          const dataFile = await resFile.json();
+          fileRef = dataFile.fileRef;
+          fileURL = dataFile.fileURL;
+        }
+      }
+      ////////////////article 수정하기///////////////
+      const payArticle = { category, title, explanation, fileType, fileRef, fileURL };
       const resArticle = await fetch(`/api/articles?doc=${articleid}`, {
         method: 'PUT',
         headers: {
@@ -79,11 +99,12 @@ export default function Edit({ data, articleid }: Props) {
         body: JSON.stringify(payArticle),
       });
       if (resArticle.status !== 204) {
-        throw new Error('죄송합니다. 처리가 되지 않았습니다.');
+        throw new Error('죄송합니다. 수정되지 않았습니다.');
       }
-      // 이동하기
+      ///////////////이동하기////////////////
       router.push(`/article/${articleid}`);
     } catch (error) {
+      ///////////////에러/////////////////
       console.error(error);
       if (error instanceof Error) {
         alert(error.message);

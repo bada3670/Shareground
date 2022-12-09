@@ -1,7 +1,5 @@
-import { db, storage } from 'fb';
+import { db } from 'fb';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { v4 as uuidv4 } from 'uuid';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
@@ -60,17 +58,28 @@ export default function Create({ userid }: { userid: string }) {
 
     try {
       // 파일이 있으면 스토리지에 올리기
-      let fileRef = null;
       let fileType = null;
+      let fileRef = null;
       let fileURL = null;
       if (refFile.current?.files) {
         // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
         if (refFile.current.files[0]) {
-          fileRef = uuidv4();
           fileType = refFile.current?.files[0].name.split('.').at(-1);
-          const storageRef = ref(storage, `article-file/${fileRef}.${fileType}`);
-          await uploadBytes(storageRef, refFile.current?.files[0]);
-          fileURL = await getDownloadURL(storageRef);
+          const buffer = await refFile.current.files[0].arrayBuffer();
+          const bufferArray = new Uint8Array(buffer);
+          const resFile = await fetch(`/api/article-file`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fileType, buffer: Array.from(bufferArray) }),
+          });
+          if (resFile.status !== 201) {
+            throw new Error('죄송합니다. 저장되지 않았습니다.');
+          }
+          const dataFile = await resFile.json();
+          fileRef = dataFile.fileRef;
+          fileURL = dataFile.fileURL;
         }
       }
       // article에 추가하기

@@ -28,8 +28,8 @@ interface Article {
   date: string;
   title: string;
   explanation: string;
-  fileRef: string;
-  fileURL: string;
+  fileRef: string | null;
+  fileURL: string | null;
   interestPeople: string[];
   comments: CommentType[];
 }
@@ -61,9 +61,11 @@ export default function ({ status, message, article }: Props) {
       <h1 className={style['title']}>{article.title}</h1>
       <hr />
       <p className={style['explanation']}>{article.explanation}</p>
-      <div className={style['file']}>
-        <a href={article.fileURL}>파일 다운로드</a>
-      </div>
+      {article.fileURL && (
+        <div className={style['file']}>
+          <a href={article.fileURL}>파일 다운로드</a>
+        </div>
+      )}
       {currentUserid === article.userid && (
         <div className={style['edit-delete']}>
           <ToEdit articleid={article.id} />

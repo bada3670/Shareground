@@ -1,11 +1,9 @@
-import { storage } from 'fb';
 import { useRouter } from 'next/router';
-import { ref, deleteObject } from 'firebase/storage';
 import style from 'styles/components/Delete.module.scss';
 
 interface Props {
   articleid: string;
-  fileRef: string;
+  fileRef: string | null;
 }
 
 export default function Delete({ articleid, fileRef }: Props) {
@@ -17,16 +15,15 @@ export default function Delete({ articleid, fileRef }: Props) {
       return;
     }
     try {
-      // storage에서 사진 삭제
-      // 없어서 삭제를 못하는 경우가 있다.
-      // 그런데 원래대로 하면 아래의 error처리에 걸린다.
-      // 따라서 별도로 try catch를 만들어야 한다.
-      try {
-        await deleteObject(ref(storage, `article-file/${fileRef}`));
-      } catch (error) {
-        console.error(error);
+      // storage에 파일이 있다면 삭제
+      if (fileRef) {
+        const resFile = await fetch(`/api/article-file?file=${fileRef}`, {
+          method: 'DELETE',
+        });
+        if (resFile.status !== 200) {
+          throw new Error('죄송합니다. 삭제되지 않았습니다.');
+        }
       }
-
       // 삭제하기
       const resArticle = await fetch(`/api/articles?doc=${articleid}`, {
         method: 'DELETE',
