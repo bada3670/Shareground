@@ -18,7 +18,7 @@ function TitleText() {
 export default function HeaderCategory() {
   const refCategories = useRef<HTMLDivElement>(null);
 
-  const click$title = () => {
+  const pointerdown$title = () => {
     if (refCategories.current) {
       refCategories.current.classList.toggle(style['visible']);
     }
@@ -45,7 +45,7 @@ export default function HeaderCategory() {
   return (
     <div className={style['container']} onMouseLeave={mouseleave$container}>
       <div className={style['title']}>
-        <button onPointerDown={click$title} onMouseEnter={mouseenter$title}>
+        <button onPointerDown={pointerdown$title} onMouseEnter={mouseenter$title}>
           <TitleText />
         </button>
       </div>

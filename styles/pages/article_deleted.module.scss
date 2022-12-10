@@ -2,11 +2,8 @@
 @use '../theme.scss';
 
 .main {
-  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
-  display: flex;
+  @include layout.only-message;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .message {

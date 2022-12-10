@@ -24,7 +24,7 @@ export default function HeaderAuth() {
     await signOut(auth);
   };
 
-  const click$photo = () => {
+  const pointerdown$photo = () => {
     if (refLoginContent.current) {
       refLoginContent.current.classList.toggle(style['visible']);
     }
@@ -78,7 +78,7 @@ export default function HeaderAuth() {
       >
         <button
           className={style['photo']}
-          onClick={click$photo}
+          onPointerDown={pointerdown$photo}
           onMouseEnter={mouseenter$photo}
         >
           <img

@@ -1,13 +1,9 @@
 @use '../layout.scss';
 
 .error {
-  font-size: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include layout.only-message;
 }
 
-.error,
 .main {
   min-height: calc(100vh - layout.$header-height - layout.$footer-height);
   padding: 2rem;

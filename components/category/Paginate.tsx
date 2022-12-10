@@ -19,13 +19,13 @@ export default function Paginate({ category, pageCount, initialPage }: Props) {
   return (
     <div className={style['container']}>
       <ReactPaginate
-        nextLabel="next >"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={2}
         marginPagesDisplayed={2}
         initialPage={initialPage - 1}
         pageCount={pageCount}
-        previousLabel="< prev"
+        previousLabel="<"
         pageClassName={style['page-item']}
         pageLinkClassName={style['page-link']}
         previousClassName={style['page-item']}

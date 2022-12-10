@@ -2,11 +2,7 @@
 @use '../theme.scss';
 
 .not-exist {
-  min-height: calc(100vh - layout.$header-height - layout.$footer-height);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
+  @include layout.only-message;
 }
 
 .exist {
