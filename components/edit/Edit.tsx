@@ -54,63 +54,35 @@ export default function Edit({ data, articleid }: Props) {
     }
 
     let fileType = null;
-    let fileRef = null;
-    let fileURL = null;
-
-    try {
-      ////////////파일 수정하기////////////////
-      if (prevFileRef) {
-        // 기존에 파일이 있으면 삭제
-        const resFile = await fetch(`/api/article-file?file=${prevFileRef}`, {
-          method: 'DELETE',
-        });
-        if (resFile.status !== 200) {
-          throw new Error('죄송합니다. 수정되지 않았습니다.');
-        }
+    let fileBuffer = null;
+    if (refFile.current?.files) {
+      if (refFile.current.files[0]) {
+        fileType = refFile.current?.files[0].name.split('.').at(-1);
+        const buffer = await refFile.current.files[0].arrayBuffer();
+        const bufferUnit8 = new Uint8Array(buffer);
+        fileBuffer = Array.from(bufferUnit8);
       }
-      if (refFile.current?.files) {
-        if (refFile.current.files[0]) {
-          // 새 파일을 올리기
-          fileType = refFile.current?.files[0].name.split('.').at(-1);
-          const buffer = await refFile.current.files[0].arrayBuffer();
-          const bufferArray = new Uint8Array(buffer);
-          const resFile = await fetch(`/api/article-file`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ fileType, buffer: Array.from(bufferArray) }),
-          });
-          if (resFile.status !== 201) {
-            throw new Error('죄송합니다. 수정되지 않았습니다.');
-          }
-          const dataFile = await resFile.json();
-          fileRef = dataFile.fileRef;
-          fileURL = dataFile.fileURL;
-        }
-      }
-      ////////////////article 수정하기///////////////
-      const payArticle = { category, title, explanation, fileType, fileRef, fileURL };
-      const resArticle = await fetch(`/api/articles?doc=${articleid}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payArticle),
-      });
-      if (resArticle.status !== 204) {
-        throw new Error('죄송합니다. 수정되지 않았습니다.');
-      }
-      ///////////////이동하기////////////////
-      router.push(`/article/${articleid}`);
-    } catch (error) {
-      ///////////////에러/////////////////
-      console.error(error);
-      if (error instanceof Error) {
-        alert(error.message);
-      }
-      setLoading(false);
     }
+    const response = await fetch(`/api/articles?ar=${articleid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        prevFileRef,
+        fileType,
+        fileBuffer,
+        category,
+        title,
+        explanation,
+      }),
+    });
+    if (response.status !== 204) {
+      alert('죄송합니다. 수정되지 않았습니다.');
+      setLoading(false);
+      return;
+    }
+    router.push(`/article/${articleid}`);
   };
 
   return (

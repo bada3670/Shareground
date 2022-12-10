@@ -1,4 +1,4 @@
-import { db } from 'fb';
+import { db, storage } from 'fb';
 import {
   collection,
   doc,
@@ -7,27 +7,46 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
 
-// 자주 쓰이는 메시지들
-const mesBadRequest = '적절하지 않은 요청입니다.';
-const mesServerError = '죄송합니다. 서버에서 에러가 발생했습니다.';
-
 async function handleGet(req: Req, res: Res) {
-  if (typeof req.query.doc !== 'string') {
-    res.status(400).json({ message: mesBadRequest });
+  const { ar } = req.query;
+  if (typeof ar !== 'string') {
+    res.status(400).json({});
     return;
   }
-  const snapArticle = await getDoc(doc(db, 'articles', req.query.doc));
+  // 글 가져오기
+  const snapArticle = await getDoc(doc(db, 'articles', ar));
   if (!snapArticle.exists()) {
     res.status(404).json({ message: '해당 글이 존재하지 않습니다.' });
     return;
   }
-  res.status(200).json({ data: snapArticle.data() });
+  const { userid } = snapArticle.data();
+  // 작성자 정보 가져오기
+  const snapWriter = await getDoc(doc(db, 'users', userid));
+  if (!snapWriter.exists()) {
+    res.status(404).json({ message: '해당 작성자가 존재하지 않습니다.' });
+    return;
+  }
+  const { name } = snapWriter.data();
+  // 보내기
+  res.status(200).json({ ...snapArticle.data(), username: name });
 }
 
 async function handlePost(req: Req, res: Res) {
-  const { userid, category, title, explanation, fileRef, fileType, fileURL } = req.body;
+  const { fileType, fileBuffer, userid, category, title, explanation } = req.body;
+  // 파일 올리기
+  let fileRef = null;
+  let fileURL = null;
+  if (fileType !== null && fileBuffer !== null) {
+    fileRef = uuidv4() + '.' + fileType;
+    const storageRef = ref(storage, `article-file/${fileRef}`);
+    await uploadBytes(storageRef, new Uint8Array(fileBuffer));
+    fileURL = await getDownloadURL(storageRef);
+  }
+  // 글 올리기
   const { id } = await addDoc(collection(db, 'articles'), {
     userid,
     category,
@@ -40,16 +59,51 @@ async function handlePost(req: Req, res: Res) {
     interestPeople: [],
     comments: [],
   });
-  res.status(201).json({ id });
+  // 검색 목록에 추가하기
+  const snapShot = await getDoc(doc(db, 'search', 'search'));
+  if (!snapShot.exists()) {
+    res.status(404).json({ message: '검색 목록이 존재하지 않습니다.' });
+    return;
+  }
+  const { searchList } = snapShot.data();
+  const searchListLimit = 10;
+  const searchListLength = searchList.length;
+  const searchListMargin = searchListLength + 1 - searchListLimit;
+  let newSearchList;
+  if (searchListMargin > 0) {
+    newSearchList = searchList.slice(searchListMargin);
+  } else {
+    newSearchList = searchList;
+  }
+  newSearchList.push({ id, title });
+  await updateDoc(doc(db, 'search', 'search'), {
+    searchList: newSearchList,
+  });
+  res.status(201).json({ id, newSearchList });
 }
 
 async function handlePut(req: Req, res: Res) {
-  if (typeof req.query.doc !== 'string') {
-    res.status(400).json({ messagae: mesBadRequest });
+  const { ar } = req.query;
+  if (typeof ar !== 'string') {
+    res.status(400).json({});
     return;
   }
-  const { category, title, explanation, fileType, fileRef, fileURL } = req.body;
-  await updateDoc(doc(db, 'articles', req.query.doc), {
+  const { prevFileRef, fileType, fileBuffer, category, title, explanation } = req.body;
+  // 기존 파일 삭제
+  if (prevFileRef) {
+    await deleteObject(ref(storage, `article-file/${prevFileRef}`));
+  }
+  // 새 파일 올리기
+  let fileRef = null;
+  let fileURL = null;
+  if (fileType !== null && fileBuffer !== null) {
+    fileRef = uuidv4() + '.' + fileType;
+    const storageRef = ref(storage, `article-file/${fileRef}`);
+    await uploadBytes(storageRef, new Uint8Array(fileBuffer));
+    fileURL = await getDownloadURL(storageRef);
+  }
+  // 글 수정하기
+  await updateDoc(doc(db, 'articles', ar), {
     category,
     title,
     explanation,
@@ -57,16 +111,20 @@ async function handlePut(req: Req, res: Res) {
     fileRef,
     fileURL,
   });
-  res.status(204).json({ message: '수정되었습니다.' });
+  res.status(204).json({});
 }
 
 async function handleDelete(req: Req, res: Res) {
-  if (typeof req.query.doc !== 'string') {
-    res.status(400).json({ message: mesBadRequest });
+  const { ar, fi } = req.query;
+  if (typeof ar !== 'string' || typeof fi !== 'string') {
+    res.status(400).json({});
     return;
   }
-  await deleteDoc(doc(db, 'articles', req.query.doc));
-  res.status(200).json({ message: '삭제되었습니다.' });
+  if (fi !== 'no') {
+    await deleteObject(ref(storage, `article-file/${fi}`));
+  }
+  await deleteDoc(doc(db, 'articles', ar));
+  res.status(204).json({});
 }
 
 //////////////////////////////////////////////////////
@@ -77,7 +135,7 @@ export default async function (req: Req, res: Res) {
       await handleGet(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: mesServerError });
+      res.status(500).json({});
     }
   }
 
@@ -86,7 +144,7 @@ export default async function (req: Req, res: Res) {
       await handlePost(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: mesServerError });
+      res.status(500).json({});
     }
   }
 
@@ -95,7 +153,7 @@ export default async function (req: Req, res: Res) {
       await handlePut(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: mesServerError });
+      res.status(500).json({});
     }
   }
 
@@ -104,7 +162,7 @@ export default async function (req: Req, res: Res) {
       await handleDelete(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: mesServerError });
+      res.status(500).json({});
     }
   }
 }

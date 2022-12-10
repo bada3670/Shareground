@@ -54,89 +54,38 @@ export default function Create({ userid }: { userid: string }) {
       return;
     }
 
-    try {
-      // 파일이 있으면 스토리지에 올리기
-      let fileType = null;
-      let fileRef = null;
-      let fileURL = null;
-      if (refFile.current?.files) {
-        // 아무것도 안 올린 경우 스토리지에 올라가지 않게 하기
-        if (refFile.current.files[0]) {
-          fileType = refFile.current?.files[0].name.split('.').at(-1);
-          const buffer = await refFile.current.files[0].arrayBuffer();
-          const bufferArray = new Uint8Array(buffer);
-          const resFile = await fetch(`/api/article-file`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ fileType, buffer: Array.from(bufferArray) }),
-          });
-          if (resFile.status !== 201) {
-            throw new Error('죄송합니다. 저장되지 않았습니다.');
-          }
-          const dataFile = await resFile.json();
-          fileRef = dataFile.fileRef;
-          fileURL = dataFile.fileURL;
-        }
+    let fileType = null;
+    let fileBuffer = null;
+    if (refFile.current?.files) {
+      if (refFile.current.files[0]) {
+        fileType = refFile.current?.files[0].name.split('.').at(-1);
+        const buffer = await refFile.current.files[0].arrayBuffer();
+        const bufferUnit8 = new Uint8Array(buffer);
+        fileBuffer = Array.from(bufferUnit8);
       }
-
-      // article에 추가하기
-      const payArticle = {
+    }
+    const response = await fetch(`/api/articles`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fileType,
+        fileBuffer,
         userid,
         category,
         title,
         explanation,
-        fileRef,
-        fileType,
-        fileURL,
-      };
-      const resArticle = await fetch('/api/articles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payArticle),
-      });
-      if (resArticle.status !== 201) {
-        throw new Error('죄송합니다. 저장되지 않았습니다.');
-      }
-      const { id } = await resArticle.json();
-
-      // search에 추가하기
-      const resSearch = await fetch('/api/search');
-      if (resSearch.status === 200) {
-        const searchListLimit = 10;
-        const { searchList } = await resSearch.json();
-        const searchListLength = searchList.length;
-        const searchListMargin = searchListLength + 1 - searchListLimit;
-        let newSearchList;
-        if (searchListMargin > 0) {
-          newSearchList = searchList.slice(searchListMargin);
-        } else {
-          newSearchList = searchList;
-        }
-        newSearchList.push({ id, title });
-        await fetch('/api/search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ newSearchList }),
-        });
-        dispatch(searchReducer.actions.add({ list: newSearchList }));
-      }
-
-      // 이동하기
-      router.push(`/article/${id}`);
-    } catch (error) {
-      ////////////////오류//////////////////
-      console.error(error);
-      if (error instanceof Error) {
-        alert(error.message);
-      }
+      }),
+    });
+    if (response.status !== 201) {
+      alert('죄송합니다. 저장되지 않았습니다.');
       setLoading(false);
+      return;
     }
+    const { id, newSearchList } = await response.json();
+    dispatch(searchReducer.actions.add({ list: newSearchList }));
+    router.push(`/article/${id}`);
   };
 
   return (

@@ -89,23 +89,23 @@ export default function ({ status, message, article }: Props) {
 }
 
 export async function getServerSideProps(context: Context) {
-  // article 정보
-  const resArticle = await fetch(
-    `${getSsrApi(context)}/articles?doc=${context.query.id}`
-  );
-  if (resArticle.status !== 200) {
-    const { message } = await resArticle.json();
+  const response = await fetch(`${getSsrApi(context)}/articles?ar=${context.query.id}`);
+
+  if (response.status !== 200) {
     return {
       props: {
         status: 'error',
-        message,
+        message: '죄송합니다. 자료를 가져오지 못했습니다.',
         article: null,
       },
     };
   }
-  const { data: dataArticle } = await resArticle.json();
+
+  const data = await response.json();
+
   const {
     userid,
+    username,
     category,
     date,
     title,
@@ -114,22 +114,8 @@ export async function getServerSideProps(context: Context) {
     fileURL,
     interestPeople,
     comments,
-  } = dataArticle;
+  } = data;
 
-  // user 정보
-  const resUser = await fetch(`${getSsrApi(context)}/user?user=${userid}`);
-  if (resUser.status !== 200) {
-    return {
-      props: {
-        status: 'error',
-        message: '요청하진 자료의 저자를 찾을 수 없습니다.',
-        article: null,
-      },
-    };
-  }
-  const { name: username } = await resUser.json();
-
-  // 완성본
   const article = {
     id: context.query.id,
     userid,
