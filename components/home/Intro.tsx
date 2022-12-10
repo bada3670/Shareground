@@ -10,8 +10,6 @@ export default function Intro() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add(style['to-original-position']);
-          } else {
-            entry.target.classList.remove(style['to-original-position']);
           }
         });
       },
