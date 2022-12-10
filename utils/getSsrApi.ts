@@ -1,6 +1,6 @@
 import { Context } from 'utils/typeContext';
 
-export default function (context: Context, collection: string, document: string) {
+export default function (context: Context) {
   const {
     req: { headers },
   } = context;
@@ -8,5 +8,5 @@ export default function (context: Context, collection: string, document: string)
   const protocol = process.env.API_PROTOCOL;
   const host = headers.host;
 
-  return `${protocol}://${host}/api/${collection}?doc=${document}`;
+  return `${protocol}://${host}/api`;
 }

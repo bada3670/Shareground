@@ -1,5 +1,3 @@
-import { db } from 'fb';
-import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import dateNumtoStr from 'utils/dateNumToStr';
 import style from 'styles/components/Comment.module.scss';
@@ -31,13 +29,13 @@ export default function Comment({
 
   useEffect(() => {
     (async () => {
-      const snapWriter = await getDoc(doc(db, 'users', writerid));
-      if (!snapWriter.exists()) {
+      const response = await fetch(`/api/user?user=${writerid}`);
+      if (response.status !== 200) {
         setWriterData(null);
-      } else {
-        const { name: writername, photo: writerphoto } = snapWriter.data();
-        setWriterData({ writername, writerphoto });
+        return;
       }
+      const { name: writername, photo: writerphoto } = await response.json();
+      setWriterData({ writername, writerphoto });
     })();
   }, []);
 

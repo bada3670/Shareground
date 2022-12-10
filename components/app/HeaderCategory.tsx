@@ -45,7 +45,7 @@ export default function HeaderCategory() {
   return (
     <div className={style['container']} onMouseLeave={mouseleave$container}>
       <div className={style['title']}>
-        <button onClick={click$title} onMouseEnter={mouseenter$title}>
+        <button onPointerDown={click$title} onMouseEnter={mouseenter$title}>
           <TitleText />
         </button>
       </div>

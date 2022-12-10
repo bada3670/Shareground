@@ -1,5 +1,3 @@
-import { db } from 'fb';
-import { updateDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { useRef } from 'react';
@@ -39,16 +37,20 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
     if (!userid) {
       return;
     }
-    try {
-      await updateDoc(doc(db, 'users', userid), {
-        name: $inputName.value,
-      });
-      dispatch(authReducer.actions.changeName({ name: $inputName.value }));
-      location.reload();
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(`/api/user?user=${userid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: $inputName.value, photo: null }),
+    });
+    if (response.status !== 204) {
+      alert('수정이 되지 않았습니다.');
       setLoading(false);
+      return;
     }
+    dispatch(authReducer.actions.changeName({ name: $inputName.value }));
+    location.reload();
   };
 
   return (

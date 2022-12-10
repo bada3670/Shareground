@@ -1,6 +1,3 @@
-import { db, storage } from 'fb';
-import { updateDoc, doc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { ChangeEvent, useRef } from 'react';
@@ -19,21 +16,25 @@ export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus })
     if (!e.target.files || !userid) {
       return;
     }
-    try {
-      const file = e.target.files[0];
-      const storageRef = ref(storage, `profile/${userid}`);
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      await updateDoc(doc(db, 'users', userid), {
-        photo: url,
-      });
+    const file = e.target.files[0];
+    const buffer = await file.arrayBuffer();
+    const bufferArray = new Uint8Array(buffer);
+    const response = await fetch(`/api/user?user=${userid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: null, photo: Array.from(bufferArray) }),
+    });
+    if (response.status !== 200) {
+      alert('죄송합니다. 수정이 되지 않았습니다.');
+    } else {
+      const { url } = await response.json();
       dispatch(authReducer.actions.changePhoto({ photo: url }));
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
     }
+    setLoading(false);
   };
+
   const click$changePhoto = () => {
     refInputPhoto.current?.click();
   };

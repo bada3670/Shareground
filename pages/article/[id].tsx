@@ -1,6 +1,4 @@
-import { db } from 'fb';
 import { Context } from 'utils/typeContext';
-import { doc, getDoc } from 'firebase/firestore';
 import getSsrApi from 'utils/getSsrApi';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
@@ -91,8 +89,10 @@ export default function ({ status, message, article }: Props) {
 }
 
 export async function getServerSideProps(context: Context) {
-  const resArticle = await fetch(getSsrApi(context, 'articles', context.query.id));
-
+  // article 정보
+  const resArticle = await fetch(
+    `${getSsrApi(context)}/articles?doc=${context.query.id}`
+  );
   if (resArticle.status !== 200) {
     const { message } = await resArticle.json();
     return {
@@ -103,7 +103,6 @@ export async function getServerSideProps(context: Context) {
       },
     };
   }
-
   const { data: dataArticle } = await resArticle.json();
   const {
     userid,
@@ -117,8 +116,9 @@ export async function getServerSideProps(context: Context) {
     comments,
   } = dataArticle;
 
-  const snapUser = await getDoc(doc(db, 'users', userid));
-  if (!snapUser.exists()) {
+  // user 정보
+  const resUser = await fetch(`${getSsrApi(context)}/user?user=${userid}`);
+  if (resUser.status !== 200) {
     return {
       props: {
         status: 'error',
@@ -127,7 +127,9 @@ export async function getServerSideProps(context: Context) {
       },
     };
   }
-  const { name: username } = snapUser.data();
+  const { name: username } = await resUser.json();
+
+  // 완성본
   const article = {
     id: context.query.id,
     userid,

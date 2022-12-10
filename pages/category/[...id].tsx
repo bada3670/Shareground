@@ -2,18 +2,9 @@ import { DocumentData } from 'firebase/firestore';
 import Card from 'components/Card';
 import Paginate from 'components/category/Paginate';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
+import getSsrApi from 'utils/getSsrApi';
 import style from 'styles/pages/category.module.scss';
-
-interface Context {
-  query: {
-    id: string[];
-  };
-  req: {
-    headers: {
-      host: string;
-    };
-  };
-}
+import { Context } from 'utils/typeContext';
 
 interface Datum {
   id: string;
@@ -54,12 +45,9 @@ export default function ({
 export async function getServerSideProps(context: Context) {
   const {
     query: { id },
-    req: { headers },
   } = context;
-  const protocol = process.env.API_PROTOCOL;
-  const host = headers.host;
   const resArticles = await fetch(
-    `${protocol}://${host}/api/articlelist/ca?category=${id[0]}&page=${id[1]}`
+    `${getSsrApi(context)}/articlelist/ca?category=${id[0]}&page=${id[1]}`
   );
   if (resArticles.status !== 200) {
     return {

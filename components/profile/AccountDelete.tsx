@@ -1,7 +1,5 @@
-import { auth, db, storage } from 'fb';
+import { auth } from 'fb';
 import { deleteUser } from 'firebase/auth';
-import { doc, deleteDoc, getDocs, collection, query, where } from 'firebase/firestore';
-import { ref, deleteObject } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
@@ -19,52 +17,37 @@ export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }
     if (!answer) {
       return;
     }
-    if (!userid) {
+    if (!userid || !auth.currentUser) {
       alert('현재 사용자가 없습니다.');
       return;
     }
     setLoading(true);
+    // auth에서 삭제
     try {
-      if (auth.currentUser) {
-        // 계정 삭제
-        await deleteUser(auth.currentUser);
-        // storage에서 사진 삭제
-        // 없어서 삭제를 못하는 경우가 있다.
-        // 그런데 원래대로 하면 아래의 error처리에 걸린다.
-        // 따라서 별도로 try catch를 만들어야 한다.
-        try {
-          // await를 해야 해당 try catch에 걸린다.
-          await deleteObject(ref(storage, `profile/${userid}`));
-        } catch (error) {
-          console.error(error);
-        }
-        // firestore에서 계정 삭제
-        deleteDoc(doc(db, 'users', userid));
-        // 올린 글 삭제
-        const queryMade = query(
-          collection(db, 'articles'),
-          where('userid', '==', userid)
-        );
-        const snapshot = await getDocs(queryMade);
-        snapshot.docs.forEach(async ({ id }) => {
-          deleteDoc(doc(db, 'articles', id));
-        });
-        // redux
-        dispatch(
-          authReducer.actions.changeAll({
-            status: 'failed',
-            id: null,
-            name: null,
-            photo: null,
-          })
-        );
-      }
-      router.push('/');
+      await deleteUser(auth.currentUser);
     } catch (error) {
       console.error(error);
-      alert('죄송합니다. 처리가 되지 않은 부분이 있습니다.');
+      alert('죄송합니다. 계정이 삭제되지 않았습니다.');
       setLoading(false);
     }
+    // firestore user, 사진, 쓴 글 삭제
+    const response = await fetch(`/api/user?user=${userid}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
+      alert('계정 정보가 완전히 삭제되지 않았습니다.');
+    }
+    // redux
+    dispatch(
+      authReducer.actions.changeAll({
+        status: 'failed',
+        id: null,
+        name: null,
+        photo: null,
+      })
+    );
+    // 홈페이지로
+    router.push('/');
   };
 
   return (

@@ -1,6 +1,5 @@
-import { auth, db } from 'fb';
+import { auth } from 'fb';
 import { onAuthStateChanged } from 'firebase/auth';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import authReducer from 'reducers/auth';
@@ -23,11 +22,11 @@ export default function Auth() {
         return;
       }
 
-      // 사용자가 있는 경우
-      const snap = await getDoc(doc(db, 'users', user.uid));
-      if (snap.exists()) {
-        // 로그인
-        const { name, photo } = snap.data();
+      const resGet = await fetch(`/api/user?user=${user.uid}`);
+
+      // 로그인
+      if (resGet.status === 200) {
+        const { name, photo } = await resGet.json();
         dispatch(
           authReducer.actions.changeAll({
             status: 'fetched',
@@ -36,16 +35,26 @@ export default function Auth() {
             photo,
           })
         );
-      } else {
-        // 회원 가입
+        return;
+      }
+
+      // 회원가입
+      if (resGet.status === 404) {
         const defaultPhoto = process.env.NEXT_PUBLIC_USER_PHOTO;
         const { uid, displayName, email, photoURL } = user;
         const name = displayName ? displayName : email?.split('@')[0];
         const photo = photoURL ? photoURL : defaultPhoto;
-        await setDoc(doc(db, 'users', uid), {
-          name,
-          photo,
+        const resPost = await fetch(`/api/user?user=${uid}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, photo }),
         });
+        if (resPost.status !== 201) {
+          alert('죄송합니다. 회원가입이 되지 않았습니다.');
+          return;
+        }
         dispatch(
           authReducer.actions.changeAll({
             status: 'fetched',
@@ -54,7 +63,12 @@ export default function Auth() {
             photo,
           })
         );
+        return;
       }
+
+      // 오류 발생
+      alert('죄송합니다. 문제가 발생해서 처리되지 않았습니다.');
+      return;
     });
   }, []);
 

@@ -33,17 +33,20 @@ export default function Intro() {
       <article
         className={`${style['article']} ${style['from-right']} ${style['many-contents']}`}
       >
-        수많은 콘텐츠를 경험해 보세요!
+        <h1>누구나</h1>
+        <p>누구나 글을 올리고 읽을 수 있습니다!</p>
       </article>
       <article
         className={`${style['article']} ${style['from-left']} ${style['various-forms']}`}
       >
-        영상, pdf, 이미지 등 다양한 종류의 콘텐츠를 제공합니다!
+        <h1>파일</h1>
+        <p>문서, 이미지, 오디오, 영상 등 다양한 파일을 올려보세요!</p>
       </article>
       <article
         className={`${style['article']} ${style['from-right']} ${style['reaction']}`}
       >
-        댓글을 통해 사람들의 반응을 확인하세요!
+        <h1>댓글</h1>
+        <p>댓글을 통해 다른 사람과 의견을 나눠 보세요!</p>
       </article>
     </section>
   );
