@@ -25,7 +25,7 @@ export default function Interest({ articleid, currentUserid, interestPeople }: P
     message: string,
     starType: IconDefinition
   ) => {
-    const resInterest = await fetch(`/api/articlelist/in`, {
+    const resInterest = await fetch(`/api/interest`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

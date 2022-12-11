@@ -24,9 +24,7 @@ export default function Wrote() {
       if (!entry.isIntersecting) {
         return;
       }
-      const resArticles = await fetch(
-        `api/articlelist/wr?user=${userid}&count=${currentNum}`
-      );
+      const resArticles = await fetch(`api/wrote?user=${userid}&count=${currentNum}`);
       if (resArticles.status !== 200) {
         alert('문제가 발생했습니다.');
         setIsEnd(true);

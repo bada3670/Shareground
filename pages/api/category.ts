@@ -16,7 +16,7 @@ async function handleGet(req: Req, res: Res) {
   const { category, page } = req.query;
 
   if (typeof category !== 'string' || typeof page !== 'string') {
-    res.status(400).json({ message: '잘못된 요청입니다.' });
+    res.status(400).json({});
     return;
   }
 
@@ -69,7 +69,7 @@ export default async function (req: Req, res: Res) {
       await handleGet(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: '죄송합니다. 서버에서 에러가 났습니다.' });
+      res.status(500).json({});
     }
   }
 }

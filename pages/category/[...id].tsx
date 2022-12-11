@@ -47,7 +47,7 @@ export async function getServerSideProps(context: Context) {
     query: { id },
   } = context;
   const resArticles = await fetch(
-    `${getSsrApi(context)}/articlelist/ca?category=${id[0]}&page=${id[1]}`
+    `${getSsrApi(context)}/category?category=${id[0]}&page=${id[1]}`
   );
   if (resArticles.status !== 200) {
     return {

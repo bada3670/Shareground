@@ -20,14 +20,14 @@ async function handleGet(req: Req, res: Res) {
   // 글 가져오기
   const snapArticle = await getDoc(doc(db, 'articles', ar));
   if (!snapArticle.exists()) {
-    res.status(404).json({ message: '해당 글이 존재하지 않습니다.' });
+    res.status(404).json({});
     return;
   }
   const { userid } = snapArticle.data();
   // 작성자 정보 가져오기
   const snapWriter = await getDoc(doc(db, 'users', userid));
   if (!snapWriter.exists()) {
-    res.status(404).json({ message: '해당 작성자가 존재하지 않습니다.' });
+    res.status(404).json({});
     return;
   }
   const { name } = snapWriter.data();
@@ -62,7 +62,7 @@ async function handlePost(req: Req, res: Res) {
   // 검색 목록에 추가하기
   const snapShot = await getDoc(doc(db, 'search', 'search'));
   if (!snapShot.exists()) {
-    res.status(404).json({ message: '검색 목록이 존재하지 않습니다.' });
+    res.status(404).json({});
     return;
   }
   const { searchList } = snapShot.data();
