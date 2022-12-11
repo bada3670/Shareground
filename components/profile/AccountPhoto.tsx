@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
 import { ChangeEvent, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/AccountPhoto.module.scss';
 import { LoadStatus } from 'components/profile/Account';
 
@@ -44,7 +46,7 @@ export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus })
       <div className={style['container']}>
         <img src={userphoto} className={style['img']} />
         <button className={style['edit']} disabled={loading} onClick={click$changePhoto}>
-          ✏
+          <FontAwesomeIcon icon={faUpload} />
         </button>
       </div>
       <input

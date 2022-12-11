@@ -7,7 +7,9 @@ import { useRef } from 'react';
 function TitleText() {
   return (
     <>
-      <FontAwesomeIcon icon={faList} className={style['title-narrow']} />
+      <span className={style['title-narrow']}>
+        <FontAwesomeIcon icon={faList} />
+      </span>
       <span className={style['title-wide']}>
         카테고리 <FontAwesomeIcon icon={faAngleDown} />
       </span>
