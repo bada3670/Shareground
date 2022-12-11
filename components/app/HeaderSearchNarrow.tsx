@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import style from 'styles/components/HeaderSearchNarrow.module.scss';
 import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearh';
-import { useRef, forwardRef } from 'react';
+import { useRef, forwardRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
@@ -33,6 +33,7 @@ const ResultComp = forwardRef<Refs, ResultCompProps>(
         className={`${style['result']} ${style['visible']}`}
         ref={reference}
         onClick={click$result}
+        id="results"
       >
         {result.map(({ title, id }, index) => (
           <div key={index}>
@@ -57,6 +58,27 @@ export default function HeaderSearchNarrow({
     refSearch.current?.classList.toggle(style['visible']);
     refResultContainer.current?.classList.toggle(style['visible']);
   };
+
+  useEffect(() => {
+    window.addEventListener('pointerup', (e) => {
+      // closest를 적용하기 위해서 다음과 같이 함
+      const target = e.target as Element;
+      // container도 여기서 처리하면 링크 이동이 안 됨
+      // container가 평소에는 null이기 때문에
+      // 평소에도 target.closest와 refResultContainer가 둘 다 null이므로 같음
+      // 따라서 null이 아니라는 조건 추가
+      if (
+        target.closest('#results') === refResultContainer.current &&
+        refResultContainer.current !== null
+      ) {
+        return;
+      }
+      if (target !== refSearch.current) {
+        refSearch.current?.classList.remove(style['visible']);
+        refResultContainer.current?.classList.remove(style['visible']);
+      }
+    });
+  }, []);
 
   return (
     <div className={style['container']}>
