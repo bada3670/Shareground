@@ -26,7 +26,7 @@ export default function Delete({ articleid, fileRef }: Props) {
   };
 
   return (
-    <button onClick={click$delete} className={style['delete']}>
+    <button onClick={click$delete} className={style['delete']} id="article__delete">
       삭제
     </button>
   );

@@ -4,7 +4,7 @@ import style from 'styles/pages/index.module.scss';
 
 export default function Home() {
   return (
-    <main className={style.home}>
+    <main className={style.home} id="home">
       <Welcome />
       <Intro />
     </main>

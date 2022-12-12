@@ -92,7 +92,7 @@ export default function SignForm() {
   };
 
   return (
-    <section className={style['not-logged-in']}>
+    <section className={style['not-logged-in']} id="sign-form">
       <label htmlFor="email" className={style['label']}>
         이메일
       </label>
@@ -107,7 +107,12 @@ export default function SignForm() {
         className={style['input']}
       />
       <div className={style['buttons']}>
-        <button onClick={click$login} disabled={loading} className={style['log-in']}>
+        <button
+          onClick={click$login}
+          disabled={loading}
+          className={style['log-in']}
+          id="log-in"
+        >
           로그인
         </button>
         <button onClick={click$signup} disabled={loading} className={style['sign-up']}>

@@ -52,15 +52,19 @@ export default function ({ status, message, article }: Props) {
   return (
     <main className={style['content']}>
       <section className={style['section']}>
-        <div>카테고리: {article.category}</div>
+        <div id="article__category">카테고리: {article.category}</div>
         <div>작성일: {article.date}</div>
-        <div>작성자: {article.username}</div>
+        <div id="article__writer">작성자: {article.username}</div>
       </section>
-      <h1 className={style['title']}>{article.title}</h1>
+      <h1 className={style['title']} id="article__title">
+        {article.title}
+      </h1>
       <hr />
-      <p className={style['explanation']}>{article.explanation}</p>
+      <p className={style['explanation']} id="article__explanation">
+        {article.explanation}
+      </p>
       {article.fileURL && (
-        <div className={style['file']}>
+        <div className={style['file']} id="article__file">
           <a href={article.fileURL}>파일 다운로드</a>
         </div>
       )}

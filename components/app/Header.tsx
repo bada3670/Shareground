@@ -9,7 +9,7 @@ import style from 'styles/components/Header.module.scss';
 export default function Header() {
   return (
     <header className={style['header']}>
-      <div className={style['logo']}>
+      <div className={style['logo']} id="header-logo">
         <Link href={'/'}>Shareground</Link>
       </div>
       <div className={style['empty1']}></div>
@@ -18,7 +18,7 @@ export default function Header() {
       <HeaderSearh />
       <div className={style['create']}>
         <Link href={'/create'}>
-          <a>
+          <a id="to-create">
             <FontAwesomeIcon icon={faPen} />
           </a>
         </Link>

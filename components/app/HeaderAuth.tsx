@@ -58,7 +58,7 @@ export default function HeaderAuth() {
 
   if (currentAuthStatus === authStatus.failed) {
     return (
-      <div className={style['container']}>
+      <div className={style['container']} id="to-login">
         <div className={style['icon']}>
           <Link href={'/sign'}>
             <a>
@@ -80,6 +80,7 @@ export default function HeaderAuth() {
           className={style['photo']}
           onPointerDown={pointerdown$photo}
           onMouseEnter={mouseenter$photo}
+          id="to-profile"
         >
           <img
             src={userphoto}
@@ -94,7 +95,9 @@ export default function HeaderAuth() {
           onClick={click$logincontent}
         >
           <div className={style['logout-button']}>
-            <button onClick={click$logout}>로그아웃</button>
+            <button onClick={click$logout} id="log-out">
+              로그아웃
+            </button>
           </div>
           <div className={style['to-profile']}>
             <Link href={'/profile'}>프로필</Link>

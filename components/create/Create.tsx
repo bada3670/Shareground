@@ -92,8 +92,8 @@ export default function Create({ userid }: { userid: string }) {
     <>
       <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
         <section className={style['select']}>
-          <label htmlFor="category">카테고리:</label>
-          <select id="category" {...register('category')}>
+          <label htmlFor="create__category">카테고리:</label>
+          <select id="create__category" {...register('category')}>
             <option value="">선택하세요.</option>
             <option value="society">사회</option>
             <option value="science">과학•기술</option>
@@ -105,16 +105,24 @@ export default function Create({ userid }: { userid: string }) {
           {...register('title')}
           placeholder={'제목을 입력하세요.'}
           className={style['title']}
+          id="create__title"
         />
         <textarea
           {...register('explanation')}
           placeholder={'설명을 입력하세요.'}
           className={style['explanation']}
+          id="create__explanation"
         ></textarea>
         <input type={'submit'} hidden ref={refSubmit} />
       </form>
       <section className={style['file']}>
-        <input type={'file'} hidden onChange={change$file} ref={refFile} />
+        <input
+          type={'file'}
+          hidden
+          onChange={change$file}
+          ref={refFile}
+          id="create__file"
+        />
         <button onClick={click$file} disabled={loading}>
           파일 업로드
         </button>
@@ -124,7 +132,7 @@ export default function Create({ userid }: { userid: string }) {
         <button onClick={click$cancel} disabled={loading}>
           취소
         </button>
-        <button onClick={click$submit} disabled={loading}>
+        <button onClick={click$submit} disabled={loading} id="create__submit">
           제출
         </button>
       </section>

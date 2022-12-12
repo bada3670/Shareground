@@ -45,13 +45,26 @@ export default function HeaderCategory() {
   };
 
   return (
-    <div className={style['container']} onMouseLeave={mouseleave$container}>
+    <div
+      className={style['container']}
+      onMouseLeave={mouseleave$container}
+      id="category-menu"
+    >
       <div className={style['title']}>
-        <button onPointerDown={pointerdown$title} onMouseEnter={mouseenter$title}>
+        <button
+          onPointerDown={pointerdown$title}
+          onMouseEnter={mouseenter$title}
+          id="category-menu__button"
+        >
           <TitleText />
         </button>
       </div>
-      <div className={style['categories']} ref={refCategories} onClick={click$categories}>
+      <div
+        className={style['categories']}
+        ref={refCategories}
+        onClick={click$categories}
+        id="category-menu__result"
+      >
         <div>
           <Link href={'/category/society/1'}>사회</Link>
         </div>

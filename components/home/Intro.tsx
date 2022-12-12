@@ -27,7 +27,7 @@ export default function Intro() {
   }, []);
 
   return (
-    <section className={style.section} ref={$section}>
+    <section className={style.section} ref={$section} id="intro">
       <article
         className={`${style['article']} ${style['from-right']} ${style['many-contents']}`}
       >

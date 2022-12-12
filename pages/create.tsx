@@ -13,7 +13,7 @@ export default function profile() {
 
   if (currentAuthStatus === authStatus.failed) {
     return (
-      <main className={style['not-confirmed']}>
+      <main className={style['not-confirmed']} id="cannot-create">
         로그인을 하셔서 원하는 글을 작성해 보세요!
       </main>
     );

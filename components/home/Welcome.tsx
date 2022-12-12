@@ -2,7 +2,7 @@ import style from 'styles/components/Welcome.module.scss';
 
 export default function Welcome() {
   return (
-    <section className={style.section}>
+    <section className={style.section} id="welcome">
       <div className={style.carousel}>
         <img src={'/배경.jpg'} className={style.item} />
         <img src={'/배경.jpg'} className={style.item} />
