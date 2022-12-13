@@ -36,9 +36,12 @@ export default function Card({ datum }: { datum: Datum }) {
     <article
       className={`${style['card']} ${style[fileTypeForBorder]}`}
       onClick={click$article}
+      id="article-card"
     >
       <div className={style['file-type']}>{fileType ?? '파일 없음'}</div>
-      <div className={style['title']}>{title}</div>
+      <div className={style['title']} id="article-card__title">
+        {title}
+      </div>
       <div className={style['others']}>
         {category}, {username}, {dateNumToStr(date)}
       </div>

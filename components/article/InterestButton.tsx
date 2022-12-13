@@ -57,7 +57,12 @@ export default function Interest({ articleid, currentUserid, interestPeople }: P
 
   return (
     <section className={style['section']}>
-      <button onClick={click$button} disabled={loading} className={style['button']}>
+      <button
+        onClick={click$button}
+        disabled={loading}
+        className={style['button']}
+        id="article__interest-button"
+      >
         <FontAwesomeIcon icon={star} />
       </button>
     </section>

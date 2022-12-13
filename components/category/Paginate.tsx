@@ -17,7 +17,7 @@ export default function Paginate({ category, pageCount, initialPage }: Props) {
   };
 
   return (
-    <div className={style['container']}>
+    <div className={style['container']} id="category-page__paginate">
       <ReactPaginate
         nextLabel=">"
         onPageChange={handlePageClick}

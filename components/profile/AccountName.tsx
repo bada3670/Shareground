@@ -55,11 +55,14 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
 
   return (
     <section className={style.section} ref={refNameSection}>
-      <div className={style.text}>{username}</div>
+      <div className={style.text} id="profile-name">
+        {username}
+      </div>
       <button
         className={`${style['edit']} ${style['button']}`}
         onClick={click$edit}
         disabled={loading}
+        id="profile-name__to-edit"
       >
         수정
       </button>
@@ -68,6 +71,7 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
         className={style.input}
         ref={refInputName}
         defaultValue={username}
+        id="profile-name__edit-input"
       />
       <button
         className={`${style['cancel']} ${style['button']}`}
@@ -80,6 +84,7 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
         className={`${style['confirm']} ${style['button']}`}
         onClick={click$confirm}
         disabled={loading}
+        id="profile-name__edit-confirm"
       >
         확인
       </button>

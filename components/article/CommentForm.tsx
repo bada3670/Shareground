@@ -43,13 +43,23 @@ export default function CommentForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
-      <input type={'text'} {...register('content')} className={style['content']} />
+    <form
+      onSubmit={handleSubmit(submit$form)}
+      className={style['form']}
+      id="comment-form"
+    >
+      <input
+        type={'text'}
+        {...register('content')}
+        className={style['content']}
+        id="comment-form__content"
+      />
       <input
         type={'submit'}
         disabled={loading}
         className={style['submit']}
         value={'전송'}
+        id="comment-form__submit"
       />
     </form>
   );

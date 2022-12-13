@@ -52,7 +52,12 @@ export default function AccountDelete({ loadStatus }: { loadStatus: LoadStatus }
 
   return (
     <section className={style['section']}>
-      <button onClick={click$delete} disabled={loading} className={style['button']}>
+      <button
+        onClick={click$delete}
+        disabled={loading}
+        className={style['button']}
+        id="delete-account-button"
+      >
         탈퇴
       </button>
     </section>

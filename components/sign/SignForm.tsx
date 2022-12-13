@@ -115,7 +115,12 @@ export default function SignForm() {
         >
           로그인
         </button>
-        <button onClick={click$signup} disabled={loading} className={style['sign-up']}>
+        <button
+          onClick={click$signup}
+          disabled={loading}
+          className={style['sign-up']}
+          id="sign-up-button"
+        >
           회원가입
         </button>
       </div>

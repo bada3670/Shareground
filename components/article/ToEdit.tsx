@@ -9,7 +9,7 @@ export default function ToEdit({ articleid }: { articleid: string }) {
   };
 
   return (
-    <button onClick={click$edit} className={style['to-edit']}>
+    <button onClick={click$edit} className={style['to-edit']} id="article__to-edit">
       수정
     </button>
   );

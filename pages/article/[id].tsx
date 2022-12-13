@@ -53,7 +53,7 @@ export default function ({ status, message, article }: Props) {
     <main className={style['content']}>
       <section className={style['section']}>
         <div id="article__category">카테고리: {article.category}</div>
-        <div>작성일: {article.date}</div>
+        <div id="article__date">작성일: {article.date}</div>
         <div id="article__writer">작성자: {article.username}</div>
       </section>
       <h1 className={style['title']} id="article__title">
@@ -81,7 +81,9 @@ export default function ({ status, message, article }: Props) {
           interestPeople={article.interestPeople}
         />
       )}
-      <h2 className={style['comment-title']}>댓글</h2>
+      <h2 className={style['comment-title']} id="article__comment-title">
+        댓글
+      </h2>
       {currentUserid && <CommentForm writerid={currentUserid} articleid={article.id} />}
       <Comments
         articleid={article.id}

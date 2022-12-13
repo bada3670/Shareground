@@ -25,7 +25,12 @@ function ResultComp({ click$result, result }: ResultCompProps) {
   }, []);
 
   return (
-    <div className={style['result']} ref={refResultContainer} onClick={click$result}>
+    <div
+      className={style['result']}
+      ref={refResultContainer}
+      onClick={click$result}
+      id="search-wide-result"
+    >
       {result.map(({ title, id }, index) => (
         <div key={index}>
           <Link href={`/article/${id}`}>{title}</Link>
@@ -49,6 +54,7 @@ export default function HeaderSearchWide({
         placeholder={'원하시는 콘텐츠의 제목을 입력하세요.'}
         onChange={change$search}
         value={searchValue}
+        id="search-wide-input"
       />
       {searchValue === '' ? (
         <></>

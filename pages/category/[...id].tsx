@@ -32,7 +32,9 @@ export default function ({
 
   return (
     <main className={style['main']}>
-      <h1 className={style['category']}>{categoryEngToKor(category)}</h1>
+      <h1 className={style['category']} id="category-page__title">
+        {categoryEngToKor(category)}
+      </h1>
       {data.map((datum, index) => {
         return <Card datum={datum} key={index} />;
       })}

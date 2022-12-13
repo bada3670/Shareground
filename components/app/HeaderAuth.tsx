@@ -100,7 +100,9 @@ export default function HeaderAuth() {
             </button>
           </div>
           <div className={style['to-profile']}>
-            <Link href={'/profile'}>프로필</Link>
+            <Link href={'/profile'}>
+              <a id="to-profile-button">프로필</a>
+            </Link>
           </div>
         </div>
       </div>

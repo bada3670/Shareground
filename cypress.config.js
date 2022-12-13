@@ -5,8 +5,8 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {},
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}',
     baseUrl: 'http://localhost:3000/',
-    defaultCommandTimeout: 40000,
-    pageLoadTimeout: 40000,
+    defaultCommandTimeout: 60000,
+    pageLoadTimeout: 60000,
     screenshotOnRunFailure: true,
     video: false,
     viewportHeight: 1080,
@@ -16,5 +16,10 @@ module.exports = defineConfig({
       openMode: 0,
     },
     supportFile: false,
+    env: {
+      screenTiny: 473,
+      screenSmall: 640,
+      screenMedium: 768,
+    },
   },
 });

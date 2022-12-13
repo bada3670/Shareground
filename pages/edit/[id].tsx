@@ -15,12 +15,12 @@ export default function () {
   useEffect(() => {
     (async () => {
       if (router.query.id && typeof router.query.id !== 'object') {
-        const resArticle = await fetch(`/api/articles?doc=${router.query.id}`);
+        const resArticle = await fetch(`/api/articles?ar=${router.query.id}`);
         if (resArticle.status !== 200) {
           setArticle(null);
         } else {
-          const { data: dataArticle } = await resArticle.json();
-          setArticle(dataArticle);
+          const data = await resArticle.json();
+          setArticle(data);
           setArticleid(router.query.id);
         }
       }
@@ -37,7 +37,9 @@ export default function () {
 
   if (article.userid !== authState.id) {
     return (
-      <main className={style['not-confirmed']}>작성자만 글을 수정할 수 있습니다.</main>
+      <main className={style['not-confirmed']} id="edit-page__no-author">
+        작성자만 글을 수정할 수 있습니다.
+      </main>
     );
   }
 

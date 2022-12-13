@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
-it('asdf', () => {});
+it('initialize', () => {
+  cy.visit('/');
+});
 
 export {};

@@ -76,7 +76,12 @@ async function handleDelete(req: Req, res: Res) {
     res.status(400).json({});
     return;
   }
-  await deleteObject(ref(storage, `profile/${user}`));
+  // 사진이 없을 수도 있으므로 try catch
+  try {
+    await deleteObject(ref(storage, `profile/${user}`));
+  } catch (error) {
+    console.error(error);
+  }
   await deleteDoc(doc(db, 'users', user));
   const queryMade = query(collection(db, 'articles'), where('userid', '==', user));
   const snapshot = await getDocs(queryMade);

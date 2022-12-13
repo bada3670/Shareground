@@ -33,7 +33,7 @@ const ResultComp = forwardRef<Refs, ResultCompProps>(
         className={`${style['result']} ${style['visible']}`}
         ref={reference}
         onClick={click$result}
-        id="results"
+        id="search-narrow__result"
       >
         {result.map(({ title, id }, index) => (
           <div key={index}>
@@ -61,14 +61,18 @@ export default function HeaderSearchNarrow({
 
   useEffect(() => {
     window.addEventListener('pointerup', (e) => {
-      // closest를 적용하기 위해서 다음과 같이 함
-      const target = e.target as Element;
       // container도 여기서 처리하면 링크 이동이 안 됨
+
+      // closest를 적용하기 위해서 다음과 같이 함
+      const { target } = e;
+      if (!(target instanceof Element)) {
+        return;
+      }
       // container가 평소에는 null이기 때문에
       // 평소에도 target.closest와 refResultContainer가 둘 다 null이므로 같음
       // 따라서 null이 아니라는 조건 추가
       if (
-        target.closest('#results') === refResultContainer.current &&
+        target.closest('#search-narrow__result') === refResultContainer.current &&
         refResultContainer.current !== null
       ) {
         return;
@@ -82,7 +86,11 @@ export default function HeaderSearchNarrow({
 
   return (
     <div className={style['container']}>
-      <button className={style['button']} onClick={click$button}>
+      <button
+        className={style['button']}
+        onClick={click$button}
+        id="search-narrow__button"
+      >
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </button>
       <input
@@ -92,6 +100,7 @@ export default function HeaderSearchNarrow({
         onChange={change$search}
         value={searchValue}
         ref={refSearch}
+        id="search-narrow__input"
       />
       {searchValue === '' ? (
         <></>

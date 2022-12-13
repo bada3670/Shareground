@@ -96,7 +96,7 @@ export default function Create({ userid }: { userid: string }) {
           <select id="create__category" {...register('category')}>
             <option value="">선택하세요.</option>
             <option value="society">사회</option>
-            <option value="science">과학•기술</option>
+            <option value="science">과학기술</option>
             <option value="culture">문화</option>
           </select>
         </section>

@@ -89,10 +89,10 @@ export default function Edit({ data, articleid }: Props) {
     <>
       <form onSubmit={handleSubmit(submit$edit)} className={style['form']}>
         <section className={style['select']}>
-          <label htmlFor="category">카테고리</label>
-          <select id="category" {...register('category')} defaultValue={category}>
+          <label htmlFor="edit__category">카테고리</label>
+          <select {...register('category')} defaultValue={category} id="edit__category">
             <option value="society">사회</option>
-            <option value="science">과학•기술</option>
+            <option value="science">과학기술</option>
             <option value="culture">문화</option>
           </select>
         </section>
@@ -101,16 +101,24 @@ export default function Edit({ data, articleid }: Props) {
           {...register('title')}
           defaultValue={title}
           className={style['title']}
+          id="edit__title"
         />
         <textarea
           {...register('explanation')}
           defaultValue={explanation}
           className={style['explanation']}
+          id="edit__explanation"
         ></textarea>
         <input type={'submit'} hidden ref={refSubmit} />
       </form>
       <section className={style['file']}>
-        <input type={'file'} hidden onChange={change$file} ref={refFile} />
+        <input
+          type={'file'}
+          hidden
+          onChange={change$file}
+          ref={refFile}
+          id="edit__file"
+        />
         <button onClick={click$file} disabled={loading}>
           파일 업로드
         </button>
@@ -120,7 +128,7 @@ export default function Edit({ data, articleid }: Props) {
         <button onClick={click$cancel} disabled={loading}>
           취소
         </button>
-        <button onClick={click$submit} disabled={loading}>
+        <button onClick={click$submit} disabled={loading} id="edit__submit">
           수정
         </button>
       </section>

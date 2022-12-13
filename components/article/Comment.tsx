@@ -61,18 +61,20 @@ export default function Comment({
   }
 
   return (
-    <article className={style['comment']}>
+    <article className={style['comment']} id="comment__whole">
       <div className={style['meta']}>
         <div className={style['writer-photo']}>
           <img src={writerData.writerphoto} />
         </div>
-        <div className={style['writer-name']}>{writerData.writername}</div>
+        <div className={style['writer-name']} id="comment__writer">
+          {writerData.writername}
+        </div>
         <div>{dateNumtoStr(date)}</div>
       </div>
-      <div>{content}</div>
+      <div id="comment__content">{content}</div>
       {writerid === currentUserid && (
         <div className={style['delete']}>
-          <button onClick={click$delete} disabled={loading}>
+          <button onClick={click$delete} disabled={loading} id="comment__delete">
             삭제
           </button>
         </div>

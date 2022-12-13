@@ -14,20 +14,20 @@ import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
 async function handleGet(req: Req, res: Res) {
   const { ar } = req.query;
   if (typeof ar !== 'string') {
-    res.status(400).json({});
+    res.status(400).json({ e: 1 });
     return;
   }
   // 글 가져오기
   const snapArticle = await getDoc(doc(db, 'articles', ar));
   if (!snapArticle.exists()) {
-    res.status(404).json({});
+    res.status(404).json({ e: 2 });
     return;
   }
   const { userid } = snapArticle.data();
   // 작성자 정보 가져오기
   const snapWriter = await getDoc(doc(db, 'users', userid));
   if (!snapWriter.exists()) {
-    res.status(404).json({});
+    res.status(404).json({ e: 3 });
     return;
   }
   const { name } = snapWriter.data();
@@ -66,7 +66,7 @@ async function handlePost(req: Req, res: Res) {
     return;
   }
   const { searchList } = snapShot.data();
-  const searchListLimit = 10;
+  const searchListLimit = 500;
   const searchListLength = searchList.length;
   const searchListMargin = searchListLength + 1 - searchListLimit;
   let newSearchList;

@@ -23,15 +23,21 @@ function Exist() {
         <button
           onClick={() => setCategory('account')}
           className={style[isChosen('account')]}
+          id="profile-button__account"
         >
           계정
         </button>
-        <button onClick={() => setCategory('wrote')} className={style[isChosen('wrote')]}>
+        <button
+          onClick={() => setCategory('wrote')}
+          className={style[isChosen('wrote')]}
+          id="profile-button__wrote"
+        >
           작성
         </button>
         <button
           onClick={() => setCategory('interest')}
           className={style[isChosen('interest')]}
+          id="profile-button__interest"
         >
           관심
         </button>

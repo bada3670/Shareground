@@ -7,7 +7,7 @@ import { useRef } from 'react';
 function TitleText() {
   return (
     <>
-      <span className={style['title-narrow']}>
+      <span className={style['title-narrow']} id="category-narrow__button">
         <FontAwesomeIcon icon={faList} />
       </span>
       <span className={style['title-wide']}>
@@ -69,7 +69,7 @@ export default function HeaderCategory() {
           <Link href={'/category/society/1'}>사회</Link>
         </div>
         <div>
-          <Link href={'/category/science/1'}>과학•기술</Link>
+          <Link href={'/category/science/1'}>과학기술</Link>
         </div>
         <div>
           <Link href={'/category/culture/1'}>문화</Link>
