@@ -1,8 +1,11 @@
 /// <reference types="cypress" />
 import { login, logout } from 'cypress/support/sign';
-const changedName = 'asdfasdf';
+import { mockName, mockGet, mockNamePut } from 'cypress/support/mock-user';
 
 it('프로필 이름 바꿨다가 원래대로 돌리기', () => {
+  // mocking
+  mockNamePut();
+  mockGet();
   // 로그인하기
   login('asdf@gmail.com', 'asdf1234');
   // 프로필에서 확인하기
@@ -11,16 +14,9 @@ it('프로필 이름 바꿨다가 원래대로 돌리기', () => {
   cy.get('#profile-name').invoke('text').as('originalName');
   // 이름 바꾸기
   cy.get('#profile-name__to-edit').click();
-  cy.get('#profile-name__edit-input').clear().type(changedName);
+  cy.get('#profile-name__edit-input').clear().type(mockName);
   cy.get('#profile-name__edit-confirm').click();
-  cy.get('#profile-name').should('have.text', changedName);
-  // 원래로 돌리기
-  cy.get('#profile-name__to-edit').click();
-  cy.get('@originalName').then((originalName: any) => {
-    cy.get('#profile-name__edit-input').clear().type(originalName);
-    cy.get('#profile-name__edit-confirm').click();
-    cy.get('#profile-name').should('have.text', originalName);
-  });
+  cy.get('#profile-name').should('have.text', mockName);
   // 로그아웃하기
   logout();
 });

@@ -20,6 +20,7 @@ module.exports = defineConfig({
       screenTiny: 473,
       screenSmall: 640,
       screenMedium: 768,
+      defaultProfilePhoto: process.env.NEXT_PUBLIC_USER_PHOTO,
     },
   },
 });
