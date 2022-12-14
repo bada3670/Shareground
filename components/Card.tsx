@@ -3,6 +3,7 @@ import dateNumToStr from 'utils/dateNumToStr';
 import style from 'styles/components/Card.module.scss';
 import { useRouter } from 'next/router';
 import { extAud, extDoc, extImg, extVid } from 'utils/fileExtension';
+import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 
 interface Datum {
   id: string;
@@ -10,7 +11,7 @@ interface Datum {
 }
 
 export default function Card({ datum }: { datum: Datum }) {
-  const { fileType, title, category, username, date } = datum.info;
+  const { fileType, title, category, date } = datum.info;
   const router = useRouter();
 
   let fileTypeForBorder = 'default';
@@ -43,7 +44,7 @@ export default function Card({ datum }: { datum: Datum }) {
         {title}
       </div>
       <div className={style['others']}>
-        {category}, {username}, {dateNumToStr(date)}
+        {categoryEngToKor(category)}, {dateNumToStr(date)}
       </div>
     </article>
   );
