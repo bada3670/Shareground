@@ -46,11 +46,11 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
     });
     if (response.status !== 204) {
       alert('수정이 되지 않았습니다.');
-      setLoading(false);
-      return;
+    } else {
+      dispatch(authReducer.actions.changeName({ name: $inputName.value }));
+      refNameSection.current?.classList.remove(style['edit-mode']);
     }
-    dispatch(authReducer.actions.changeName({ name: $inputName.value }));
-    location.reload();
+    setLoading(false);
   };
 
   return (
