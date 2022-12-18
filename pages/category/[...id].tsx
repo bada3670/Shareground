@@ -15,14 +15,14 @@ export default function ({
   category,
   data,
   pageCount,
-  initialPage,
+  currentPage,
 }: {
   category: string;
   data: Datum[] | string;
   pageCount: number | null;
-  initialPage: number | null;
+  currentPage: number | null;
 }) {
-  if (typeof data === 'string' || pageCount === null || initialPage === null) {
+  if (typeof data === 'string' || pageCount === null || currentPage === null) {
     return (
       <section className={style['error']}>
         죄송합니다. 자료를 가져오지 못했습니다.
@@ -38,7 +38,7 @@ export default function ({
       {data.map((datum, index) => {
         return <Card datum={datum} key={index} />;
       })}
-      <Paginate category={category} pageCount={pageCount} initialPage={initialPage} />
+      <Paginate category={category} pageCount={pageCount} currentPage={currentPage} />
     </main>
   );
 }
@@ -57,7 +57,7 @@ export async function getServerSideProps(context: Context) {
         category: id[0],
         data: '죄송합니다. 문제가 발생했습니다.',
         pageCount: null,
-        initialPage: null,
+        currentPage: null,
       },
     };
   }
@@ -67,7 +67,7 @@ export async function getServerSideProps(context: Context) {
       category: id[0],
       data,
       pageCount,
-      initialPage: parseInt(id[1]),
+      currentPage: parseInt(id[1]),
     },
   };
 }

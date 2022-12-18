@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faList } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/HeaderCategory.module.scss';
@@ -65,13 +66,13 @@ export default function HeaderCategory() {
         id="category-menu__result"
       >
         <div>
-          <a href={'/category/society/1'}>사회</a>
+          <Link href={'/category/society/1'}>사회</Link>
         </div>
         <div>
-          <a href={'/category/science/1'}>과학기술</a>
+          <Link href={'/category/science/1'}>과학기술</Link>
         </div>
         <div>
-          <a href={'/category/culture/1'}>문화</a>
+          <Link href={'/category/culture/1'}>문화</Link>
         </div>
       </div>
     </div>
