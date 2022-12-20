@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 import { login, logout } from 'cypress/support/sign';
 import goToProfile from 'cypress/support/to-profile';
+// 글 id
+const articleid = 'Nu4h5ria8LcvVVXOZgeQ';
 // 원래 내용
 const original_category = '문화';
 const original_title = '문화 1';
@@ -14,7 +16,7 @@ const changed_file = 'cypress/fixtures/blue.jpg';
 
 describe('로그아웃', () => {
   it('쓸 수 없다는 메시지', () => {
-    cy.visit('/edit/zSfNpmAgYXlXL3rEb2iq');
+    cy.visit(`/edit/${articleid}`);
     cy.get('#edit-page__no-author').should('exist');
     cy.visit('/');
   });
@@ -23,7 +25,7 @@ describe('로그아웃', () => {
 describe('로그인', () => {
   beforeEach(() => {
     login('asdf@gmail.com', 'asdf1234');
-    cy.visit('/article/zSfNpmAgYXlXL3rEb2iq');
+    cy.visit(`/article/${articleid}`);
     cy.get('#article__to-edit').click();
   });
   afterEach(() => {

@@ -85,8 +85,12 @@ async function handleDelete(req: Req, res: Res) {
   await deleteDoc(doc(db, 'users', user));
   const queryMade = query(collection(db, 'articles'), where('userid', '==', user));
   const snapshot = await getDocs(queryMade);
-  snapshot.docs.forEach(async ({ id }) => {
-    deleteDoc(doc(db, 'articles', id));
+  snapshot.docs.forEach(async (eachDoc) => {
+    const { fileRef } = eachDoc.data();
+    if (fileRef) {
+      await deleteObject(ref(storage, `article-file/${fileRef}`));
+    }
+    deleteDoc(doc(db, 'articles', eachDoc.id));
   });
   res.status(204).json({});
 }
