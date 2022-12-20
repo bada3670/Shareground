@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.2.1",
@@ -33,6 +34,7 @@
     "@types/uuid": "^8.3.4",
     "cypress": "^10.11.0",
     "msw": "^0.49.2",
-    "sass": "^1.56.1"
+    "sass": "^1.56.1",
+    "husky": "^8.0.0"
   }
 }
