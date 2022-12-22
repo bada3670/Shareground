@@ -1,7 +1,7 @@
 @use '../layout.scss';
 
-$img-width: 4000px;
-$img-height: 400px;
+$img-width: 2000px;
+$img-height: 500px;
 
 @keyframes moving {
   0% {
@@ -20,7 +20,7 @@ $img-height: 400px;
 .carousel {
   display: flex;
   width: calc(2 * $img-width);
-  animation: moving 35s linear infinite;
+  animation: moving 30s linear infinite;
 
   .item {
     width: $img-width;

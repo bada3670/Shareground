@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Shareground</title>
+        <title>ShareGround</title>
         <link rel="icon" href="/favicon.jpg" />
       </Head>
       <div>

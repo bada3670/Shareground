@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <header className={style['header']}>
       <div className={style['logo']} id="header-logo">
-        <Link href={'/'}>Shareground</Link>
+        <Link href={'/'}>ShareGround</Link>
       </div>
       <div className={style['empty1']}></div>
       <HeaderCategory />
