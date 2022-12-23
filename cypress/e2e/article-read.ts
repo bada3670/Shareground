@@ -1,9 +1,14 @@
 /// <reference types="cypress" />
 import { login, logout } from 'cypress/support/sign';
+import mockArticles from 'data/article';
+import mockAccounts from 'data/account';
+const articleid = mockArticles[0].id;
+const writerid = mockArticles[0].userid;
+const writerAccount = mockAccounts.find((mockAccount) => mockAccount.id === writerid);
 
 describe('로그인을 하지 않은 경우', () => {
   before(() => {
-    cy.visit('/article/9mDSqenHRWNZTvCvsSew');
+    cy.visit(`/article/${articleid}`);
   });
 
   it('구성 요소가 있는지 확인', () => {
@@ -12,7 +17,6 @@ describe('로그인을 하지 않은 경우', () => {
     cy.get('#article__writer').should('exist');
     cy.get('#article__title').should('exist');
     cy.get('#article__explanation').should('exist');
-    cy.get('#article__file').should('exist');
     cy.get('#article__comment-title').should('exist');
     cy.get('#comment__whole').should('exist');
   });
@@ -20,8 +24,11 @@ describe('로그인을 하지 않은 경우', () => {
 
 describe('로그인을 한 경우', () => {
   before(() => {
-    login('asdf@gmail.com', 'asdf1234');
-    cy.visit('/article/9mDSqenHRWNZTvCvsSew');
+    if (writerAccount) {
+      const { email, password } = writerAccount;
+      login(email, password);
+    }
+    cy.visit(`/article/${articleid}`);
   });
   after(() => {
     logout();

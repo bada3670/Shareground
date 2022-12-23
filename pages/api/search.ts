@@ -1,15 +1,8 @@
-import { db } from 'fb';
-import { doc, getDoc } from 'firebase/firestore';
 import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
+import mockSearchList from 'data/searchList';
 
 async function handleGet(req: Req, res: Res) {
-  const snapShot = await getDoc(doc(db, 'search', 'search'));
-  if (!snapShot.exists()) {
-    res.status(404).json({});
-    return;
-  }
-  const { searchList } = snapShot.data();
-  res.status(200).json({ searchList });
+  res.status(200).json({ searchList: mockSearchList });
 }
 
 //////////////////////////////////////////////////////
