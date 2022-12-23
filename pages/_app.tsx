@@ -1,5 +1,6 @@
 import 'styles/globals.css';
 import type { AppProps } from 'next/app';
+import MSW from 'components/app/MSW';
 import Auth from 'components/app/Auth';
 import Search from 'components/app/Search';
 import Head from 'next/head';
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.jpg" />
       </Head>
       <div>
+        <MSW />
         <Provider store={store}>
           <Auth />
           <Search />

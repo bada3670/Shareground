@@ -1,10 +1,11 @@
 /// <reference types="cypress" />
 import { login, logout } from 'cypress/support/sign';
+import mockAccounts from 'data/account';
 const changedName = 'asdfasdf';
 
 it('프로필 이름 바꿨다가 원래대로 돌리기', () => {
   // 로그인하기
-  login('asdf@gmail.com', 'asdf1234');
+  login(mockAccounts[0].email, mockAccounts[0].password);
   // 프로필에서 확인하기
   cy.visit('/profile');
   // 현재 이름 가져오기
