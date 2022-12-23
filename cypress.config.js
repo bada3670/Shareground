@@ -22,5 +22,9 @@ module.exports = defineConfig({
       screenMedium: 768,
       defaultProfilePhoto: process.env.NEXT_PUBLIC_USER_PHOTO,
     },
+    reporter: 'cypress-multi-reporters',
+    reporterOptions: {
+      configFile: 'reporter-config.json',
+    },
   },
 });

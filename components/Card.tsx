@@ -43,7 +43,7 @@ export default function Card({ datum }: { datum: Datum }) {
       <div className={style['title']} id="article-card__title">
         {title}
       </div>
-      <div className={style['others']}>
+      <div className={style['others']} id="article-card__others">
         {categoryEngToKor(category)}, {dateNumToStr(date)}
       </div>
     </article>

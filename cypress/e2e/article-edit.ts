@@ -34,6 +34,8 @@ describe('로그인', () => {
   });
 
   it('원래 -> 변형', () => {
+    // 작성 전에 기존에 글이 남아 있는지 확인
+    cy.get('#edit__title').should('have.value', original_title);
     // 작성
     cy.get('#edit__category').select(changed_category, { force: true });
     cy.get('#edit__title').clear().type(changed_title);
