@@ -50,7 +50,7 @@ Warning: Prop `className` did not match. Server: "sc-bqWxrE dFiDCh" Client: "sc-
 
 Firebase의 currentUser로 사용하면 정보를 가져오는데 시간이 걸리기 때문에 이를 사용했습니다.
 
-context api를 사용하면 다음과 같은 문제가 생기기 때문에 이를 사용했습니다.
+Context API를 사용하면 다음과 같은 문제가 생기기 때문에 이를 사용했습니다.
 
 - 다른 reducer(또는 context)가 들어오면 태그 네스팅이 일어납니다.
 
@@ -63,6 +63,14 @@ context api를 사용하면 다음과 같은 문제가 생기기 때문에 이�
 Vitest나 Jest와 같은 unit 테스팅 툴은 제가 원하는 테스팅을 하기에는 기능이 부족하다고 생각했습니다.
 
 React Testing Library도 배워 보았지만 복잡하기도 했고, 여전히 화면을 보지 않고 한다는 측면이 답답했습니다.
+
+### Mochawesome
+
+Mochawesome을 통해 테스팅에 대한 리포트가 자동으로 작성되게 하였습니다.
+
+Mochawesome을 통해 만들어진 테스트는 해당 페이지에 있습니다.
+
+https://bada3670.github.io/ShareGround/mochawesome/report.html
 
 ## 기술적 측면에서의 기능
 
