@@ -26,6 +26,12 @@ it('카테고리 hover해서 이동하기', () => {
   cy.visit('/');
 });
 
+it('카테고리 키보드로 이동하기', () => {
+  cy.get('#category-menu__result').should('have.css', 'display', 'none');
+  cy.get('#category-menu__button').focus().type('{enter}');
+  cy.get('#category-menu__result').should('not.have.css', 'display', 'none');
+});
+
 it('작성 페이지로 이동', () => {
   cy.get('#to-create').click();
   cy.url().should('contain', 'create');
@@ -39,13 +45,15 @@ it('로그인 페이지로 이동', () => {
 });
 
 it('screen-medium 이하이면 검색창 사라지고 검색 버튼 생김', () => {
+  cy.get('#search-narrow__container').should('have.css', 'display', 'none');
   cy.viewport(Cypress.env('screenMedium') - 1, 1000);
-  cy.get('#search-narrow__button').should('exist');
+  cy.get('#search-narrow__container').should('not.have.css', 'display', 'none');
 });
 
 it('screen-tiny 이하이면 카테고리 줄어듬', () => {
+  cy.get('#category-narrow__button').should('have.css', 'display', 'none');
   cy.viewport(Cypress.env('screenTiny') - 1, 500);
-  cy.get('#category-narrow__button').should('exist');
+  cy.get('#category-narrow__button').should('not.have.css', 'display', 'none');
 });
 
 export {};

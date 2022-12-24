@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faList } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/HeaderCategory.module.scss';
-import { useRef } from 'react';
+import { KeyboardEventHandler, useRef } from 'react';
 
 function TitleText() {
   return (
@@ -22,6 +22,12 @@ export default function HeaderCategory() {
 
   const pointerdown$title = () => {
     if (refCategories.current) {
+      refCategories.current.classList.toggle(style['visible']);
+    }
+  };
+
+  const keydown$title: KeyboardEventHandler = (e) => {
+    if (e.key === 'Enter' && refCategories.current) {
       refCategories.current.classList.toggle(style['visible']);
     }
   };
@@ -54,6 +60,7 @@ export default function HeaderCategory() {
         <button
           onPointerDown={pointerdown$title}
           onMouseEnter={mouseenter$title}
+          onKeyDown={keydown$title}
           id="category-menu__button"
         >
           <TitleText />

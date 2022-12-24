@@ -85,7 +85,7 @@ export default function HeaderSearchNarrow({
   }, []);
 
   return (
-    <div className={style['container']}>
+    <div className={style['container']} id="search-narrow__container">
       <button
         className={style['button']}
         onClick={click$button}
