@@ -18,7 +18,7 @@ export default function Interest({ articleid, currentUserid, interestPeople }: P
     if (interestPeople.includes(currentUserid)) {
       setStar(solidStar);
     }
-  });
+  }, []);
 
   const changeFirebase = async (
     newInterestPeople: string[],
