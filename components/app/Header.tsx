@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import HeaderCategory from 'components/app/HeaderCategory';
-import HeaderSearh from 'components/app/HeaderSearh';
+import HeaderSearch from 'components/app/HeaderSearch';
 import HeaderAuth from 'components/app/HeaderAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,7 @@ export default function Header() {
       <div className={style['empty1']}></div>
       <HeaderCategory />
       <div className={style['empty2']}></div>
-      <HeaderSearh />
+      <HeaderSearch />
       <div className={style['create']}>
         <Link href={'/create'}>
           <a id="to-create">

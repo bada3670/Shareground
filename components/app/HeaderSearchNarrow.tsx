@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import style from 'styles/components/HeaderSearchNarrow.module.scss';
-import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearh';
+import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearch';
 import { useRef, forwardRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';

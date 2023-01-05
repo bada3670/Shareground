@@ -9,7 +9,7 @@ export type ChangeSearch = ChangeEventHandler<HTMLInputElement>;
 export type ClickResult = MouseEventHandler<HTMLDivElement>;
 export type Result = Item[];
 
-export default function HeaderSearh() {
+export default function HeaderSearch() {
   const allData = useSelector((state: SearchState) => state.search.list);
   const [searchValue, setSearchValue] = useState<string>('');
   const [result, setResult] = useState<Item[]>([]);
