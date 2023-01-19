@@ -1,15 +1,15 @@
-import { Context } from 'utils/typeContext';
-import getSsrApi from 'utils/getSsrApi';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
+import getSsrApi from 'utils/getSsrApi';
 import dateNumToStr from 'utils/dateNumToStr';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
-import style from 'styles/pages/article.module.scss';
 import ToEdit from 'components/article/ToEdit';
 import Delete from 'components/article/Delete';
 import InterestButton from 'components/article/InterestButton';
 import CommentForm from 'components/article/CommentForm';
 import Comments from 'components/article/Comments';
+import style from 'styles/pages/article.module.scss';
+import { Context } from 'utils/typeContext';
 
 export interface CommentType {
   id: string;

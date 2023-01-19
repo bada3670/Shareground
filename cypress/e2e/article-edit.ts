@@ -2,7 +2,7 @@
 import { login, logout } from 'cypress/support/sign';
 import goToProfile from 'cypress/support/to-profile';
 // 글 id
-const articleid = 'Nu4h5ria8LcvVVXOZgeQ';
+const articleid = 'mzWmYxI5rPCqpsADZeYh';
 // 원래 내용
 const original_category = '문화';
 const original_title = '문화 1';

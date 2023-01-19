@@ -1,9 +1,9 @@
-import HeaderSearchNarrow from 'components/app/HeaderSearchNarrow';
-import HeaderSearchWide from 'components/app/HeaderSearchWide';
 import { useSelector } from 'react-redux';
 import { SearchState, Item } from 'reducers/search';
 import { ChangeEventHandler, MouseEventHandler, useState } from 'react';
 import searchFunction from 'utils/search';
+import HeaderSearchNarrow from 'components/app/HeaderSearchNarrow';
+import HeaderSearchWide from 'components/app/HeaderSearchWide';
 
 export type ChangeSearch = ChangeEventHandler<HTMLInputElement>;
 export type ClickResult = MouseEventHandler<HTMLDivElement>;

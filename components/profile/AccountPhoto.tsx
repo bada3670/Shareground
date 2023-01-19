@@ -6,7 +6,7 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/AccountPhoto.module.scss';
 import { LoadStatus } from 'components/profile/Account';
 
-export default function ProfilePhoto({ loadStatus }: { loadStatus: LoadStatus }) {
+export default function AccountPhoto({ loadStatus }: { loadStatus: LoadStatus }) {
   const dispatch = useDispatch();
   const { loading, setLoading } = loadStatus;
   const { id: userid, photo } = useSelector((state: AuthState) => state.auth);

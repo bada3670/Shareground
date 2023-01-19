@@ -1,8 +1,8 @@
 import { auth } from 'fb';
 import { deleteUser } from 'firebase/auth';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer, { AuthState } from 'reducers/auth';
+import { useRouter } from 'next/router';
 import { LoadStatus } from 'components/profile/Account';
 import style from 'styles/components/AccountDelete.module.scss';
 

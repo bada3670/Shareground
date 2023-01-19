@@ -1,7 +1,7 @@
 import { DocumentData } from 'firebase/firestore';
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import style from 'styles/components/Write.module.scss';
 
 interface Props {
@@ -87,7 +87,7 @@ export default function Edit({ data, articleid }: Props) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submit$edit)} className={style['form']}>
+      <form onSubmit={handleSubmit(submit$edit)}>
         <section className={style['select']}>
           <label htmlFor="edit__category">카테고리</label>
           <select {...register('category')} defaultValue={category} id="edit__category">

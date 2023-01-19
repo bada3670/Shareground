@@ -1,11 +1,10 @@
-@use '../layout.scss';
 @use '../theme.scss';
 
 .section {
   overflow-x: hidden;
 }
 
-.article {
+@mixin article($background-color, $color, $way) {
   height: 20rem;
   display: flex;
   align-items: center;
@@ -13,6 +12,8 @@
   flex-direction: column;
   padding: 1rem;
   transition: all 1s ease-in-out;
+  background-color: $background-color;
+  color: $color;
 
   h1 {
     font-size: 2rem;
@@ -22,31 +23,26 @@
   p {
     font-size: 1.5rem;
   }
-}
 
-.from-right {
-  transform: translateX(90%);
-}
+  @if $way == 'from-right' {
+    transform: translateX(90%);
+  } @else {
+    transform: translateX(-90%);
+  }
 
-.from-left {
-  transform: translateX(-90%);
-}
-
-.to-original-position {
-  transform: translateX(0);
+  &.to-original-position {
+    transform: translateX(0);
+  }
 }
 
 .many-contents {
-  background-color: theme.$color-pomegranate;
-  color: white;
+  @include article(theme.$color-pomegranate, white, 'from-right');
 }
 
 .various-forms {
-  background-color: theme.$color-belizehole;
-  color: white;
+  @include article(theme.$color-belizehole, white, 'from-left');
 }
 
 .reaction {
-  background-color: theme.$color-midnightblue;
-  color: white;
+  @include article(theme.$color-midnightblue, white, 'from-right');
 }

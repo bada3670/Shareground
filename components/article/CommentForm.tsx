@@ -1,5 +1,5 @@
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import style from 'styles/components/CommentForm.module.scss';
 
 export default function CommentForm({

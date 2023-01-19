@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import style from 'styles/components/HeaderSearchWide.module.scss';
-import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearch';
 import { useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { ChangeSearch, Result, ClickResult } from 'components/app/HeaderSearch';
+import style from 'styles/components/HeaderSearchWide.module.scss';
 
 interface Props {
   change$search: ChangeSearch;

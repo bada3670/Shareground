@@ -1,8 +1,8 @@
 import { db } from 'fb';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
-import { CommentType } from 'pages/article/[id]';
 import { v4 as uuidv4 } from 'uuid';
+import { CommentType } from 'pages/article/[id]';
 
 async function handlePost(req: Req, res: Res) {
   const { article } = req.query;

@@ -1,8 +1,8 @@
 import { DocumentData } from 'firebase/firestore';
-import Card from 'components/Card';
-import Paginate from 'components/category/Paginate';
 import { categoryEngToKor } from 'utils/convertCategoryLanguage';
 import getSsrApi from 'utils/getSsrApi';
+import Card from 'components/Card';
+import Paginate from 'components/category/Paginate';
 import style from 'styles/pages/category.module.scss';
 import { Context } from 'utils/typeContext';
 

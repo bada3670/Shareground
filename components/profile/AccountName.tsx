@@ -54,8 +54,8 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
   };
 
   return (
-    <section className={style.section} ref={refNameSection}>
-      <div className={style.text} id="profile-name">
+    <section className={style['section']} ref={refNameSection}>
+      <div className={style['text']} id="profile-name">
         {username}
       </div>
       <button
@@ -68,7 +68,7 @@ export default function AccountName({ loadStatus }: { loadStatus: LoadStatus }) 
       </button>
       <input
         type={'text'}
-        className={style.input}
+        className={style['input']}
         ref={refInputName}
         defaultValue={username}
         id="profile-name__edit-input"

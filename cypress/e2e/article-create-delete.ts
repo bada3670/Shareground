@@ -11,7 +11,6 @@ describe('글 생성 및 삭제', () => {
     it('생성할 수 없다는 메시지가 보여야 한다.', () => {
       cy.visit('/create');
       cy.get('#cannot-create').should('exist');
-      cy.visit('/');
     });
   });
 

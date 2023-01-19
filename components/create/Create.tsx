@@ -1,8 +1,8 @@
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
-import { useState, useRef, ChangeEvent } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import searchReducer from 'reducers/search';
+import { useState, useRef, ChangeEvent } from 'react';
+import { useRouter } from 'next/router';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import style from 'styles/components/Write.module.scss';
 
 export default function Create({ userid }: { userid: string }) {
@@ -90,7 +90,7 @@ export default function Create({ userid }: { userid: string }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submit$form)} className={style['form']}>
+      <form onSubmit={handleSubmit(submit$form)}>
         <section className={style['select']}>
           <label htmlFor="create__category">카테고리:</label>
           <select id="create__category" {...register('category')}>

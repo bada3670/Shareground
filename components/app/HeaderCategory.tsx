@@ -1,8 +1,8 @@
+import { KeyboardEventHandler, useRef } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faList } from '@fortawesome/free-solid-svg-icons';
 import style from 'styles/components/HeaderCategory.module.scss';
-import { KeyboardEventHandler, useRef } from 'react';
 
 function TitleText() {
   return (

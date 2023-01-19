@@ -10,9 +10,9 @@ import {
 } from 'firebase/auth';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import style from 'styles/components/SignForm.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
+import style from 'styles/components/SignForm.module.scss';
 
 type SocialProvider = GoogleAuthProvider | GithubAuthProvider;
 
@@ -43,6 +43,9 @@ export default function SignForm() {
         if (error.message.includes('user-not-found')) {
           alert('해당 계정이 존재하지 않습니다!');
         }
+        if (error.message.includes('auth/wrong-password')) {
+          alert('잘못된 비밀번호를 입력하셨습니다!');
+        }
       }
       setLoading(false);
     }
@@ -64,6 +67,9 @@ export default function SignForm() {
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
+        if (error.message.includes('auth/weak-password')) {
+          alert('비밀번호는 6자리 이상이어야 합니다!');
+        }
         if (error.message.includes('email-already-in-use')) {
           alert('이미 가입되어 있습니다!');
         }

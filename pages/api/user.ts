@@ -11,7 +11,6 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-
 import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
 
 async function handleGet(req: Req, res: Res) {

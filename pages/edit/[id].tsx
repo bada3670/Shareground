@@ -1,8 +1,8 @@
+import { DocumentData } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { DocumentData } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import Edit from 'components/edit/Edit';
 import style from 'styles/pages/write.module.scss';
 

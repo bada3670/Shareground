@@ -1,13 +1,13 @@
-import { useSelector } from 'react-redux';
 import { auth } from 'fb';
 import { signOut } from 'firebase/auth';
+import { useSelector } from 'react-redux';
 import { AuthState, authStatus } from 'reducers/auth';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import style from 'styles/components/HeaderAuth.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { useRef } from 'react';
+import style from 'styles/components/HeaderAuth.module.scss';
 
 export default function HeaderAuth() {
   const { status: currentAuthStatus, photo } = useSelector(
@@ -72,22 +72,14 @@ export default function HeaderAuth() {
 
   if (currentAuthStatus === authStatus.fetched) {
     return (
-      <div
-        className={`${style['container']} ${style['logged-in']}`}
-        onMouseLeave={mouseleave$container}
-      >
+      <div className={style['container']} onMouseLeave={mouseleave$container}>
         <button
           className={style['photo']}
           onPointerDown={pointerdown$photo}
           onMouseEnter={mouseenter$photo}
           id="to-profile"
         >
-          <img
-            src={userphoto}
-            alt={'프로필 사진'}
-            className={style['profile']}
-            referrerPolicy={'no-referrer'}
-          />
+          <img src={userphoto} alt={'프로필 사진'} referrerPolicy={'no-referrer'} />
         </button>
         <div
           className={style['login-content']}

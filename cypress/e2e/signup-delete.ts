@@ -1,8 +1,18 @@
 /// <reference types="cypress" />
-const email = 'zxcv@email.com';
+const email = 'sample@gmail.com';
 const password = 'asdf1234';
 
 describe('회원가입, 탈퇴', () => {
+  it('비밀번호는 6자리 이상이어야 한다.', () => {
+    cy.visit('/sign');
+    cy.get('#email').type(email);
+    cy.get('#password').type('1234');
+    cy.get('#sign-up-button').click();
+    cy.on('window:alert', (str) => {
+      expect(str).to.equal('비밀번호는 6자리 이상이어야 합니다!');
+    });
+  });
+
   it('회원가입', () => {
     cy.visit('/sign');
     cy.get('#email').type(email);

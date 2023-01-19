@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import searchReducer from 'reducers/search';
+import { useEffect } from 'react';
 
 export default function Search() {
   const dispatch = useDispatch();

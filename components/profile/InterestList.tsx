@@ -1,9 +1,9 @@
 import { DocumentData } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { AuthState } from 'reducers/auth';
+import { useEffect, useState, useRef } from 'react';
 import Card from 'components/Card';
 import Loader from 'components/profile/Loader';
-import { useEffect, useState, useRef } from 'react';
 import style from 'styles/components/ProfileArticle.module.scss';
 
 interface Datum {

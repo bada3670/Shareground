@@ -8,8 +8,8 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { v4 as uuidv4 } from 'uuid';
 import type { NextApiRequest as Req, NextApiResponse as Res } from 'next';
+import { v4 as uuidv4 } from 'uuid';
 
 async function handleGet(req: Req, res: Res) {
   const { ar } = req.query;
