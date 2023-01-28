@@ -2,6 +2,18 @@
 
 [링크](https://shareground.vercel.app/)
 
+|이미 존재하는 계정|
+
+다음 계정들을 편하게 사용해 보시기 바랍니다.
+
+모든 계정의 비밀번호는 asdf1234입니다.
+
+asdf@gmail.com: 많은 글을 작성했습니다.
+
+qwer@gmail.com
+
+zxcv@gmail.com: 많은 글을 관심 목록에 담았습니다.
+
 ## 소개
 
 ShareGround는 블로그 플랫폼으로서 글을 작성해서 다른 사람과 공유할 수 있습니다.
