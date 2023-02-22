@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+curbranch=$(git symbolic-ref --short HEAD)
+echo $curbranch
+
+if [ "dev" == ${curbranch} ]
+then
+  npm run cy:run
+  npx mochawesome-merge cypress/results/\*.json -o mochawesome-result.json
+  npx marge mochawesome-result.json
+  rm -r cypress/results
+  rm -r docs/mochawesome
+  mv mochawesome-report docs/mochawesome
+  mv docs/mochawesome/mochawesome-result.html docs/mochawesome/report.html
+  mv mochawesome-result.json docs/mochawesome/result.json
+  git add .
+fi
+
