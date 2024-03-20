@@ -1,18 +1,24 @@
-## 웹사이트
+\* 한국어 설명은 아래에 있습니다.
 
-[링크](https://shareground.vercel.app/)
+## Introduction
 
-|이미 존재하는 계정|
+ShareGround is a blog platform where someone can share with others what he or she write.
 
-다음 계정들을 편하게 사용해 보시기 바랍니다.
+Below are the key features.
 
-모든 계정의 비밀번호는 asdf1234입니다.
+- file upload & download
 
-asdf@gmail.com: 많은 글을 작성했습니다.
+- writing comments
 
-qwer@gmail.com
+- bookmarks for articles
 
-zxcv@gmail.com: 많은 글을 관심 목록에 담았습니다.
+- checking articles which I wrote
+
+- searching articles
+
+## Demonstration Videos
+
+[link](https://www.youtube.com/playlist?list=PLvBzZzUGEXRVUgaOyzVg6jgBAHmxqBSpI)
 
 ## 소개
 
@@ -32,21 +38,7 @@ ShareGround는 블로그 플랫폼으로서 글을 작성해서 다른 사람과
 
 ## 시연 영상
 
-아래에 링크들이 있습니다.
-
-순서대로 보시기를 권장합니다.
-
-1. [홈페이지, 맨 위로 가기 버튼, 헤더](https://youtu.be/3SU-zySlcDk)
-
-2. [카테고리, 카드, 글 읽기](https://youtu.be/Q1vrWPk39mk)
-
-3. [계정 관련](https://youtu.be/3ZdXpz5jIiU)
-
-4. [글 작성, 수정, 삭제](https://youtu.be/LxYw0Qa_aHM)
-
-5. [댓글](https://youtu.be/fy93dQPQ_lM)
-
-6. [관심 목록](https://youtu.be/8Os13ZMtjw0)
+[링크](https://www.youtube.com/playlist?list=PLvBzZzUGEXRVUgaOyzVg6jgBAHmxqBSpI)
 
 ## 주요 사용 기술
 
